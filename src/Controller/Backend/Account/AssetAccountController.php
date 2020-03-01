@@ -42,17 +42,15 @@ class AssetAccountController extends BaseController {
     public function new(Request $request, AssetAccountData $assetAccountData): Response {
         $form = $this->createForm(AssetAccountType::class, $assetAccountData);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($assetAccount);
+            $entityManager->persist($assetAccountData->createOrUpdateEntity());
             $entityManager->flush();
 
             return $this->redirectToRoute('backend_account_asset_index');
         }
 
         return $this->render('backend/account/asset/new.html.twig', [
-            'assetAccount' => $assetAccount,
             'form' => $form->createView(),
         ]);
     }
@@ -64,7 +62,8 @@ class AssetAccountController extends BaseController {
      * @return Response
      */
     public function edit(Request $request, AssetAccount $assetAccount): Response {
-        $form = $this->createForm(AssetAccountType::class, $assetAccount);
+        $assetAccountData = new AssetAccountData($assetAccount);
+        $form = $this->createForm(AssetAccountType::class, $assetAccountData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

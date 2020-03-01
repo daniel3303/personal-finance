@@ -3,6 +3,7 @@
 namespace App\Controller\Backend\Account;
 
 use App\Controller\Backend\BaseController;
+use App\Dto\Account\TransferData;
 use App\Entity\Account\Account;
 use App\Entity\Account\Transfer;
 use App\Form\Account\TransferType;
@@ -41,20 +42,19 @@ class TransferController extends BaseController {
      * @return Response
      */
     public function new(Request $request): Response {
-        $transfer = new Transfer();
-        $form = $this->createForm(TransferType::class, $transfer);
+        $transferData = new TransferData();
+        $form = $this->createForm(TransferType::class, $transferData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($transfer);
+            $entityManager->persist($transferData->createOrUpdateEntity());
             $entityManager->flush();
 
             return $this->redirectToRoute('backend_account_transfer_index');
         }
 
         return $this->render('backend/account/transfer/new.html.twig', [
-            'transfer' => $transfer,
             'form' => $form->createView(),
         ]);
     }
@@ -66,7 +66,8 @@ class TransferController extends BaseController {
      * @return Response
      */
     public function edit(Request $request, Transfer $transfer): Response {
-        $form = $this->createForm(TransferType::class, $transfer);
+        $transferData = new TransferData($transfer);
+        $form = $this->createForm(TransferType::class, $transferData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

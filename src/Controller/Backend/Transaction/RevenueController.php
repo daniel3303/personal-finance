@@ -3,6 +3,7 @@
 namespace App\Controller\Backend\Transaction;
 
 use App\Controller\Backend\BaseController;
+use App\Dto\Transaction\RevenueData;
 use App\Entity\Transaction\Revenue;
 use App\Form\Transaction\RevenueType;
 use App\Repository\Transaction\RevenueRepository;
@@ -35,31 +36,36 @@ class RevenueController extends BaseController {
 
     /**
      * @Route("/new", name="backend_transaction_revenue_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response {
-        $revenue = new Revenue();
-        $form = $this->createForm(RevenueType::class, $revenue);
+        $revenueData = new RevenueData();
+        $form = $this->createForm(RevenueType::class, $revenueData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($revenue);
+            $entityManager->persist($revenueData->createOrUpdateEntity());
             $entityManager->flush();
 
             return $this->redirectToRoute('backend_transaction_revenue_index');
         }
 
         return $this->render('backend/transaction/revenue/new.html.twig', [
-            'revenue' => $revenue,
             'form' => $form->createView(),
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="backend_transaction_revenue_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Revenue $revenue
+     * @return Response
      */
     public function edit(Request $request, Revenue $revenue): Response {
-        $form = $this->createForm(RevenueType::class, $revenue);
+        $revenueData = new RevenueData($revenue);
+        $form = $this->createForm(RevenueType::class, $revenueData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

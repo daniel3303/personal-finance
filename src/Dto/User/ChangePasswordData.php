@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 class ChangePasswordData {
+    private User $entity;
 
     /**
      * @Assert\NotNull(message="A password atual é obrigatória.")
@@ -32,23 +33,25 @@ class ChangePasswordData {
      */
     private $newPassword;
 
-    public function __construct() {
+    public function __construct(User $user) {
+        $this->entity = $user;
     }
 
-    public function updateEntity(User $user){
-        $user->setPlainPassword($this->getNewPassword());
-        $user->setPassword('');
+    public function updateEntity(): User{
+        $this->entity->setPlainPassword($this->getNewPassword());
+        $this->entity->setPassword('');
+        return $this->entity;
     }
 
     /**
-     * @return ?string
+     * @return string|null ?string
      */
     public function getOldPassword(): ?string {
         return $this->oldPassword;
     }
 
     /**
-     * @param ?string $oldPassword
+     * @param string|null $oldPassword
      * @return self
      */
     public function setOldPassword($oldPassword): self {

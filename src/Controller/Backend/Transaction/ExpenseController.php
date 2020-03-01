@@ -3,6 +3,7 @@
 namespace App\Controller\Backend\Transaction;
 
 use App\Controller\Backend\BaseController;
+use App\Dto\Transaction\ExpenseData;
 use App\Entity\Transaction\Expense;
 use App\Form\Transaction\ExpenseType;
 use App\Repository\Transaction\ExpenseRepository;
@@ -35,31 +36,36 @@ class ExpenseController extends BaseController {
 
     /**
      * @Route("/new", name="backend_transaction_expense_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response {
-        $expense = new Expense();
-        $form = $this->createForm(ExpenseType::class, $expense);
+        $expenseData = new ExpenseData();
+        $form = $this->createForm(ExpenseType::class, $expenseData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($expense);
+            $entityManager->persist($expenseData->createOrUpdateEntity());
             $entityManager->flush();
 
             return $this->redirectToRoute('backend_transaction_expense_index');
         }
 
         return $this->render('backend/transaction/expense/new.html.twig', [
-            'expense' => $expense,
             'form' => $form->createView(),
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="backend_transaction_expense_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Expense $expense
+     * @return Response
      */
     public function edit(Request $request, Expense $expense): Response {
-        $form = $this->createForm(ExpenseType::class, $expense);
+        $expenseData = new ExpenseData($expense);
+        $form = $this->createForm(ExpenseType::class, $expenseData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

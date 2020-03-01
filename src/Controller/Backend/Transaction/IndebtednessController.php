@@ -3,9 +3,11 @@
 namespace App\Controller\Backend\Transaction;
 
 use App\Controller\Backend\BaseController;
+use App\Dto\Transaction\IndebtednessData;
 use App\Entity\Transaction\Indebtedness;
 use App\Form\Transaction\IndebtednessType;
 use App\Repository\Transaction\IndebtednessRepository;
+use Hoa\Stream\Test\Unit\IStream\In;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,20 +41,19 @@ class IndebtednessController extends BaseController {
      * @return Response
      */
     public function new(Request $request): Response {
-        $indebtedness = new Indebtedness();
-        $form = $this->createForm(IndebtednessType::class, $indebtedness);
+        $indebtednessData = new IndebtednessData();
+        $form = $this->createForm(IndebtednessType::class, $indebtednessData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($indebtedness);
+            $entityManager->persist($indebtednessData->createOrUpdateEntity());
             $entityManager->flush();
 
             return $this->redirectToRoute('backend_transaction_indebtedness_index');
         }
 
         return $this->render('backend/transaction/indebtedness/new.html.twig', [
-            'indebtedness' => $indebtedness,
             'form' => $form->createView(),
         ]);
     }
@@ -64,6 +65,7 @@ class IndebtednessController extends BaseController {
      * @return Response
      */
     public function edit(Request $request, Indebtedness $indebtedness): Response {
+        $indebtednessData = new IndebtednessData($indebtedness);
         $form = $this->createForm(IndebtednessType::class, $indebtedness);
         $form->handleRequest($request);
 

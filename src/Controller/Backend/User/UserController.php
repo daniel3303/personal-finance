@@ -3,6 +3,8 @@
 namespace App\Controller\Backend\User;
 
 use App\Controller\Backend\BaseController;
+use App\Dto\User\ChangePasswordData;
+use App\Dto\User\UserData;
 use App\Entity\User\User;
 use App\Form\Filter\UserFilterType;
 use App\Form\Model\ChangePassword;
@@ -45,20 +47,19 @@ class UserController extends BaseController {
      * @Route("/new", name="backend_user_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user, ['allow_change_roles' => $this->isGranted("ROLE_SUPER_ADMIN")]);
+        $userData = new UserData();
+        $form = $this->createForm(UserType::class, $userData, ['allow_change_roles' => $this->isGranted("ROLE_SUPER_ADMIN")]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
+            $entityManager->persist($userData->createOrUpdateEntity());
             $entityManager->flush();
 
             return $this->redirectToRoute('backend_user_index');
         }
 
         return $this->render('backend/user/new.html.twig', [
-            'user' => $user,
             'form' => $form->createView(),
         ]);
     }
@@ -76,7 +77,8 @@ class UserController extends BaseController {
      * @Route("/{id}/edit", name="backend_user_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, User $user): Response {
-        $form = $this->createForm(UserType::class, $user, ['allow_change_roles' => $this->isGranted("ROLE_SUPER_ADMIN")]);
+        $userData = new UserData($user);
+        $form = $this->createForm(UserType::class, $userData, ['allow_change_roles' => $this->isGranted("ROLE_SUPER_ADMIN")]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -117,21 +119,20 @@ class UserController extends BaseController {
      * @Route("/backend/user/change-password", name="backend_user_change_password")
      */
     public function changePassword(Request $request, TranslatorInterface $translator) {
-        $changePasswordModel = new ChangePassword();
+        /**
+         * @var User $user
+         */
+        $user = $this->getUser();
+        $changePasswordModel = new ChangePasswordData($user);
 
         $form = $this->createForm(ChangePasswordType::class, $changePasswordModel);
         $form->handleRequest($request);
 
-        /**
-         * @var $user User
-         */
-        $user = $this->getUser();
-
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            $this->addFlash("success", $translator->trans("Your password was successfully changed."));
-            $changePasswordModel->update($user);
+            $this->addFlash('success', $translator->trans('Your password was successfully changed.'));
+            $changePasswordModel->updateEntity();
 
             $this->getDoctrine()->getManager()->flush();
 

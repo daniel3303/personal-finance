@@ -3,6 +3,7 @@
 namespace App\Controller\Backend\TaxPayer;
 
 use App\Controller\Backend\BaseController;
+use App\Dto\TaxPayer\TaxPayerData;
 use App\Entity\TaxPayer\TaxPayer;
 use App\Form\TaxPayer\TaxPayerType;
 use App\Repository\TaxPayer\TaxPayerRepository;
@@ -35,40 +36,36 @@ class TaxPayerController extends BaseController {
 
     /**
      * @Route("/new", name="backend_tax_payer_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response {
-        $taxPayer = new TaxPayer();
-        $form = $this->createForm(TaxPayerType::class, $taxPayer);
+        $taxPayerData = new TaxPayerData();
+        $form = $this->createForm(TaxPayerType::class, $taxPayerData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($taxPayer);
+            $entityManager->persist($taxPayerData->createOrUpdateEntity());
             $entityManager->flush();
 
             return $this->redirectToRoute('backend_tax_payer_index');
         }
 
         return $this->render('backend/tax_payer/new.html.twig', [
-            'taxPayer' => $taxPayer,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="backend_tax_payer_show", methods={"GET"})
-     */
-    public function show(TaxPayer $taxPayer): Response {
-        return $this->render('backend/tax_payer/show.html.twig', [
-            'taxPayer' => $taxPayer,
-        ]);
-    }
-
-    /**
      * @Route("/{id}/edit", name="backend_tax_payer_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param TaxPayer $taxPayer
+     * @return Response
      */
     public function edit(Request $request, TaxPayer $taxPayer): Response {
-        $form = $this->createForm(TaxPayerType::class, $taxPayer);
+        $taxPayerData = new TaxPayerData($taxPayer);
+        $form = $this->createForm(TaxPayerType::class, $taxPayerData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
