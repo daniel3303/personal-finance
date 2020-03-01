@@ -4,6 +4,8 @@ namespace App\Entity\Account;
 
 use Carbon\Carbon;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -57,8 +59,20 @@ abstract class Account {
      */
     private DateTime $creationTime;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Account\Transfer", mappedBy="source", orphanRemoval=true)
+     */
+    private Collection $transfersAsSource;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Account\Transfer", mappedBy="target", orphanRemoval=true)
+     */
+    private Collection $transfersAsTarget;
+
     public function __construct() {
         $this->creationTime = new DateTime();
+        $this->transfersAsSource = new ArrayCollection();
+        $this->transfersAsTarget = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -121,6 +135,62 @@ abstract class Account {
 
     public function setIban(?string $iban): self {
         $this->iban = $iban;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transfer[]
+     */
+    public function getTransfersAsSource(): Collection {
+        return $this->transfersAsSource;
+    }
+
+    public function addTransferAsSource(Transfer $transfer): self {
+        if (!$this->transfersAsSource->contains($transfer)) {
+            $this->transfersAsSource[] = $transfer;
+            $transfer->setSource($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransferAsSource(Transfer $transfer): self {
+        if ($this->transfersAsSource->contains($transfer)) {
+            $this->transfersAsSource->removeElement($transfer);
+            // set the owning side to null (unless already changed)
+            if ($transfer->getSource() === $this) {
+                $transfer->setSource(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transfer[]
+     */
+    public function getTransfersAsTarget(): Collection {
+        return $this->transfersAsTarget;
+    }
+
+    public function addTransferAsTarget(Transfer $transfer): self {
+        if (!$this->transfersAsTarget->contains($transfer)) {
+            $this->transfersAsTarget[] = $transfer;
+            $transfer->setTarget($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransferAsTarget(Transfer $transfer): self {
+        if ($this->transfersAsTarget->contains($transfer)) {
+            $this->transfersAsTarget->removeElement($transfer);
+            // set the owning side to null (unless already changed)
+            if ($transfer->getTarget() === $this) {
+                $transfer->setTarget(null);
+            }
+        }
 
         return $this;
     }

@@ -24,7 +24,7 @@ class ExpenseType extends AbstractType {
             ->add('total', MoneyType::class, [
                 'label' => 'Total'
             ])
-            ->add('date', DateTimeType::class, [
+            ->add('time', DateTimeType::class, [
                 'label' => 'Date',
                 'widget' => 'single_text'
             ])

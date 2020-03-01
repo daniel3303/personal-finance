@@ -15,7 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorMap({
  *     "expense" = "Expense",
- *     "revenue" = "Revenue"
+ *     "revenue" = "Revenue",
+ *     "indebtedness" = "Indebtedness",
  * })
  */
 abstract class Transaction {
@@ -46,7 +47,7 @@ abstract class Transaction {
      * @ORM\Column(type="datetime")
      * @Assert\NotNull()
      */
-    private ?DateTime $date = null;
+    private ?DateTime $time = null;
 
     /**
      * @ORM\Column(type="string", length=65536, nullable=true)
@@ -91,12 +92,12 @@ abstract class Transaction {
         return $this;
     }
 
-    public function getDate(): ?Carbon {
-        return $this->date !== null ? Carbon::instance($this->date) : null;
+    public function getTime(): ?Carbon {
+        return $this->time !== null ? Carbon::instance($this->time) : null;
     }
 
-    public function setDate(DateTime $date): self {
-        $this->date = $date;
+    public function setTime(DateTime $time): self {
+        $this->time = $time;
 
         return $this;
     }
