@@ -1,0 +1,87 @@
+# See dos how to configure the bundle: https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html
+liip_imagine:
+    driver: "gd"
+
+    loaders:
+        default:
+            flysystem:
+                filesystem_service: public.storage
+
+    filter_sets:
+        cache: ~
+
+        thumbnail_tiny:
+            quality: 100
+            filters:
+                thumbnail:
+                    size: [42,42]
+                    mode: outbound
+                    allow_upscale: false
+                strip: ~
+
+        thumbnail_small:
+            quality: 100
+            filters:
+                thumbnail:
+                    size: [128,128]
+                    mode: outbound
+                    allow_upscale: false
+                strip: ~
+
+        thumbnail_medium_small:
+            quality: 90
+            filters:
+                thumbnail:
+                    size: [256,256]
+                    mode: outbound
+                    allow_upscale: false
+                strip: ~
+
+        thumbnail_medium:
+            quality: 90
+            filters:
+                thumbnail:
+                    size: [512,512]
+                    mode: outbound
+                    allow_upscale: false
+                strip: ~
+
+        thumbnail_large:
+            quality: 90
+            filters:
+                thumbnail:
+                    size: [1024,1024]
+                    mode: outbound
+                    allow_upscale: false
+                strip: ~
+
+        small:
+            quality: 100
+            filters:
+                thumbnail:
+                    size: [128,128]
+                    mode: inset
+                    allow_upscale: false
+                strip: ~
+        medium:
+            quality: 90
+            filters:
+                thumbnail:
+                    size: [512,512]
+                    mode: inset
+                    allow_upscale: false
+                strip: ~
+
+        large:
+            quality: 90
+            filters:
+                thumbnail:
+                    size: [1024,1024]
+                    mode: inset
+                    allow_upscale: false
+                strip: ~
+
+        original:
+            quality: 90
+            filters:
+                strip: ~

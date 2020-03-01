@@ -1,0 +1,2 @@
+<a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'_locale': 'pt_PT' })) }}">PT</a>
+<a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'_locale': 'en_US' })) }}">EN</a>

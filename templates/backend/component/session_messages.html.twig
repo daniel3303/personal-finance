@@ -1,0 +1,30 @@
+{% for label, messages in app.session.flashBag.all %}
+    {% if label == "success" %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                <i class="fa fa-check"></i> {{ message }}
+            </div>
+        {% endfor %}
+
+    {% elseif label == "warning" %}
+        {% for message in messages %}
+            <div class="alert alert-warning">
+                <i class="fa fa-info"></i> {{ message }}
+            </div>
+        {% endfor %}
+
+    {% elseif label == "error" %}
+        {% for message in messages %}
+            <div class="alert alert-danger">
+                <i class="fa fa-times"></i> {{ message }}
+            </div>
+        {% endfor %}
+
+    {% else %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                <i class="fa fa-times"></i> {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endfor %}

@@ -1,0 +1,17 @@
+legend.col-form-label{
+    font-size: 140%;
+}
+
+#filters legend.col-form-label{
+    font-size: 100%;
+}
+
+a.no-underline{
+    text-decoration: none !important;
+}
+
+@media (min-width: 992px) {
+    .table-responsive{
+        overflow: visible;
+    }
+}

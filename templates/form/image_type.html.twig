@@ -1,0 +1,37 @@
+{% block image_type_row %}
+    {# @var image \App\Entity\Media\Image #}
+    {% set image = form.vars.data %}
+
+    <div class="form-row mb-3">
+        {% if image is not null and image.size > 0 %}
+            <div class="col">
+                <img alt="{{ image.filename }}" class="img-fluid"
+                     src="{{ image|imagine_filter('large') }}">
+            </div>
+        {% endif %}
+
+
+        <div class="col">
+            {% if form.image and not form.image.rendered %}
+                <div class="form-group">
+                    {{ form_label(form.image) }}
+                    {{ form_widget(form.image) }}
+                    {{ form_help(form.image) }}
+                    {{ form_errors(form.image) }}
+                </div>
+            {% endif %}
+
+            {% if form.remove and not form.remove.rendered %}
+                <div class="form-group">
+                    {{ form_label(form.remove) }}
+                    {{ form_widget(form.remove) }}
+                    {{ form_help(form.remove) }}
+                    {{ form_errors(form.remove) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}
+© 2020 GitHub, Inc.

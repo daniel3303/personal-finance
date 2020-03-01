@@ -1,0 +1,2 @@
+lexik_form_filter:
+    condition_pattern: text.contains

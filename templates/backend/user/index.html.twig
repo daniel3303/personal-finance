@@ -1,0 +1,86 @@
+{% extends 'backend/master.html.twig' %}
+{% block title %}{{ 'Users'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'Users'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Users'|trans }}</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        {% embed 'backend/component/pagination/header.html.twig' with {pagination: users, filters: filterForm} %}{% endembed %}
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>{{ knp_pagination_sortable(users, 'Enabled'|trans, 'o.enabled') }}</th>
+                                    <th>{{ knp_pagination_sortable(users, 'Name'|trans, 'o.name') }}</th>
+                                    <th>{{ knp_pagination_sortable(users, 'Email'|trans, 'o.email') }}</th>
+                                    <th>{{ knp_pagination_sortable(users, 'Registration date'|trans, 'o.creationTime') }}</th>
+                                    <th>{{ 'Actions'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                    {# @var user \App\Entity\User #}
+                                    <tr>
+                                        <td>
+                                            {% if user.enabled %}
+                                                <span class="badge badge-success">{{ 'Yes'|trans }}</span>
+                                            {% else %}
+                                                <span class="badge badge-danger">{{ 'No'|trans }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{% embed 'backend/component/identifier/user.html.twig'
+                                                with {user: user} %}{% endembed %}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.creationTime|date("d-m-Y H:i") }}h</td>
+                                        <td>
+                                            <a href="{{ path('backend_user_edit', {'id': user.id}) }}"
+                                               class="btn btn-info btn-icon-split">
+                                                <span class="icon text-white-50">
+                                                  <i class="fas fa-edit"></i>
+                                                </span>
+                                            </a>
+                                            {% if is_granted("ROLE_SUPER_ADMIN") %}
+                                                {{ include('backend/user/partials/delete_form.html.twig') }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5">{{ 'No results found.'|trans }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>{{ knp_pagination_sortable(users, 'Enabled'|trans, 'o.enabled') }}</th>
+                                    <th>{{ knp_pagination_sortable(users, 'Name'|trans, 'o.name') }}</th>
+                                    <th>{{ knp_pagination_sortable(users, 'Email'|trans, 'o.email') }}</th>
+                                    <th>{{ knp_pagination_sortable(users, 'Registration date'|trans, 'o.creationTime') }}</th>
+                                    <th>{{ 'Actions'|trans }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        {% embed 'backend/component/pagination/footer.html.twig' with {pagination: users} %}{% endembed %}
+                    </div>
+
+                    <a href="{{ path('backend_user_new') }}"
+                       class="btn btn-success btn-icon-split">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-plus"></i>
+                        </span>
+                        <span class="text">{{ 'Create new'|trans }}</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

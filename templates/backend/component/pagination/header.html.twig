@@ -1,0 +1,41 @@
+<div class="d-flex justify-content-between">
+    <div class="left">
+        <div class="items-per-page">
+            {{ 'Per page'|trans }}:
+            {% set perPage = app.request.query.get("per-page") ?? app.session.get("per-page") %}
+            {% for num in [10, 25, 50, 100, 200, 500] %}
+                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'per-page': num})) }}"
+                   class="btn btn-primary btn-sm {{ perPage == num ? 'active' : '' }}">
+                    {{ perPage == num ? '<i class="fa fa-check"></i>' : '' }} {{ num }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="right d-flex">
+        <div class="total-records">
+            {# @var pagination \Knp\Component\Pager\Pagination\PaginationInterface #}
+            {% if pagination is not empty %}
+                <p class="text-right">{{ '<strong>{{ count }}</strong> results were found in the database.'|trans({'{{ count }}': pagination.totalItemCount})|raw }}</p>
+            {% else %}
+                <p class="text-right">{{ 'No results found.'|trans }}</p>
+            {% endif %}
+        </div>
+        {% if filters is defined %}
+            <div class="filter-toggle ml-3">
+                <a data-toggle="collapse" href="#filters"><i class="fa fa-lg fa-filter"></i></a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if filters is defined %}
+    <div id="filters" class="collapse px-5 pb-4 pt-3">
+        <form method="get" action="">
+            {% form_theme filterForm 'bootstrap_4_horizontal_layout.html.twig' %}
+            {{ form_rest(filterForm) }}
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-secondary"><i class="fa fa-filter"></i> Filtrar</button>
+            </div>
+        </form>
+    </div>
+{% endif %}

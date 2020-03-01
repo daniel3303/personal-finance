@@ -1,0 +1,7 @@
+Error: Erro
+'The email address {{ value }} is not valid.': "O endereço de email {{ value }}\_não é valido."
+'The name can have at most {{ limit }} chars.': 'O nome pode no máximo ter {{ limit }} caracteres.'
+'The name is required.': 'O nome é obrigatório.'
+'Your password must have at least {{ limit }} chars.': 'A sua password deve ter pelo menos {{ limit }} caracteres.'
+'Your password must have at most {{ limit }} chars.': 'A sua password pode no máximo ter {{ limit }} caracteres.'
+'This password has been leaked in a data breach, it must not be used. Please use another password.': 'Esta password foi comprometida numa violação de dados e não deve ser utilizada. Utilize outra password.'

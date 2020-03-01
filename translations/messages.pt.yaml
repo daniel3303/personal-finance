@@ -1,0 +1,66 @@
+Copyright: 'Todos os direitos reservados'
+'Press the "Exit" button when you are ready to logout': 'Pressione o botão "Sair" se estiver pronto para terminar a sua sessão.'
+'Control Panel': 'Painel de Controlo'
+Users: Utilizadores
+'Change password': 'Alterar password'
+Logout: 'Terminar Sessão'
+Login: Entrar
+'Welcome back!': 'Bem-vindo de volta!'
+'Reset password': 'Recuperar password'
+'Login into my account': 'Entrar na minha conta'
+'Recover your password': 'Recuperar a sua password'
+'Something unexpected happened! Try again later.': 'Aconteceu algo inesparado. Tente novamente mais tarde.'
+'Invalid password recover token.': 'Token de recuperação de password inválido.'
+'Your password was successfully changed.': 'A sua password foi alterada com sucesso.'
+'Press the "Exit" button when you are ready to logout.': 'Pressione o botão "Sair" quando estiver pronto para terminar sessão.'
+Enabled: Ativo
+Name: Nome
+Email: E-mail
+'Registration date': 'Data de registo'
+'Yes': Sim
+'No': Não
+Actions: Acções
+'No results found.': 'Não foram encontrados resultados.'
+'Create new': 'Criar novo'
+'<strong>{{ count }}</strong> results were found in the database.': 'Foram encontrados <strong>{{ count }}</strong> resultados na base de dados.'
+'Per page': 'Por página'
+'Are you sure you want to delete this user?': 'Tem a certeza que pretende eliminar este utilizador?'
+contains: contém
+'equals to': 'igual a'
+Clear: Limpar
+Filter: Filtrar
+'Edit user': 'Editar utilizador'
+'Back to the list': 'Voltar à lista'
+'Create new user': 'Criar novo utilizador'
+User: Utilizador
+Administrator: Administrador
+Edit: Editar
+'Editing user': 'A editar o utilizador'
+'User''s full name.': 'Nome completo do utilizador.'
+'User''s email, used for authentication.': 'E-mail do utilizador, utilizado para autenticação'
+'Permissions for this user. Administrator and Super Administrator provide access to this panel.': 'Permissões para este utilizador. Administrador e Super Administrador dão acesso a este painel.'
+'Super Administrator': 'Super Administrador'
+Permissions: Permissões
+Update: Atualizar
+'You can not delete your own user.': 'Não pode apagar o seu próprio utilizador.'
+'The field "New password" and "Repeat new password" must be equal.': 'Os campos "Nova password" e "Repetir nova password" devem ser iguais'
+'Current password': 'Password atual'
+'New password': 'Nova password'
+'Repeat new password': 'Repetir nova password'
+'Repeat password': 'Repetir a password'
+Cancel: Cancelar
+Exit: Sair
+'Are you ready to leave?': 'Estás pronto para sair?'
+'User''s password.': 'Password do utilizador.'
+'Repeat the user''s password.': 'Repetir a password do utilizador.'
+Save: Guardar
+Hello: Olá
+'To recover your {{ app_name }} password click the link below': 'Para recuperar a sua password no site {{ app_name }} aceda ao seguinte link'
+'This link is valid until {{ time }}h': 'Este link é valido até {{ time }}h'
+'Thank you': 'Obrigado'
+'The team': 'A equipa'
+'No user was found with the email {{ email }}.': 'Nenhum utilizador encontrado com o email {{ email }}.'
+'An email was sent with instructions to recover your password.': 'Foi enviado um email com instruções para recuperar a sua password.'
+'An error occurred while resenting your password. Try again later or contact the support.': 'Ocorreu um erro ao recuperar a sua password. Tente novamente mais tarde ou contacte o suporte.'
+After: Depois de
+Before: Antes de

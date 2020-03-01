@@ -1,0 +1,6 @@
+{# @var pagination \Knp\Component\Pager\Pagination\PaginationInterface #}
+{% if pagination is not empty %}
+    <div class="d-flex justify-content-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endif %}
