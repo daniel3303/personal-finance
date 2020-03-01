@@ -22,34 +22,26 @@ class Transfer {
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\NotNull()
-     * @Assert\Length(min=1, max=64)
      */
     private string $title;
 
     /**
      * @ORM\Column(type="float")
-     * @Assert\Type(type="float")
      */
     private float $total;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotNull()
      */
     private DateTime $time;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Account\Account", inversedBy="transfersAsSource")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotNull()
      */
     private Account $source;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Account\Account", inversedBy="transfersAsTarget")
-     * @Assert\NotNull()
-     * @Assert\NotEqualTo(propertyPath="target", message="The target account can not be equal to the source account.")
      */
     private Account $target;
 

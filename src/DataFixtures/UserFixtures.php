@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Media\Image;
 use App\Entity\User\User;
 use App\Form\Type\GenderType;
+use Carbon\Carbon;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class UserFixtures extends BaseFixture{
@@ -26,6 +27,7 @@ class UserFixtures extends BaseFixture{
             $user->setGender(GenderType::MALE);
             $user->setRoles(['ROLE_ADMIN']);
             $user->setPlainPassword('123456');
+            $user->setBirthday(Carbon::create(1997,02,13));
         });
     }
 }

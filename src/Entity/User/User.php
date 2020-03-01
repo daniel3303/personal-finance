@@ -35,33 +35,26 @@ class User implements UserInterface {
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotNull(message="The name is required.")
-     * @Assert\Length(max=255, maxMessage="The name can have at most {{ limit }} chars.")
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", length=16)
-     * @Assert\NotNull(message="O género é obrigatório.")
-     * @Assert\Choice(choices={"M", "F"})
      */
     private string $gender;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Email(message="The email address {{ value }} is not valid.")
      */
     private string $email;
 
     /**
      * @ORM\Column(type="phone_number", nullable=true)
-     * @PhoneNumberConstraint(message="Este número de telémovel não é válido.", type="mobile")
      */
     private ?PhoneNumber $phone = null;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
      */
     private \DateTime $birthday;
 
@@ -79,17 +72,6 @@ class User implements UserInterface {
 
     /**
      * @var string|null Plain password
-     * @Assert\Length(
-     *     min=6,
-     *     minMessage="Your password must have at least {{ limit }} chars.",
-     *     max=64,
-     *     maxMessage="Your password must have at most {{ limit }} chars."
-     * )
-     * @Assert\NotCompromisedPassword(
-     *     threshold=6,
-     *     message="This password has been leaked in a data breach, it must not be used. Please use another password.",
-     *     skipOnError=true
-     * )
      */
     private ?string $plainPassword = null;
 

@@ -2,6 +2,7 @@
 
 namespace App\Form\User;
 
+use App\Dto\User\UserData;
 use App\Entity\User\User;
 use App\Form\Field\LocaleType;
 use App\Form\Type\GenderType;
@@ -84,7 +85,7 @@ class UserType extends AbstractType {
 
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => UserData::class,
             'allow_change_roles' => false,
         ]);
     }

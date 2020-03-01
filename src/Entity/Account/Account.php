@@ -30,8 +30,6 @@ abstract class Account {
 
     /**
      * @ORM\Column(type="string", length=64, unique=true)
-     * @Assert\NotNull()
-     * @Assert\Length(min=1, max=64)
      */
     private string $name;
 
@@ -42,7 +40,6 @@ abstract class Account {
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotNull()
      */
     private DateTime $initialAmountTime;
 

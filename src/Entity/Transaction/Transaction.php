@@ -32,7 +32,6 @@ abstract class Transaction {
 
     /**
      * @ORM\Column(type="string", length=128, nullable=true)
-     * @Assert\Length(max=128)
      */
     private ?string $title = null;
 
@@ -44,7 +43,6 @@ abstract class Transaction {
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotNull()
      */
     private DateTime $time;
 
@@ -67,7 +65,6 @@ abstract class Transaction {
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TaxPayer\TaxPayer", inversedBy="transactions")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotNull()
      */
     private TaxPayer $taxPayer;
 

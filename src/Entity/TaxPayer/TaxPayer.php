@@ -37,14 +37,11 @@ class TaxPayer {
 
     /**
      * @ORM\Column(type="string", length=128, unique=true)
-     * @Assert\NotNull()
-     * @Assert\Length(min=1, max=128)
      */
     private string $name;
 
     /**
      * @ORM\Column(type="text", length=65535, nullable=true)
-     * @Assert\Length(max="65535")
      */
     private ?string $description = null;
 
