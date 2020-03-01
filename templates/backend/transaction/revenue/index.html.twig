@@ -18,7 +18,7 @@
                                 <tr>
                                     <th>{{ knp_pagination_sortable(revenues, 'Title'|trans, 'o.title') }}</th>
                                     <th>{{ knp_pagination_sortable(revenues, 'Total'|trans, 'o.total') }}</th>
-                                    <th>{{ knp_pagination_sortable(revenues, 'Date'|trans, 'o.date') }}</th>
+                                    <th>{{ knp_pagination_sortable(revenues, 'Date'|trans, 'o.time') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </thead>
@@ -28,7 +28,7 @@
                                     <tr>
                                         <td>{{ revenue.title }}</td>
                                         <td>{{ revenue.total|number_format(2, ',', '.') }}€</td>
-                                        <td>{{ revenue.date|dateDiffForHumans }}</td>
+                                        <td>{{ revenue.time|dateDiffForHumans }}</td>
                                         <td>
                                             <a href="{{ path('backend_transaction_revenue_edit', {'id': revenue.id}) }}"
                                                class="btn btn-info btn-icon-split">
@@ -49,7 +49,7 @@
                                 <tr>
                                     <th>{{ knp_pagination_sortable(revenues, 'Title'|trans, 'o.title') }}</th>
                                     <th>{{ knp_pagination_sortable(revenues, 'Total'|trans, 'o.total') }}</th>
-                                    <th>{{ knp_pagination_sortable(revenues, 'Date'|trans, 'o.date') }}</th>
+                                    <th>{{ knp_pagination_sortable(revenues, 'Date'|trans, 'o.time') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </tfoot>

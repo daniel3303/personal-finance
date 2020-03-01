@@ -2,8 +2,10 @@
 
 namespace App\Form\Transaction;
 
+use App\Entity\Account\Account;
 use App\Entity\TaxPayer\TaxPayer;
 use App\Entity\Transaction\Revenue;
+use App\Repository\Account\AccountRepository;
 use App\Repository\TaxPayer\TaxPayerRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -36,6 +38,15 @@ class RevenueType extends AbstractType
                     return $taxPayerRepository->createQueryBuilder('tp')
                         ->where('tp.enabled = true')
                         ->orderBy('tp.name', 'ASC');
+                },
+                'choice_label' => 'name',
+            ])
+            ->add('account', EntityType::class, [
+                'label' => 'Target',
+                'class' => Account::class,
+                'query_builder' => static function (AccountRepository $accountRepository) {
+                    return $accountRepository->createQueryBuilder('a')
+                        ->orderBy('a.name', 'ASC');
                 },
                 'choice_label' => 'name',
             ])

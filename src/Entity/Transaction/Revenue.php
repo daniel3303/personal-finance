@@ -11,36 +11,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Entity(repositoryClass="App\Repository\Transaction\RevenueRepository")
  */
 class Revenue extends Transaction {
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TaxPayer\TaxPayer", inversedBy="revenues")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotNull()
-     */
-    private ?TaxPayer $taxPayer = null;
-
-    /**
-     * @inheritDoc
-     */
-    public function getTaxPayer(): ?TaxPayer {
-        return $this->taxPayer;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setTaxPayer(?TaxPayer $taxPayer) {
-        $olderTaxPayer = $this->taxPayer;
-        $this->taxPayer = $taxPayer;
-
-        if($olderTaxPayer && $olderTaxPayer !== $taxPayer){
-            $olderTaxPayer->removeRevenue($this);
-        }
-        if($taxPayer){
-            $taxPayer->addRevenue($this);
-        }
-        return $this;
-    }
-
     public static function validate(Revenue $revenue, ExecutionContextInterface $context, $payload): void {
 
         // Revenue total must be equal or greater than 0

@@ -2,19 +2,23 @@
 
 namespace App\Entity\Account;
 
+use App\Entity\Transaction\Transaction;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Account\AccountRepository")
+ * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorMap({
  *     "assetAccount" = "AssetAccount",
  *     "liabilityAccount" = "LiabilityAccount"
  * })
+ * @UniqueEntity(errorPath="name", fields={"name"})
  */
 abstract class Account {
     /**
@@ -26,33 +30,31 @@ abstract class Account {
 
     /**
      * @ORM\Column(type="string", length=64, unique=true)
-     * @Assert\Unique()
      * @Assert\NotNull()
      * @Assert\Length(min=1, max=64)
      */
-    private ?string $name = null;
+    private string $name;
 
     /**
      * @ORM\Column(type="float")
      */
-    private float $total = 0;
+    private float $total;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotNull()
      */
-    private ?DateTime $initialAmountTime = null;
+    private DateTime $initialAmountTime;
 
     /**
-     * @ORM\Column(type="string", length=34, nullable=true)
-     * @Assert\Length(min=34, max=34)
+     * @ORM\Column(type="string", length=34)
      */
-    private ?string $iban = null;
+    private string $iban = '';
 
     /**
-     * @ORM\Column(type="string", length=65536, nullable=true)
+     * @ORM\Column(type="text", length=65535)
      */
-    private ?string $notes = null;
+    private string $notes = '';
 
     /**
      * @ORM\Column(type="datetime")
@@ -69,17 +71,23 @@ abstract class Account {
      */
     private Collection $transfersAsTarget;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Transaction", mappedBy="account")
+     */
+    private $transactions;
+
     public function __construct() {
         $this->creationTime = new DateTime();
         $this->transfersAsSource = new ArrayCollection();
         $this->transfersAsTarget = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     public function getId(): ?int {
         return $this->id;
     }
 
-    public function getName(): ?string {
+    public function getName(): string {
         return $this->name;
     }
 
@@ -99,7 +107,7 @@ abstract class Account {
         return $this;
     }
 
-    public function getNotes(): ?string {
+    public function getNotes(): string {
         return $this->notes;
     }
 
@@ -110,7 +118,7 @@ abstract class Account {
     }
 
     public function getInitialAmountTime(): ?Carbon {
-        return $this->initialAmountTime !== null ? Carbon::instance($this->initialAmountTime) : null;
+        return Carbon::instance($this->initialAmountTime);
     }
 
     public function setInitialAmountTime(DateTime $initialAmountTime): self {
@@ -119,8 +127,8 @@ abstract class Account {
         return $this;
     }
 
-    public function getCreationTime(): ?Carbon {
-        return $this->creationTime !== null ? Carbon::instance($this->creationTime) : null;
+    public function getCreationTime(): Carbon {
+        return Carbon::instance($this->creationTime);
     }
 
     public function setCreationTime(DateTime $creationTime): self {
@@ -129,11 +137,11 @@ abstract class Account {
         return $this;
     }
 
-    public function getIban(): ?string {
+    public function getIban(): string {
         return $this->iban;
     }
 
-    public function setIban(?string $iban): self {
+    public function setIban(string $iban): self {
         $this->iban = $iban;
 
         return $this;
@@ -189,6 +197,34 @@ abstract class Account {
             // set the owning side to null (unless already changed)
             if ($transfer->getTarget() === $this) {
                 $transfer->setTarget(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transaction[]
+     */
+    public function getTransactions(): Collection {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): self {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions[] = $transaction;
+            $transaction->setAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transaction $transaction): self {
+        if ($this->transactions->contains($transaction)) {
+            $this->transactions->removeElement($transaction);
+            // set the owning side to null (unless already changed)
+            if ($transaction->getAccount() === $this) {
+                $transaction->setAccount(null);
             }
         }
 

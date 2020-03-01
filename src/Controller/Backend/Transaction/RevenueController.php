@@ -24,7 +24,7 @@ class RevenueController extends BaseController {
     public function index(RevenueRepository $revenueRepository, Request $request): Response {
         /** @var Revenue[] $revenues */
         $revenues = $this->paginate($revenueRepository->findAllWithQuery(), $request, [
-            'defaultSortFieldName' => 'o.date',
+            'defaultSortFieldName' => 'o.time',
             'defaultSortDirection' => 'desc'
         ]);
 

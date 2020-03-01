@@ -6,12 +6,12 @@ use App\Entity\Media\Image;
 use App\Entity\Transaction\Expense;
 use App\Entity\Transaction\Indebtedness;
 use App\Entity\Transaction\Revenue;
+use App\Entity\Transaction\Transaction;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Hoa\Stream\Test\Unit\IStream\In;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -43,8 +43,8 @@ class TaxPayer {
     private ?string $name = null;
 
     /**
-     * @ORM\Column(type="string", length=65536, nullable=true)
-     * @Assert\Length(max="65536")
+     * @ORM\Column(type="text", length=65535, nullable=true)
+     * @Assert\Length(max="65535")
      */
     private ?string $description = null;
 
@@ -54,24 +54,14 @@ class TaxPayer {
     private DateTime $creationTime;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Revenue", mappedBy="taxPayer", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Transaction", mappedBy="taxPayer", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private Collection $revenues;
+    private Collection $transactions;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Expense", mappedBy="taxPayer", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    private Collection $expenses;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Indebtedness", mappedBy="taxPayer", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    private Collection $indebtednesses;
 
     public function __construct() {
         $this->creationTime = new DateTime();
-        $this->revenues = new ArrayCollection();
-        $this->expenses = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -133,85 +123,28 @@ class TaxPayer {
     /**
      * @return Collection|Revenue[]
      */
-    public function getRevenues(): Collection {
-        return $this->revenues;
+    public function getTransactions(): Collection {
+        return $this->transactions;
     }
 
-    public function addRevenue(Revenue $revenue): self {
-        if (!$this->revenues->contains($revenue)) {
-            $this->revenues[] = $revenue;
-            $revenue->setTaxPayer($this);
+    public function addTransaction(Transaction $transaction): self {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions[] = $transaction;
+            $transaction->setTaxPayer($this);
         }
 
         return $this;
     }
 
-    public function removeRevenue(Revenue $revenue): self {
-        if ($this->revenues->contains($revenue)) {
-            $this->revenues->removeElement($revenue);
+    public function removeTransaction(Transaction $transaction): self {
+        if ($this->transactions->contains($transaction)) {
+            $this->transactions->removeElement($transaction);
             // set the owning side to null (unless already changed)
-            if ($revenue->getTaxPayer() === $this) {
-                $revenue->setTaxPayer(null);
+            if ($transaction->getTaxPayer() === $this) {
+                $transaction->setTaxPayer(null);
             }
         }
 
         return $this;
     }
-
-    /**
-     * @return Collection|Expense[]
-     */
-    public function getExpenses(): Collection {
-        return $this->expenses;
-    }
-
-    public function addExpense(Expense $expense): self {
-        if (!$this->expenses->contains($expense)) {
-            $this->expenses[] = $expense;
-            $expense->setTaxPayer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeExpense(Expense $expense): self {
-        if ($this->expenses->contains($expense)) {
-            $this->expenses->removeElement($expense);
-            // set the owning side to null (unless already changed)
-            if ($expense->getTaxPayer() === $this) {
-                $expense->setTaxPayer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Expense[]
-     */
-    public function getIndebtednesses(): Collection {
-        return $this->indebtednesses;
-    }
-
-    public function addIndebtedness(Indebtedness $indebtedness): self {
-        if (!$this->indebtednesses->contains($indebtedness)) {
-            $this->indebtednesses[] = $indebtedness;
-            $indebtedness->setTaxPayer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIndebtedness(Indebtedness $indebtedness): self {
-        if ($this->indebtednesses->contains($indebtedness)) {
-            $this->indebtednesses->removeElement($indebtedness);
-            // set the owning side to null (unless already changed)
-            if ($indebtedness->getTaxPayer() === $this) {
-                $indebtedness->setTaxPayer(null);
-            }
-        }
-
-        return $this;
-    }
-
 }

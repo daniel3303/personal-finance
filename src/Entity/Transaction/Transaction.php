@@ -2,6 +2,7 @@
 
 namespace App\Entity\Transaction;
 
+use App\Entity\Account\Account;
 use App\Entity\TaxPayer\TaxPayer;
 use Carbon\Carbon;
 use DateTime;
@@ -11,6 +12,8 @@ use JMS\Serializer\Tests\Fixtures\Discriminator\Car;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Represents a exchange of goods between you and a tax payer. Usually you provide a service and
+ * get paid for it or you buy something or some service and pay for it.
  * @ORM\Entity(repositoryClass="App\Repository\Transaction\TransactionRepository")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorMap({
@@ -50,9 +53,15 @@ abstract class Transaction {
     private ?DateTime $time = null;
 
     /**
-     * @ORM\Column(type="string", length=65536, nullable=true)
+     * @ORM\Column(type="text", length=65535, nullable=true)
      */
     private ?string $description = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Account\Account", inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?Account $account = null;
 
     public function __construct() {
         $this->creationTime = new DateTime();
@@ -103,15 +112,34 @@ abstract class Transaction {
     }
 
     /**
-     * @return TaxPayer|null
+     * @ORM\ManyToOne(targetEntity="App\Entity\TaxPayer\TaxPayer", inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull()
      */
-    abstract public function getTaxPayer(): ?TaxPayer;
+    private ?TaxPayer $taxPayer = null;
 
     /**
-     * @param TaxPayer|null $taxPayer
-     * @return mixed
+     * @inheritDoc
      */
-    abstract public function setTaxPayer(?TaxPayer $taxPayer);
+    public function getTaxPayer(): ?TaxPayer {
+        return $this->taxPayer;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setTaxPayer(?TaxPayer $taxPayer): self {
+        $olderTaxPayer = $this->taxPayer;
+        $this->taxPayer = $taxPayer;
+
+        if($olderTaxPayer && $olderTaxPayer !== $taxPayer){
+            $olderTaxPayer->removeTransaction($this);
+        }
+        if($taxPayer){
+            $taxPayer->addTransaction($this);
+        }
+        return $this;
+    }
 
     public function getDescription(): ?string {
         return $this->description;
@@ -120,6 +148,23 @@ abstract class Transaction {
     public function setDescription(?string $description): self {
         $this->description = $description;
 
+        return $this;
+    }
+
+    public function getAccount(): ?Account {
+        return $this->account;
+    }
+
+    public function setAccount(?Account $account): self {
+        $oldAccount = $this->account;
+        $this->account = $account;
+
+        if($oldAccount && $oldAccount !== $account){
+            $oldAccount->removeTransaction($this);
+        }
+        if($account){
+            $account->addTransaction($this);
+        }
         return $this;
     }
 }

@@ -5,8 +5,10 @@ namespace App\Entity\Account;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Represents a transfer of money between accounts.
  * @ORM\Entity(repositoryClass="App\Repository\Account\TransferRepository")
  */
 class Transfer {
@@ -18,23 +20,35 @@ class Transfer {
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=64, nullable=true)
+     * @ORM\Column(type="string", length=64)
+     * @Assert\NotNull()
+     * @Assert\Length(min=1, max=64)
      */
     private ?string $title = null;
 
     /**
+     * @ORM\Column(type="float")
+     * @Assert\Type(type="float")
+     */
+    private ?float $total = 0;
+
+    /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotNull()
      */
     private ?DateTime $time = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Account\Account", inversedBy="transfersAsSource")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull()
      */
     private ?Account $source = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Account\Account", inversedBy="transfersAsTarget")
+     * @Assert\NotNull()
+     * @Assert\NotEqualTo(propertyPath="target", message="The target account can not be equal to the source account.")
      */
     private ?Account $target = null;
 
@@ -58,6 +72,15 @@ class Transfer {
     public function setTitle(string $title): self {
         $this->title = $title;
 
+        return $this;
+    }
+
+    public function getTotal() : float {
+        return $this->total;
+    }
+
+    public function setTotal(float $total): self {
+        $this->total = $total;
         return $this;
     }
 

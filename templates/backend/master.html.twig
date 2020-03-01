@@ -42,6 +42,18 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link" href="{{ path('backend_account_asset_index') }}">
+                <i class="fas fa-fw fa-building"></i>
+                <span>{{ 'Asset Accounts'|trans }}</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('backend_account_transfer_index') }}">
+                <i class="fas fa-fw fa-building"></i>
+                <span>{{ 'Transfers'|trans }}</span></a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link" href="{{ path('backend_tax_payer_index') }}">
                 <i class="fas fa-fw fa-building"></i>
                 <span>{{ 'Tax Payers'|trans }}</span></a>
@@ -57,6 +69,12 @@
             <a class="nav-link" href="{{ path('backend_transaction_expense_index') }}">
                 <i class="fas fa-fw fa-building"></i>
                 <span>{{ 'Expenses'|trans }}</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('backend_transaction_indebtedness_index') }}">
+                <i class="fas fa-fw fa-building"></i>
+                <span>{{ 'Indebtednesses'|trans }}</span></a>
         </li>
 
         <!-- Divider -->

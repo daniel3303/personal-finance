@@ -1,5 +1,5 @@
 parameters:
-    app_name: 'Backoffice'
+    app_name: 'Personal Finance'
     from_mail: 'noreply@domain.tld'
     locale: 'pt'
     public_storage_path: '%kernel.project_dir%/public/storage'
