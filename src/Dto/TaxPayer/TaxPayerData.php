@@ -4,6 +4,7 @@ namespace App\Dto\TaxPayer;
 
 use App\Entity\Media\Image;
 use App\Entity\TaxPayer\TaxPayer;
+use App\Entity\Transaction\Transaction;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TaxPayerData {
@@ -33,6 +34,9 @@ class TaxPayerData {
 
     public function __construct(?TaxPayer $taxPayer = null) {
         $this->entity = $taxPayer;
+        if($taxPayer){
+            $this->reverseTransfer($taxPayer);
+        }
     }
 
     public function getName(): ?string {
@@ -81,15 +85,25 @@ class TaxPayerData {
         return $this->entity;
     }
 
+    public function transfer(TaxPayer $entity): void {
+        $entity->setEnabled($this->enabled);
+        $entity->setName($this->name);
+        $entity->setPhoto($this->photo);
+        $entity->setDescription($this->description);
+    }
+
+    public function reverseTransfer(TaxPayer $taxPayer): void {
+        $this->enabled = $taxPayer->isEnabled();
+        $this->photo = $taxPayer->getPhoto();
+        $this->name = $taxPayer->getName();
+        $this->description = $taxPayer->getDescription();
+    }
+
     public function createOrUpdateEntity(): TaxPayer{
         if($this->entity === null){
             $this->entity = new TaxPayer($this->enabled, $this->name);
         }
-        $this->entity->setEnabled($this->enabled);
-        $this->entity->setName($this->name);
-        $this->entity->setPhoto($this->photo);
-        $this->entity->setDescription($this->description);
-
+        $this->transfer($this->entity);
         return $this->entity;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Form\Account;
 
+use App\Dto\Account\TransferData;
 use App\Dto\Transaction\TransactionData;
 use App\Entity\Account\Account;
 use App\Entity\Account\Transfer;
@@ -29,7 +30,7 @@ class TransferType extends AbstractType {
                 'widget' => 'single_text'
             ])
             ->add('source', EntityType::class, [
-                'label' => 'Target',
+                'label' => 'Source',
                 'class' => Account::class,
                 'query_builder' => static function (AccountRepository $accountRepository) {
                     return $accountRepository->createQueryBuilder('a')
@@ -50,7 +51,7 @@ class TransferType extends AbstractType {
 
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
-            'data_class' => TransactionData::class,
+            'data_class' => TransferData::class,
         ]);
     }
 }

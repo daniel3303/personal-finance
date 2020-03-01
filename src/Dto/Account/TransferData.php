@@ -4,6 +4,7 @@ namespace App\Dto\Account;
 
 use App\Entity\Account\Account;
 use App\Entity\Account\Transfer;
+use App\Entity\TaxPayer\TaxPayer;
 use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -34,12 +35,15 @@ class TransferData {
 
     /**
      * @Assert\NotNull()
-     * @Assert\NotEqualTo(propertyPath="target", message="The target account can not be equal to the source account.")
+     * @Assert\NotEqualTo(propertyPath="source", message="The target account can not be equal to the source account.")
      */
     private ?Account $target = null;
 
     public function __construct(?Transfer $transfer = null) {
         $this->entity = $transfer;
+        if($transfer){
+            $this->reverseTransfer($transfer);
+        }
     }
 
     public function getTitle(): ?string {
@@ -95,15 +99,27 @@ class TransferData {
         return $this->entity;
     }
 
+    public function transfer(Transfer $entity): void {
+        $entity->setTitle($this->title);
+        $entity->setTotal($this->total);
+        $entity->setTime($this->time);
+        $entity->setSource($this->source);
+        $entity->setTarget($this->target);
+    }
+
+    public function reverseTransfer(Transfer $transfer): void {
+        $this->title = $transfer->getTitle();
+        $this->total = $transfer->getTotal();
+        $this->time = $transfer->getTime();
+        $this->source = $transfer->getSource();
+        $this->target = $transfer->getTarget();
+    }
+
     public function createOrUpdateEntity(): Transfer{
         if($this->entity === null){
             $this->entity = new Transfer($this->title, $this->total, $this->time, $this->source, $this->target);
         }
-        $this->entity->setTitle($this->title);
-        $this->entity->setTotal($this->total);
-        $this->entity->setTime($this->time);
-        $this->entity->setSource($this->source);
-        $this->entity->setTarget($this->target);
+        $this->transfer($this->entity);
 
         return $this->entity;
     }

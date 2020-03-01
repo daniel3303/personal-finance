@@ -77,17 +77,10 @@ class UserData {
     public function __construct(?User $entity = null) {
         $this->entity = $entity;
         if($entity){
-            $this->enabled = $entity->isEnabled();
-            $this->photo = $entity->getPhoto();
-            $this->name = $entity->getName();
-            $this->gender = $entity->getGender();
-            $this->email = $entity->getEmail();
-            $this->phone = $entity->getPhone();
-            $this->birthday = $entity->getBirthday();
-            $this->roles = $entity->getRoles();
-            $this->plainPassword = $entity->getPlainPassword();
+            $this->reverseTransfer($entity);
         }
     }
+
 
     /**
      * @return bool|null
@@ -222,6 +215,16 @@ class UserData {
             $this->entity = $user;
         }
         $user = $this->entity;
+        $this->transfer($user);
+
+        return $this->entity;
+    }
+
+    public function getEntity() : ?User{
+        return $this->entity;
+    }
+
+    public function transfer(User $user): void {
         $user->setEnabled($this->enabled);
         $user->setName($this->name);
         $user->setGender($this->gender);
@@ -231,11 +234,17 @@ class UserData {
         $user->setPlainPassword($this->plainPassword);
         $user->setRoles($this->roles);
         $user->setPhoto($this->photo);
-
-        return $this->entity;
     }
 
-    public function getEntity() : ?User{
-        return $this->entity;
+    public function reverseTransfer(User $user): void {
+        $this->enabled = $user->isEnabled();
+        $this->photo = $user->getPhoto();
+        $this->name = $user->getName();
+        $this->gender = $user->getGender();
+        $this->email = $user->getEmail();
+        $this->phone = $user->getPhone();
+        $this->birthday = $user->getBirthday();
+        $this->roles = $user->getRoles();
+        $this->plainPassword = $user->getPlainPassword();
     }
 }

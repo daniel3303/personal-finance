@@ -28,13 +28,13 @@ class ResetPasswordData {
     public function __construct() {
     }
 
-    public function update(User $user){
+    public function update(User $user): void {
         $user->setPlainPassword($this->getNewPassword());
         $user->setPassword('');
     }
 
     /**
-     * @return ?string
+     * @return string|null
      */
     public function getNewPassword(): ?string {
         return $this->newPassword;

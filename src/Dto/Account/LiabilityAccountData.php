@@ -2,7 +2,6 @@
 
 namespace App\Dto\Account;
 
-use App\Entity\Account\AssetAccount;
 use App\Entity\Account\LiabilityAccount;
 use DateInterval;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,9 +20,12 @@ class LiabilityAccountData extends AccountData {
      */
     private ?DateInterval $interestInterval = null;
 
-    public function __construct(?AssetAccount $assetAccount = null) {
-        parent::__construct($assetAccount);
-        $this->entity = $assetAccount;
+    public function __construct(?LiabilityAccount $liabilityAccount = null) {
+        parent::__construct($liabilityAccount);
+        $this->entity = $liabilityAccount;
+        if($liabilityAccount){
+            $this->reverseTransfer($liabilityAccount);
+        }
     }
 
     public function getInterest(): ?float {
@@ -50,11 +52,24 @@ class LiabilityAccountData extends AccountData {
         return $this->entity;
     }
 
+    public function transfer(LiabilityAccount $liabilityAccount): void {
+        $this->accountTransfer($liabilityAccount);
+        $liabilityAccount->setInterest($this->interest);
+        $liabilityAccount->setInterestInterval($this->interestInterval);
+    }
+
+    public function reverseTransfer(LiabilityAccount $liabilityAccount): void {
+        $this->accountReverseTransfer($liabilityAccount);
+        $this->interest = $liabilityAccount->getInterest();
+        $this->interestInterval = $liabilityAccount->getInterestInterval();
+
+    }
+
     public function createOrUpdateEntity(): LiabilityAccount {
         if($this->entity === null){
             $this->entity = new LiabilityAccount($this->getName(), $this->getTotal(), $this->getInitialAmountTime(), $this->interest, $this->interestInterval);
         }
-        $this->updateEntity($this->entity);
+        $this->transfer($this->entity);
         return $this->entity;
     }
 }

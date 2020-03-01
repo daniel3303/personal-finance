@@ -35,13 +35,6 @@ abstract class AccountData {
     private ?string $notes = null;
 
     public function __construct(?Account $account) {
-        if($account){
-            $this->name = $account->getName();
-            $this->iban = $account->getIban();
-            $this->total = $account->getTotal();
-            $this->initialAmountTime = $account->getInitialAmountTime();
-            $this->notes = $account->getNotes();
-        }
     }
 
 
@@ -95,11 +88,19 @@ abstract class AccountData {
         return $this;
     }
 
-    public function updateEntity(Account $account) : void {
+    protected function accountTransfer(Account $account): void {
         $account->setName($this->name);
         $account->setIban($this->iban);
         $account->setNotes($this->notes);
         $account->setTotal($this->total);
         $account->setInitialAmountTime($this->initialAmountTime);
+    }
+
+    protected function accountReverseTransfer(Account $account): void {
+        $this->name = $account->getName();
+        $this->iban = $account->getIban();
+        $this->total = $account->getTotal();
+        $this->initialAmountTime = $account->getInitialAmountTime();
+        $this->notes = $account->getNotes();
     }
 }

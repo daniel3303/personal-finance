@@ -25,7 +25,7 @@ class RecoverPasswordData {
     }
 
     /**
-     * @return ?string
+     * @return string|null ?string
      */
     public function getEmail(): ?string {
         return $this->email;

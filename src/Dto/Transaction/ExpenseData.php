@@ -16,17 +16,28 @@ class ExpenseData extends TransactionData {
     public function __construct(Expense $expense = null) {
         parent::__construct($expense);
         $this->entity = $expense;
+        if($expense !== null){
+            $this->reverseTransfer($expense);
+        }
     }
 
     public function getEntity() : ?Expense{
         return $this->entity;
     }
 
+    public function transfer(Expense $expense): void {
+        $this->transactionTransfer($expense);
+    }
+
+    public function reverseTransfer(Expense $expense): void {
+        $this->transactionReverseTransfer($expense);
+    }
+
     public function createOrUpdateEntity(): Expense{
         if($this->entity === null){
             $this->entity = new Expense($this->getTotal(), $this->getTime(), $this->getAccount(), $this->getTaxPayer());
         }
-        $this->updateEntity($this->entity);
+        $this->transfer($this->entity);
         return $this->entity;
     }
 

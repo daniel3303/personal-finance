@@ -42,13 +42,6 @@ abstract class TransactionData {
     private ?TaxPayer $taxPayer = null;
 
     public function __construct(Transaction $transaction = null) {
-        if($transaction !== null){
-            $this->title = $transaction->getTitle();
-            $this->total = $transaction->getTotal();
-            $this->description = $transaction->getDescription();
-            $this->account = $transaction->getAccount();
-            $this->taxPayer = $transaction->getTaxPayer();
-        }
     }
 
     /**
@@ -135,12 +128,20 @@ abstract class TransactionData {
         $this->taxPayer = $taxPayer;
     }
 
-    public function updateEntity(Transaction $transaction) : void {
+    protected function transactionTransfer(Transaction $transaction): void {
         $transaction->setTitle($this->title);
         $transaction->setTotal($this->total);
         $transaction->setDescription($this->description);
         $transaction->setAccount($this->account);
         $transaction->setTaxPayer($this->taxPayer);
+    }
+
+    protected function transactionReverseTransfer(Transaction $transaction): void {
+        $this->title = $transaction->getTitle();
+        $this->total = $transaction->getTotal();
+        $this->description = $transaction->getDescription();
+        $this->account = $transaction->getAccount();
+        $this->taxPayer = $transaction->getTaxPayer();
     }
 
 }
