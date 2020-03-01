@@ -2,6 +2,7 @@
 
 namespace App\Entity\Media;
 
+use App\Entity\TaxPayer\TaxPayer;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 

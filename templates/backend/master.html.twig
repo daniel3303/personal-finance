@@ -38,7 +38,13 @@
         <li class="nav-item active">
             <a class="nav-link" href="{{ path('backend_dashboard') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>{{ 'Control Panel'|trans }}</span></a>
+                <span>{{ 'Control Panel'|trans() }}</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('backend_tax_payer_index') }}">
+                <i class="fas fa-fw fa-building"></i>
+                <span>{{ 'Tax Payers'|trans }}</span></a>
         </li>
 
         <!-- Divider -->

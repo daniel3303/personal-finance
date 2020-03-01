@@ -1,5 +1,4 @@
-# symfony-base-backoffice
-Symfony Base Backoffice
+# Personal Finance
 
 # Installation
 Configure the .env file with your database details.
@@ -16,9 +15,5 @@ For development run the built-in php server
 ```
 You must also run yarn to compile the assets
 ```shell
-    $ encore dev --watch 
-```
-or 
-```shell
-    $ yarn encore dev --watch 
+    $ yarn dev --watch 
 ```

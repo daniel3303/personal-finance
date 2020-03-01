@@ -41,7 +41,7 @@ class SecurityController extends AbstractController {
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('backend/security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
     /**
@@ -60,15 +60,15 @@ class SecurityController extends AbstractController {
             }else{
                 try{
                     $userHelper->resetPassword($user);
-                    $this->addFlash('success', $this->translator->trans("An email was sent with instructions to recover your password."));
+                    $this->addFlash('success', $this->translator->trans('An email was sent with instructions to recover your password.'));
                 }catch (UserResetPasswordException $e){
-                    $this->addFlash('error', $this->translator->trans("An error occurred while resenting your password. Try again later or contact the support."));
+                    $this->addFlash('error', $this->translator->trans('An error occurred while resenting your password. Try again later or contact the support.'));
                 }
             }
 
         }
 
-        return $this->render('backend/security/recover_password.html.twig',[
+        return $this->render('security/recover_password.html.twig',[
             'form' => $form->createView()
         ]);
     }
@@ -96,7 +96,7 @@ class SecurityController extends AbstractController {
             return $this->redirectToRoute('login');
         }
 
-        return $this->render('backend/security/reset_password.html.twig', [
+        return $this->render('security/reset_password.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
