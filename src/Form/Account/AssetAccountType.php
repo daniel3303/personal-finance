@@ -2,6 +2,7 @@
 
 namespace App\Form\Account;
 
+use App\Dto\Account\AssetAccountData;
 use App\Entity\Account\AssetAccount;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -40,7 +41,7 @@ class AssetAccountType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => AssetAccount::class,
+            'data_class' => AssetAccountData::class,
         ]);
     }
 }

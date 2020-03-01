@@ -3,6 +3,7 @@
 namespace App\Controller\Backend\Account;
 
 use App\Controller\Backend\BaseController;
+use App\Dto\Account\AssetAccountData;
 use App\Entity\Account\AssetAccount;
 use App\Form\Account\AssetAccountType;
 use App\Repository\Account\AssetAccountRepository;
@@ -38,9 +39,8 @@ class AssetAccountController extends BaseController {
      * @param Request $request
      * @return Response
      */
-    public function new(Request $request): Response {
-        $assetAccount = new AssetAccount();
-        $form = $this->createForm(AssetAccountType::class, $assetAccount);
+    public function new(Request $request, AssetAccountData $assetAccountData): Response {
+        $form = $this->createForm(AssetAccountType::class, $assetAccountData);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

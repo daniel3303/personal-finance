@@ -2,6 +2,7 @@
 
 namespace App\Dto\Account;
 
+use App\Entity\Account\Account;
 use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,6 +33,16 @@ abstract class AccountData {
      * @Assert\Length(max=65535)
      */
     private ?string $notes = null;
+
+    public function __construct(?Account $account) {
+        if($account){
+            $this->name = $account->getName();
+            $this->iban = $account->getIban();
+            $this->total = $account->getTotal();
+            $this->initialAmountTime = $account->getInitialAmountTime();
+            $this->notes = $account->getNotes();
+        }
+    }
 
 
     public function getName(): ?string {
@@ -82,5 +93,13 @@ abstract class AccountData {
         $this->iban = $iban;
 
         return $this;
+    }
+
+    public function updateEntity(Account $account) : void {
+        $account->setName($this->name);
+        $account->setIban($this->iban);
+        $account->setNotes($this->notes);
+        $account->setTotal($this->total);
+        $account->setInitialAmountTime($this->initialAmountTime);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Form\Transaction;
 
+use App\Dto\Transaction\RevenueData;
 use App\Entity\Account\Account;
 use App\Entity\TaxPayer\TaxPayer;
-use App\Entity\Transaction\Revenue;
 use App\Repository\Account\AccountRepository;
 use App\Repository\TaxPayer\TaxPayerRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -56,7 +56,7 @@ class RevenueType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Revenue::class,
+            'data_class' => RevenueData::class,
         ]);
     }
 }

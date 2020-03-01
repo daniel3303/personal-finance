@@ -2,6 +2,7 @@
 
 namespace App\Form\TaxPayer;
 
+use App\Dto\TaxPayer\TaxPayerData;
 use App\Entity\TaxPayer\TaxPayer;
 use App\Form\Type\ImageType;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -33,7 +34,7 @@ class TaxPayerType extends AbstractType {
 
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
-            'data_class' => TaxPayer::class,
+            'data_class' => TaxPayerData::class,
         ]);
     }
 }

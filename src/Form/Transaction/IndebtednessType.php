@@ -2,6 +2,7 @@
 
 namespace App\Form\Transaction;
 
+use App\Dto\Transaction\IndebtednessData;
 use App\Entity\Account\Account;
 use App\Entity\TaxPayer\TaxPayer;
 use App\Entity\Transaction\Indebtedness;
@@ -59,7 +60,7 @@ class IndebtednessType extends AbstractType {
 
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
-            'data_class' => Indebtedness::class,
+            'data_class' => IndebtednessData::class,
         ]);
     }
 }

@@ -6,21 +6,14 @@
  * Time: 02:04
  */
 
-namespace App\Form\Model;
+namespace App\Dto\User;
 
 use App\Entity\User\User;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-class ChangePassword {
-
-    /**
-     * @Assert\NotNull(message="A password atual é obrigatória.")
-     * @SecurityAssert\UserPassword(message="A password actual está incorrecta.")
-     */
-    private $oldPassword;
-
+class ResetPasswordData {
     /**
      * @Assert\NotNull(message="A nova password é obrigatória.")
      * @Assert\Length(
@@ -43,22 +36,6 @@ class ChangePassword {
     /**
      * @return ?string
      */
-    public function getOldPassword(): ?string {
-        return $this->oldPassword;
-    }
-
-    /**
-     * @param ?string $oldPassword
-     * @return self
-     */
-    public function setOldPassword($oldPassword): self {
-        $this->oldPassword = $oldPassword;
-        return $this;
-    }
-
-    /**
-     * @return ?string
-     */
     public function getNewPassword(): ?string {
         return $this->newPassword;
     }
@@ -71,5 +48,6 @@ class ChangePassword {
         $this->newPassword = $newPassword;
         return $this;
     }
+
 
 }

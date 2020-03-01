@@ -6,14 +6,14 @@
  * Time: 02:04
  */
 
-namespace App\Form\Model;
+namespace App\Dto\User;
 
 use App\Entity\User;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-class RecoverPassword {
+class RecoverPasswordData {
 
     /**
      * @Assert\NotNull(message="O email é obrigatório.")

@@ -3,9 +3,11 @@
 namespace App\Dto\TaxPayer;
 
 use App\Entity\Media\Image;
+use App\Entity\TaxPayer\TaxPayer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TaxPayerData {
+    private ?TaxPayer $entity;
 
     /**
      * @var bool
@@ -28,6 +30,10 @@ class TaxPayerData {
      * @Assert\Length(max="65535")
      */
     private ?string $description = null;
+
+    public function __construct(?TaxPayer $taxPayer = null) {
+        $this->entity = $taxPayer;
+    }
 
 
     public function getName(): ?string {
@@ -70,5 +76,17 @@ class TaxPayerData {
         $this->enabled = $enabled;
 
         return $this;
+    }
+
+    public function createOrUpdateEntity(): TaxPayer{
+        if($this->entity === null){
+            $this->entity = new TaxPayer($this->enabled, $this->name);
+        }
+        $this->entity->setEnabled($this->enabled);
+        $this->entity->setName($this->name);
+        $this->entity->setPhoto($this->photo);
+        $this->entity->setDescription($this->description);
+
+        return $this->entity;
     }
 }

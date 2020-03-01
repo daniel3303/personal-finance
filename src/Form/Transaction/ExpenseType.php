@@ -2,6 +2,7 @@
 
 namespace App\Form\Transaction;
 
+use App\Dto\Transaction\ExpenseData;
 use App\Entity\Account\Account;
 use App\Entity\TaxPayer\TaxPayer;
 use App\Entity\Transaction\Expense;
@@ -53,7 +54,7 @@ class ExpenseType extends AbstractType {
 
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
-            'data_class' => Expense::class,
+            'data_class' => ExpenseData::class,
         ]);
     }
 }

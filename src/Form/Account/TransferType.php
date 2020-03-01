@@ -2,6 +2,7 @@
 
 namespace App\Form\Account;
 
+use App\Dto\Transaction\TransactionData;
 use App\Entity\Account\Account;
 use App\Entity\Account\Transfer;
 use App\Repository\Account\AccountRepository;
@@ -49,7 +50,7 @@ class TransferType extends AbstractType {
 
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
-            'data_class' => Transfer::class,
+            'data_class' => TransactionData::class,
         ]);
     }
 }

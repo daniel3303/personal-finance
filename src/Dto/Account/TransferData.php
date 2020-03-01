@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Entity\Account;
+namespace App\Dto\Account;
 
-use Carbon\Carbon;
+use App\Entity\Account\Account;
+use App\Entity\Account\Transfer;
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class Transfer {
+class TransferData {
+    private ?Transfer $entity;
+
     /**
      * @Assert\NotNull()
      * @Assert\Length(min=1, max=64)
@@ -36,6 +37,10 @@ class Transfer {
      * @Assert\NotEqualTo(propertyPath="target", message="The target account can not be equal to the source account.")
      */
     private ?Account $target;
+
+    public function __construct(?Transfer $transfer = null) {
+        $this->entity = $transfer;
+    }
 
     public function getTitle(): ?string {
         return $this->title;
@@ -84,5 +89,18 @@ class Transfer {
         $this->target = $target;
 
         return $this;
+    }
+
+    public function createOrUpdateEntity(): Transfer{
+        if($this->entity === null){
+            $this->entity = new Transfer($this->title, $this->total, $this->time, $this->source, $this->target);
+        }
+        $this->entity->setTitle($this->title);
+        $this->entity->setTotal($this->total);
+        $this->entity->setTime($this->time);
+        $this->entity->setSource($this->source);
+        $this->entity->setTarget($this->target);
+
+        return $this->entity;
     }
 }

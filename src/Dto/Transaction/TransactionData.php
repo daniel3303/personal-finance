@@ -4,8 +4,10 @@ namespace App\Dto\Transaction;
 
 use App\Entity\Account\Account;
 use App\Entity\TaxPayer\TaxPayer;
+use App\Entity\Transaction\Transaction;
 use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
+use function Pinky\transformManyDocs;
 
 abstract class TransactionData {
     /**
@@ -38,6 +40,16 @@ abstract class TransactionData {
      * @Assert\NotNull()
      */
     private ?TaxPayer $taxPayer;
+
+    public function __construct(Transaction $transaction = null) {
+        if($transaction !== null){
+            $this->title = $transaction->getTitle();
+            $this->total = $transaction->getTotal();
+            $this->description = $transaction->getDescription();
+            $this->account = $transaction->getAccount();
+            $this->taxPayer = $transaction->getTaxPayer();
+        }
+    }
 
     /**
      * @return string|null
@@ -121,6 +133,14 @@ abstract class TransactionData {
      */
     public function setTaxPayer(?TaxPayer $taxPayer): void {
         $this->taxPayer = $taxPayer;
+    }
+
+    public function updateEntity(Transaction $transaction) : void {
+        $transaction->setTitle($this->title);
+        $transaction->setTotal($this->total);
+        $transaction->setDescription($this->description);
+        $transaction->setAccount($this->account);
+        $transaction->setTaxPayer($this->taxPayer);
     }
 
 }
