@@ -18,7 +18,6 @@ class UserToEmailTransformer implements DataTransformerInterface {
     private $userRepository;
 
     public function __construct(UserRepository $userRepository) {
-
         $this->userRepository = $userRepository;
     }
 
