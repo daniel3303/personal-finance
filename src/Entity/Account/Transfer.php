@@ -5,6 +5,7 @@ namespace App\Entity\Account;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -24,48 +25,55 @@ class Transfer {
      * @Assert\NotNull()
      * @Assert\Length(min=1, max=64)
      */
-    private ?string $title = null;
+    private string $title;
 
     /**
      * @ORM\Column(type="float")
      * @Assert\Type(type="float")
      */
-    private ?float $total = 0;
+    private float $total;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotNull()
      */
-    private ?DateTime $time = null;
+    private DateTime $time;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Account\Account", inversedBy="transfersAsSource")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull()
      */
-    private ?Account $source = null;
+    private Account $source;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Account\Account", inversedBy="transfersAsTarget")
      * @Assert\NotNull()
      * @Assert\NotEqualTo(propertyPath="target", message="The target account can not be equal to the source account.")
      */
-    private ?Account $target = null;
+    private Account $target;
 
     /**
      * @ORM\Column(type="datetime")
      */
     private DateTime $creationTime;
 
-    public function __construct() {
+
+    public function __construct(string $title, float $total, DateTime $time, Account $source, Account $target) {
+        $this->title = $title;
+        $this->total = $total;
+        $this->time = $time;
+        $this->source = $source;
+        $this->target = $target;
         $this->creationTime = new DateTime();
     }
+
 
     public function getId(): ?int {
         return $this->id;
     }
 
-    public function getTitle(): ?string {
+    public function getTitle(): string {
         return $this->title;
     }
 
@@ -75,7 +83,7 @@ class Transfer {
         return $this;
     }
 
-    public function getTotal() : float {
+    public function getTotal(): float {
         return $this->total;
     }
 
@@ -84,8 +92,8 @@ class Transfer {
         return $this;
     }
 
-    public function getTime(): ?Carbon {
-        return $this->time !== null ? Carbon::instance($this->time) : null;
+    public function getTime(): Carbon {
+        return Carbon::instance($this->time);
     }
 
     public function setTime(DateTime $time): self {
@@ -98,24 +106,24 @@ class Transfer {
         return $this->source;
     }
 
-    public function setSource(?Account $source): self {
+    public function setSource(Account $source): self {
         $this->source = $source;
 
         return $this;
     }
 
-    public function getTarget(): ?Account {
+    public function getTarget(): Account {
         return $this->target;
     }
 
-    public function setTarget(?Account $target): self {
+    public function setTarget(Account $target): self {
         $this->target = $target;
 
         return $this;
     }
 
-    public function getCreationTime(): ?Carbon {
-        return $this->creationTime !== null ? Carbon::instance($this->creationTime) : null;
+    public function getCreationTime(): Carbon {
+        return Carbon::instance($this->creationTime);
     }
 
     public function setCreationTime(DateTime $time): self {

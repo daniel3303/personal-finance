@@ -47,14 +47,14 @@ abstract class Account {
     private DateTime $initialAmountTime;
 
     /**
-     * @ORM\Column(type="string", length=34)
+     * @ORM\Column(type="string", length=34, nullable=true)
      */
-    private string $iban = '';
+    private ?string $iban = null;
 
     /**
-     * @ORM\Column(type="text", length=65535)
+     * @ORM\Column(type="text", length=65535, nullable=true)
      */
-    private string $notes = '';
+    private ?string $notes = null;
 
     /**
      * @ORM\Column(type="datetime")
@@ -74,9 +74,12 @@ abstract class Account {
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Transaction", mappedBy="account")
      */
-    private $transactions;
+    private Collection $transactions;
 
-    public function __construct() {
+    public function __construct(string $name, float $total, DateTime $initialAmountTime) {
+        $this->name = $name;
+        $this->total = $total;
+        $this->initialAmountTime = $initialAmountTime;
         $this->creationTime = new DateTime();
         $this->transfersAsSource = new ArrayCollection();
         $this->transfersAsTarget = new ArrayCollection();
@@ -107,11 +110,11 @@ abstract class Account {
         return $this;
     }
 
-    public function getNotes(): string {
+    public function getNotes(): ?string {
         return $this->notes;
     }
 
-    public function setNotes(string $notes): self {
+    public function setNotes(?string $notes): self {
         $this->notes = $notes;
 
         return $this;
@@ -137,11 +140,11 @@ abstract class Account {
         return $this;
     }
 
-    public function getIban(): string {
+    public function getIban(): ?string {
         return $this->iban;
     }
 
-    public function setIban(string $iban): self {
+    public function setIban(?string $iban): self {
         $this->iban = $iban;
 
         return $this;

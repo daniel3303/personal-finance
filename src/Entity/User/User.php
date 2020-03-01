@@ -38,20 +38,20 @@ class User implements UserInterface {
      * @Assert\NotNull(message="The name is required.")
      * @Assert\Length(max=255, maxMessage="The name can have at most {{ limit }} chars.")
      */
-    private ?string $name = null;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=16)
      * @Assert\NotNull(message="O género é obrigatório.")
      * @Assert\Choice(choices={"M", "F"})
      */
-    private $gender;
+    private string $gender;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email(message="The email address {{ value }} is not valid.")
      */
-    private ?string $email = null;
+    private string $email;
 
     /**
      * @ORM\Column(type="phone_number", nullable=true)
@@ -60,16 +60,16 @@ class User implements UserInterface {
     private ?PhoneNumber $phone = null;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      * @Assert\DateTime()
      */
-    private $birthday;
+    private \DateTime $birthday;
 
 
     /**
      * @ORM\Column(type="json")
      */
-    private array $roles = [];
+    private array $roles;
 
     /**
      * @var string The hashed password
@@ -108,16 +108,23 @@ class User implements UserInterface {
      */
     private ?\DateTime $passwordTokenExpirationTime = null;
 
-
-    public function __construct() {
-        $this->setCreationTime(new \DateTime());
+    public function __construct(bool $enabled, string $name, string $gender, string $email, ?PhoneNumber $phone, \DateTime $birthday, array $roles) {
+        $this->enabled = $enabled;
+        $this->name = $name;
+        $this->gender = $gender;
+        $this->email = $email;
+        $this->phone = $phone;
+        $this->birthday = $birthday;
+        $this->roles = $roles;
+        $this->creationTime = new \DateTime();
     }
+
 
     public function getId(): ?int {
         return $this->id;
     }
 
-    public function isEnabled(): ?bool {
+    public function isEnabled(): bool {
         return $this->enabled;
     }
 
@@ -137,17 +144,17 @@ class User implements UserInterface {
         return $this;
     }
 
-    public function getName(): ?string {
+    public function getName(): string {
         return $this->name;
     }
 
-    public function setName(?string $name): self {
+    public function setName(string $name): self {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getEmail(): ?string {
+    public function getEmail(): string {
         return $this->email;
     }
 
@@ -163,7 +170,7 @@ class User implements UserInterface {
      * @see UserInterface
      */
     public function getUsername(): string {
-        return (string)$this->email;
+        return $this->email;
     }
 
     /**
@@ -226,8 +233,8 @@ class User implements UserInterface {
         $this->setPasswordTokenExpirationTime(null);
     }
 
-    public function getCreationTime(): ?Carbon {
-        return $this->creationTime !== null ? Carbon::instance($this->creationTime) : null;
+    public function getCreationTime(): Carbon {
+        return Carbon::instance($this->creationTime);
     }
 
     public function setCreationTime(\DateTime $creationTime): self {
@@ -269,7 +276,7 @@ class User implements UserInterface {
     /**
      * @return string|null
      */
-    public function getGender(): ?string {
+    public function getGender(): string {
         return $this->gender;
     }
 
@@ -277,16 +284,16 @@ class User implements UserInterface {
      * @param string
      * @return User
      */
-    public function setGender(?string $gender): self {
+    public function setGender(string $gender): self {
         $this->gender = $gender;
         return $this;
     }
 
-    public function getBirthday(): ?Carbon {
-        return $this->birthday !== null ? Carbon::instance($this->birthday) : null;
+    public function getBirthday(): Carbon {
+        return Carbon::instance($this->birthday);
     }
 
-    public function setBirthday(?\DateTime $birthday): self {
+    public function setBirthday(\DateTime $birthday): self {
         $this->birthday = $birthday;
 
         return $this;

@@ -4,6 +4,7 @@ namespace App\Entity\Account;
 
 use Carbon\CarbonInterval;
 use DateInterval;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,14 +14,20 @@ class LiabilityAccount extends Account {
     /**
      * @ORM\Column(type="float")
      */
-    private float $interest = 0;
+    private float $interest;
 
     /**
      * @ORM\Column(type="dateinterval")
      */
-    private ?DateInterval $interestInterval = null;
+    private DateInterval $interestInterval;
 
-    public function getInterest(): ?float {
+    public function __construct(string $name, float $total, DateTime $initialAmountTime, float $interest, DateInterval $interestInterval) {
+        parent::__construct($name, $total, $initialAmountTime);
+        $this->interest = $interest;
+        $this->interestInterval = $interestInterval;
+    }
+
+    public function getInterest(): float {
         return $this->interest;
     }
 
@@ -30,8 +37,8 @@ class LiabilityAccount extends Account {
         return $this;
     }
 
-    public function getInterestInterval(): ?CarbonInterval {
-        return $this->interestInterval !== null ? CarbonInterval::instance($this->interestInterval) : null;
+    public function getInterestInterval(): CarbonInterval {
+        return CarbonInterval::instance($this->interestInterval);
     }
 
     public function setInterestInterval(DateInterval $interestInterval): self {

@@ -39,18 +39,19 @@ abstract class Transaction {
     /**
      * @ORM\Column(type="float")
      */
-    private float $total = 0;
+    private float $total;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private DateTime $creationTime;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotNull()
      */
-    private ?DateTime $time = null;
+    private DateTime $time;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private DateTime $creationTime;
 
     /**
      * @ORM\Column(type="text", length=65535, nullable=true)
@@ -61,11 +62,23 @@ abstract class Transaction {
      * @ORM\ManyToOne(targetEntity="App\Entity\Account\Account", inversedBy="transactions")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?Account $account = null;
+    private Account $account;
 
-    public function __construct() {
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TaxPayer\TaxPayer", inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull()
+     */
+    private TaxPayer $taxPayer;
+
+    public function __construct(float $total, DateTime $time, Account $account, TaxPayer $taxPayer) {
+        $this->total = $total;
+        $this->time = $time;
+        $this->account = $account;
+        $this->taxPayer = $taxPayer;
         $this->creationTime = new DateTime();
     }
+
 
     public function getId(): ?int {
         return $this->id;
@@ -91,8 +104,8 @@ abstract class Transaction {
         return $this;
     }
 
-    public function getCreationTime(): ?Carbon {
-        return $this->creationTime !== null ? Carbon::instance($this->creationTime) : null;
+    public function getCreationTime(): Carbon {
+        return Carbon::instance($this->creationTime);
     }
 
     public function setCreationTime(DateTime $creationTime): self {
@@ -101,8 +114,8 @@ abstract class Transaction {
         return $this;
     }
 
-    public function getTime(): ?Carbon {
-        return $this->time !== null ? Carbon::instance($this->time) : null;
+    public function getTime(): Carbon {
+        return Carbon::instance($this->time);
     }
 
     public function setTime(DateTime $time): self {
@@ -112,30 +125,23 @@ abstract class Transaction {
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TaxPayer\TaxPayer", inversedBy="transactions")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotNull()
-     */
-    private ?TaxPayer $taxPayer = null;
-
-    /**
      * @inheritDoc
      */
-    public function getTaxPayer(): ?TaxPayer {
+    public function getTaxPayer(): TaxPayer {
         return $this->taxPayer;
     }
 
     /**
      * @inheritDoc
      */
-    public function setTaxPayer(?TaxPayer $taxPayer): self {
+    public function setTaxPayer(TaxPayer $taxPayer): self {
         $olderTaxPayer = $this->taxPayer;
         $this->taxPayer = $taxPayer;
 
-        if($olderTaxPayer && $olderTaxPayer !== $taxPayer){
+        if ($olderTaxPayer && $olderTaxPayer !== $taxPayer) {
             $olderTaxPayer->removeTransaction($this);
         }
-        if($taxPayer){
+        if ($taxPayer) {
             $taxPayer->addTransaction($this);
         }
         return $this;
@@ -151,18 +157,18 @@ abstract class Transaction {
         return $this;
     }
 
-    public function getAccount(): ?Account {
+    public function getAccount(): Account {
         return $this->account;
     }
 
-    public function setAccount(?Account $account): self {
+    public function setAccount(Account $account): self {
         $oldAccount = $this->account;
         $this->account = $account;
 
-        if($oldAccount && $oldAccount !== $account){
+        if ($oldAccount && $oldAccount !== $account) {
             $oldAccount->removeTransaction($this);
         }
-        if($account){
+        if ($account) {
             $account->addTransaction($this);
         }
         return $this;

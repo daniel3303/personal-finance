@@ -28,7 +28,7 @@ class TaxPayer {
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $enabled = true;
+    private bool $enabled;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Media\Image", cascade={"persist", "remove"})
@@ -40,7 +40,7 @@ class TaxPayer {
      * @Assert\NotNull()
      * @Assert\Length(min=1, max=128)
      */
-    private ?string $name = null;
+    private string $name;
 
     /**
      * @ORM\Column(type="text", length=65535, nullable=true)
@@ -59,7 +59,9 @@ class TaxPayer {
     private Collection $transactions;
 
 
-    public function __construct() {
+    public function __construct(bool $enabled, string $name) {
+        $this->enabled = $enabled;
+        $this->name = $name;
         $this->creationTime = new DateTime();
         $this->transactions = new ArrayCollection();
     }
@@ -68,7 +70,7 @@ class TaxPayer {
         return $this->id;
     }
 
-    public function getName(): ?string {
+    public function getName(): string {
         return $this->name;
     }
 
@@ -88,8 +90,8 @@ class TaxPayer {
         return $this;
     }
 
-    public function getCreationTime(): ?Carbon {
-        return $this->creationTime !== null ? Carbon::instance($this->creationTime) : null;
+    public function getCreationTime(): Carbon {
+        return Carbon::instance($this->creationTime);
     }
 
     public function setCreationTime(\DateTime $creationTime): self {
@@ -110,7 +112,7 @@ class TaxPayer {
         return $this;
     }
 
-    public function getEnabled(): ?bool {
+    public function getEnabled(): bool {
         return $this->enabled;
     }
 
