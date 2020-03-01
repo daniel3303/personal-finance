@@ -132,15 +132,12 @@ abstract class Transaction {
      * @inheritDoc
      */
     public function setTaxPayer(TaxPayer $taxPayer): self {
-        $olderTaxPayer = $this->taxPayer;
+        if ($this->taxPayer !== $taxPayer) {
+            $this->taxPayer->removeTransaction($this);
+        }
         $this->taxPayer = $taxPayer;
+        $taxPayer->addTransaction($this);
 
-        if ($olderTaxPayer && $olderTaxPayer !== $taxPayer) {
-            $olderTaxPayer->removeTransaction($this);
-        }
-        if ($taxPayer) {
-            $taxPayer->addTransaction($this);
-        }
         return $this;
     }
 
@@ -159,15 +156,12 @@ abstract class Transaction {
     }
 
     public function setAccount(Account $account): self {
-        $oldAccount = $this->account;
+        if ($this->account !== $account) {
+            $this->account->removeTransaction($this);
+        }
         $this->account = $account;
+        $account->addTransaction($this);
 
-        if ($oldAccount && $oldAccount !== $account) {
-            $oldAccount->removeTransaction($this);
-        }
-        if ($account) {
-            $account->addTransaction($this);
-        }
         return $this;
     }
 }

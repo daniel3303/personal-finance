@@ -99,7 +99,11 @@ class Transfer {
     }
 
     public function setSource(Account $source): self {
+        if ($this->source !== $source) {
+            $this->source->removeTransferAsSource($this);
+        }
         $this->source = $source;
+        $source->addTransferAsSource($this);
 
         return $this;
     }
@@ -109,7 +113,11 @@ class Transfer {
     }
 
     public function setTarget(Account $target): self {
+        if ($this->target !== $target) {
+            $this->target->removeTransferAsTarget($this);
+        }
         $this->target = $target;
+        $target->addTransferAsTarget($this);
 
         return $this;
     }
