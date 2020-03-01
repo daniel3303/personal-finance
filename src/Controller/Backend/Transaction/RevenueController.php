@@ -50,17 +50,8 @@ class RevenueController extends BaseController {
         }
 
         return $this->render('backend/transaction/revenue/new.html.twig', [
-            'Revenue' => $revenue,
+            'revenue' => $revenue,
             'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="backend_transaction_revenue_show", methods={"GET"})
-     */
-    public function show(Revenue $revenue): Response {
-        return $this->render('backend/transaction/revenue/show.html.twig', [
-            'Revenue' => $revenue,
         ]);
     }
 
@@ -80,7 +71,7 @@ class RevenueController extends BaseController {
         }
 
         return $this->render('backend/transaction/revenue/edit.html.twig', [
-            'Revenue' => $revenue,
+            'revenue' => $revenue,
             'form' => $form->createView(),
         ]);
     }

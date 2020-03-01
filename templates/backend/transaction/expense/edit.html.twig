@@ -1,21 +1,21 @@
 {% extends 'backend/master.html.twig' %}
 
-{% block title %}{{ 'Editing revenue'|trans }}: {{ revenue.title }}{% endblock %}
-{% block contentTitle %}{{ 'Editing revenue'|trans }}: {{ revenue.title}}{% endblock %}
+{% block title %}{{ 'Editing expense'|trans }}: {{ expense.title }}{% endblock %}
+{% block contentTitle %}{{ 'Editing expense'|trans }}: {{ expense.title }}{% endblock %}
 
 {% block body %}
     <div class="row">
         <div class="col-12">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Edit revenue'|trans }}:
-                        {{ revenue.title }}
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Edit expense'|trans }}:
+                        {{ expense.title }}
                     </h6>
                 </div>
                 <div class="card-body">
-                    {{ include('backend/transaction/revenue/partials/form.html.twig', {'button_label': 'Update'}) }}
+                    {{ include('backend/transaction/expense/partials/form.html.twig', {'button_label': 'Update'}) }}
                     <hr/>
-                    <a href="{{ path('backend_transaction_revenue_index') }}"
+                    <a href="{{ path('backend_transaction_expense_index') }}"
                        class="btn btn-secondary btn-icon-split">
                         <span class="icon text-white-50">
                           <i class="fas fa-arrow-left"></i>

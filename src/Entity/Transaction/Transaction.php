@@ -8,6 +8,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use DoctrineExtensions\Query\Mysql\Date;
 use JMS\Serializer\Tests\Fixtures\Discriminator\Car;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Transaction\TransactionRepository")
@@ -27,6 +28,7 @@ abstract class Transaction {
 
     /**
      * @ORM\Column(type="string", length=128, nullable=true)
+     * @Assert\Length(max=128)
      */
     private ?string $title = null;
 
@@ -42,14 +44,9 @@ abstract class Transaction {
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotNull()
      */
     private ?DateTime $date = null;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TaxPayer\TaxPayer", inversedBy="trasactions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private ?TaxPayer $taxPayer = null;
 
     /**
      * @ORM\Column(type="string", length=65536, nullable=true)
@@ -104,15 +101,16 @@ abstract class Transaction {
         return $this;
     }
 
-    public function getTaxPayer(): ?TaxPayer {
-        return $this->taxPayer;
-    }
+    /**
+     * @return TaxPayer|null
+     */
+    abstract public function getTaxPayer(): ?TaxPayer;
 
-    public function setTaxPayer(?TaxPayer $taxPayer): self {
-        $this->taxPayer = $taxPayer;
-
-        return $this;
-    }
+    /**
+     * @param TaxPayer|null $taxPayer
+     * @return mixed
+     */
+    abstract public function setTaxPayer(?TaxPayer $taxPayer);
 
     public function getDescription(): ?string {
         return $this->description;

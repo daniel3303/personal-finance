@@ -3,8 +3,12 @@
 namespace App\Entity\TaxPayer;
 
 use App\Entity\Media\Image;
+use App\Entity\Transaction\Expense;
+use App\Entity\Transaction\Revenue;
 use Carbon\Carbon;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -47,8 +51,20 @@ class TaxPayer {
      */
     private DateTime $creationTime;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Revenue", mappedBy="taxPayer", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private Collection $revenues;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Expense", mappedBy="taxPayer", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private Collection $expenses;
+
     public function __construct() {
         $this->creationTime = new DateTime();
+        $this->revenues = new ArrayCollection();
+        $this->expenses = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -106,4 +122,61 @@ class TaxPayer {
 
         return $this;
     }
+
+    /**
+     * @return Collection|Revenue[]
+     */
+    public function getRevenues(): Collection {
+        return $this->revenues;
+    }
+
+    public function addRevenue(Revenue $revenue): self {
+        if (!$this->revenues->contains($revenue)) {
+            $this->revenues[] = $revenue;
+            $revenue->setTaxPayer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRevenue(Revenue $revenue): self {
+        if ($this->revenues->contains($revenue)) {
+            $this->revenues->removeElement($revenue);
+            // set the owning side to null (unless already changed)
+            if ($revenue->getTaxPayer() === $this) {
+                $revenue->setTaxPayer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Expense[]
+     */
+    public function getExpenses(): Collection {
+        return $this->expenses;
+    }
+
+    public function addExpense(Expense $expense): self {
+        if (!$this->expenses->contains($expense)) {
+            $this->expenses[] = $expense;
+            $expense->setTaxPayer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExpense(Expense $expense): self {
+        if ($this->expenses->contains($expense)) {
+            $this->expenses->removeElement($expense);
+            // set the owning side to null (unless already changed)
+            if ($expense->getTaxPayer() === $this) {
+                $expense->setTaxPayer(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
