@@ -11,17 +11,17 @@ abstract class AccountData {
      * @Assert\NotNull()
      * @Assert\Length(min=1, max=64)
      */
-    private ?string $name;
+    private ?string $name = null;
 
     /**
      * @Assert\NotNull()
      */
-    private ?float $total;
+    private ?float $total = null;
 
     /**
      * @Assert\NotNull()
      */
-    private ?DateTime $initialAmountTime;
+    private ?DateTime $initialAmountTime = null;
 
     /**
      * @var string|null

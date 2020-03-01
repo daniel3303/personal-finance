@@ -15,13 +15,11 @@ class UserData {
 
     /**
      * @Assert\NotNull()
-     * @Assert\Type(type="bool")
      */
     private ?bool $enabled = null;
 
     /**
      * @var Image|null
-     * @Assert\Type(type="Image")
      */
     private ?Image $photo = null;
 
@@ -78,6 +76,17 @@ class UserData {
 
     public function __construct(?User $entity = null) {
         $this->entity = $entity;
+        if($entity){
+            $this->enabled = $entity->isEnabled();
+            $this->photo = $entity->getPhoto();
+            $this->name = $entity->getName();
+            $this->gender = $entity->getGender();
+            $this->email = $entity->getEmail();
+            $this->phone = $entity->getPhone();
+            $this->birthday = $entity->getBirthday();
+            $this->roles = $entity->getRoles();
+            $this->plainPassword = $entity->getPlainPassword();
+        }
     }
 
     /**
