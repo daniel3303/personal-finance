@@ -3,8 +3,6 @@
 namespace App\Entity\TaxPayer;
 
 use App\Entity\Media\Image;
-use App\Entity\Transaction\Expense;
-use App\Entity\Transaction\Indebtedness;
 use App\Entity\Transaction\Revenue;
 use App\Entity\Transaction\Transaction;
 use Carbon\Carbon;
@@ -12,7 +10,6 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TaxPayer\TaxPayerRepository")
@@ -138,10 +135,6 @@ class TaxPayer {
     public function removeTransaction(Transaction $transaction): self {
         if ($this->transactions->contains($transaction)) {
             $this->transactions->removeElement($transaction);
-            // set the owning side to null (unless already changed)
-            if ($transaction->getTaxPayer() === $this) {
-                $transaction->setTaxPayer(null);
-            }
         }
 
         return $this;

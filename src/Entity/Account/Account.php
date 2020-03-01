@@ -158,6 +158,11 @@ abstract class Account {
         if (!$this->transfersAsSource->contains($transfer)) {
             $this->transfersAsSource[] = $transfer;
             $transfer->setSource($this);
+
+            // Update total
+            if($transfer->getTime()->isAfter($this->getInitialAmountTime())){
+                $this->total -= $transfer->getTotal();
+            }
         }
 
         return $this;
@@ -166,9 +171,10 @@ abstract class Account {
     public function removeTransferAsSource(Transfer $transfer): self {
         if ($this->transfersAsSource->contains($transfer)) {
             $this->transfersAsSource->removeElement($transfer);
-            // set the owning side to null (unless already changed)
-            if ($transfer->getSource() === $this) {
-                $transfer->setSource(null);
+
+            // Update total
+            if($transfer->getTime()->isAfter($this->getInitialAmountTime())){
+                $this->total += $transfer->getTotal();
             }
         }
 
@@ -186,6 +192,11 @@ abstract class Account {
         if (!$this->transfersAsTarget->contains($transfer)) {
             $this->transfersAsTarget[] = $transfer;
             $transfer->setTarget($this);
+
+            // Update total
+            if($transfer->getTime()->isAfter($this->getInitialAmountTime())){
+                $this->total += $transfer->getTotal();
+            }
         }
 
         return $this;
@@ -194,9 +205,10 @@ abstract class Account {
     public function removeTransferAsTarget(Transfer $transfer): self {
         if ($this->transfersAsTarget->contains($transfer)) {
             $this->transfersAsTarget->removeElement($transfer);
-            // set the owning side to null (unless already changed)
-            if ($transfer->getTarget() === $this) {
-                $transfer->setTarget(null);
+
+            // Update total
+            if($transfer->getTime()->isAfter($this->getInitialAmountTime())){
+                $this->total -= $transfer->getTotal();
             }
         }
 
@@ -214,6 +226,11 @@ abstract class Account {
         if (!$this->transactions->contains($transaction)) {
             $this->transactions[] = $transaction;
             $transaction->setAccount($this);
+
+            // Update total
+            if($transaction->getTime()->isAfter($this->getInitialAmountTime())){
+                $this->total += $transaction->getTotal();
+            }
         }
 
         return $this;
@@ -222,9 +239,10 @@ abstract class Account {
     public function removeTransaction(Transaction $transaction): self {
         if ($this->transactions->contains($transaction)) {
             $this->transactions->removeElement($transaction);
-            // set the owning side to null (unless already changed)
-            if ($transaction->getAccount() === $this) {
-                $transaction->setAccount(null);
+
+            // Update total
+            if($transaction->getTime()->isAfter($this->getInitialAmountTime())){
+                $this->total -= $transaction->getTotal();
             }
         }
 
