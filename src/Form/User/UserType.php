@@ -3,7 +3,6 @@
 namespace App\Form\User;
 
 use App\Dto\User\UserData;
-use App\Form\Field\LocaleType;
 use App\Form\Type\GenderType;
 use App\Form\Type\ImageType;
 use Symfony\Component\Form\AbstractType;
@@ -18,7 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType {
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options):void {
         /** @var UserData|null $user */
         $user = $options['data'] ?? null;
         $isEdit = $user->getEntity() && $user->getEntity()->getId();
@@ -61,7 +60,7 @@ class UserType extends AbstractType {
             ]);
 
         $builder->add('gender', GenderType::class, [
-            'label' => 'Género',
+            'label' => 'Gender',
         ]);
         $builder->add('birthday', DateType::class, [
             'label' => 'Birthday',
@@ -82,7 +81,7 @@ class UserType extends AbstractType {
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver):void {
         $resolver->setDefaults([
             'data_class' => UserData::class,
             'allow_change_roles' => false,

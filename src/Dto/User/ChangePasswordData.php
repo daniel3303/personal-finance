@@ -60,7 +60,7 @@ class ChangePasswordData {
     }
 
     /**
-     * @return ?string
+     * @return string|null ?string
      */
     public function getNewPassword(): ?string {
         return $this->newPassword;

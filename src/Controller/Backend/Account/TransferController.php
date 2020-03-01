@@ -6,7 +6,6 @@ use App\Controller\Backend\BaseController;
 use App\Dto\Account\TransferData;
 use App\Entity\Account\Transfer;
 use App\Form\Account\TransferType;
-use App\Repository\Account\AccountRepository;
 use App\Repository\Account\TransferRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TransferController extends BaseController {
     /**
      * @Route("/", name="backend_account_transfer_index", methods={"GET"})
-     * @param AccountRepository $transferRepository
+     * @param TransferRepository $transferRepository
      * @param Request $request
      * @return Response
      */
@@ -90,7 +89,7 @@ class TransferController extends BaseController {
      * @param TranslatorInterface $translator
      * @return Response
      */
-    public function delete(Request $request, Transfer $transfer, TranslatorInterface $translator): Response {
+    public function delete(Request $request, Transfer $transfer): Response {
         if ($this->isCsrfTokenValid('delete' . $transfer->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($transfer);

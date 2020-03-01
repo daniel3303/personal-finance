@@ -40,7 +40,7 @@ class ResetPasswordData {
     }
 
     /**
-     * @param ?string $newPassword
+     * @param string|null $newPassword
      * @return self
      */
     public function setNewPassword(?string $newPassword): self {

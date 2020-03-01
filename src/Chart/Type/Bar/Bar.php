@@ -13,7 +13,7 @@ class Bar {
     /**
      * @var float
      */
-    private $y;
+    private float $y;
 
     public function __construct(float $y) {
         $this->y = $y;

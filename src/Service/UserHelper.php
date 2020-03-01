@@ -13,12 +13,12 @@ use App\Entity\User\User;
 use App\Exception\UserResetPasswordException;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 class UserHelper {
 
@@ -42,21 +42,14 @@ class UserHelper {
      */
     private string $appName;
 
-    /**
-     * @var Environment
-     */
-    private Environment $twig;
-
     public function __construct(MailerInterface $mailer,
                                 EntityManagerInterface $entityManager,
                                 TranslatorInterface $translator,
-                                Environment $twig,
                                 string $appName) {
         $this->mailer = $mailer;
         $this->entityManager = $entityManager;
         $this->translator = $translator;
         $this->appName = $appName;
-        $this->twig = $twig;
     }
 
     /**
@@ -89,7 +82,7 @@ class UserHelper {
 
         } catch (TransportExceptionInterface $e) {
             throw new UserResetPasswordException($this->translator->trans('Something unexpected happened! Try again later.'), $e);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new UserResetPasswordException($this->translator->trans('Something unexpected happened! Try again later.'), $e);
         }
     }

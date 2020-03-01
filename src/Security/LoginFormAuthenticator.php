@@ -34,7 +34,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator {
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function supports(Request $request) {
+    public function supports(Request $request): bool {
         return 'login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
@@ -56,7 +56,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator {
     public function getUser($credentials, UserProviderInterface $userProvider) {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
+            throw new InvalidCsrfTokenException('Invalid security token.');
         }
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
@@ -69,7 +69,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator {
         return $user;
     }
 
-    public function checkCredentials($credentials, UserInterface $user) {
+    public function checkCredentials($credentials, UserInterface $user): bool {
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
@@ -81,7 +81,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator {
         return new RedirectResponse($this->urlGenerator->generate('backend_dashboard'));
     }
 
-    protected function getLoginUrl() {
+    protected function getLoginUrl(): string {
         return $this->urlGenerator->generate('login');
     }
 

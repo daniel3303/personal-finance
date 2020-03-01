@@ -21,14 +21,13 @@ class GenderType extends AbstractType {
     public function configureOptions(OptionsResolver $resolver) : void{
         $resolver->setDefaults([
             'choices' => [
-                'Masculino' => 'M',
-                'Feminino' => 'F',
+                'Male' => self::MALE,
+                'Female' => self::FEMALE,
             ],
-            'placeholder' => 'Selecione uma opção...'
         ]);
     }
 
-    public function getParent() {
+    public function getParent() : string {
         return ChoiceType::class;
     }
 }

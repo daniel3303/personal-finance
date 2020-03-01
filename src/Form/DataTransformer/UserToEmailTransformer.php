@@ -15,7 +15,7 @@ class UserToEmailTransformer implements DataTransformerInterface {
     /**
      * @var UserRepository
      */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository) {
         $this->userRepository = $userRepository;

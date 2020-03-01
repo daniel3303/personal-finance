@@ -4,7 +4,6 @@
 namespace App\Twig;
 
 
-use App\Service\UploaderHelper;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;

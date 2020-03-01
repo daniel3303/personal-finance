@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserFilterType extends AbstractType {
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options) :void {
         $builder
             ->add('name', Filters\TextFilterType::class, [
                 'condition_pattern' => FilterOperands::STRING_CONTAINS,
@@ -27,7 +27,7 @@ class UserFilterType extends AbstractType {
                 'label' => 'Email',
             ])
             ->add('gender', Filters\ChoiceFilterType::class, [
-                'label' => 'Gneder',
+                'label' => 'Gender',
                 'choices' => [
                     'Male' => 'M',
                     'Female' => 'F',
@@ -48,7 +48,7 @@ class UserFilterType extends AbstractType {
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver):void {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
             'validation_groups' => array('filtering') // avoid NotBlank() constraint-related message

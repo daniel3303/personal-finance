@@ -10,24 +10,25 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 use Faker\Factory;
 use Faker\Generator;
 use http\Exception\RuntimeException;
 
 abstract class BaseFixture extends Fixture {
-    private $referencesIndex = [];
+    private array $referencesIndex = [];
 
     /** @var Generator */
-    protected $faker;
+    protected Generator $faker;
 
     /** @var ObjectManager */
-    protected $manager;
+    protected ObjectManager $manager;
 
     public function __construct() {
         $this->faker = Factory::create();
     }
 
-    public function load(ObjectManager $manager) {
+    public function load(ObjectManager $manager) :void {
         $this->manager = $manager;
         $this->loadData($manager);
         $manager->flush();
@@ -35,7 +36,7 @@ abstract class BaseFixture extends Fixture {
 
     abstract protected function loadData(ObjectManager $manager);
 
-    protected function createMany(string $className, int $count, callable $factory) {
+    protected function createMany(string $className, int $count, callable $factory)  :void {
         for ($i = 0; $i < $count; $i++) {
             $entity = $factory($i);
             if (!$entity || get_class($entity) !== $className) {
@@ -50,7 +51,7 @@ abstract class BaseFixture extends Fixture {
     /**
      * @param string $className
      * @return object
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getRandomReference(string $className) {
         if (!isset($this->referencesIndex[$className])) {
@@ -62,7 +63,7 @@ abstract class BaseFixture extends Fixture {
             }
         }
         if (empty($this->referencesIndex[$className])) {
-            throw new \Exception(sprintf('Cannot find any references for class "%s"', $className));
+            throw new RuntimeException(sprintf('Cannot find any references for class "%s"', $className));
         }
         $randomReferenceKey = $this->faker->randomElement($this->referencesIndex[$className]);
         return $this->getReference($randomReferenceKey);

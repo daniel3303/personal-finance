@@ -37,6 +37,7 @@ class AssetAccountController extends BaseController {
     /**
      * @Route("/new", name="backend_account_asset_new", methods={"GET","POST"})
      * @param Request $request
+     * @param AssetAccountData $assetAccountData
      * @return Response
      */
     public function new(Request $request, AssetAccountData $assetAccountData): Response {
@@ -87,7 +88,7 @@ class AssetAccountController extends BaseController {
      * @param TranslatorInterface $translator
      * @return Response
      */
-    public function delete(Request $request, AssetAccount $assetAccount, TranslatorInterface $translator): Response {
+    public function delete(Request $request, AssetAccount $assetAccount): Response {
         if ($this->isCsrfTokenValid('delete' . $assetAccount->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($assetAccount);

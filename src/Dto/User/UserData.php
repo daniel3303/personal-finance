@@ -5,6 +5,7 @@ namespace App\Dto\User;
 
 use App\Entity\Media\Image;
 use App\Entity\User\User;
+use DateTime;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as PhoneNumberConstraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -49,7 +50,7 @@ class UserData {
      * @Assert\NotNull()
      * @Assert\DateTime()
      */
-    private ?\DateTime $birthday = null;
+    private ?DateTime $birthday = null;
 
 
     /**
@@ -166,16 +167,16 @@ class UserData {
     }
 
     /**
-     * @return \DateTime|null
+     * @return DateTime|null
      */
-    public function getBirthday(): ?\DateTime {
+    public function getBirthday(): ?DateTime {
         return $this->birthday;
     }
 
     /**
-     * @param \DateTime|null $birthday
+     * @param DateTime|null $birthday
      */
-    public function setBirthday(?\DateTime $birthday): void {
+    public function setBirthday(?DateTime $birthday): void {
         $this->birthday = $birthday;
     }
 

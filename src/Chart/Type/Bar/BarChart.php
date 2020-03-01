@@ -24,12 +24,12 @@ class BarChart {
     }
 
     public static function create(array $labels, array $datasets) : BarChart{
-        $labels = new ArrayObject($labels);
-        $datasets = new ArrayObject($datasets);
+        $labelsObject = new ArrayObject($labels);
+        $datasetsObject = new ArrayObject($datasets);
 
-        $chart = new self($labels);
-        foreach ($datasets as $dataset) {
-            foreach ($labels as $label){
+        $chart = new self($labelsObject);
+        foreach ($datasetsObject as $dataset) {
+            for ($i = 0, $iMax = count($labelsObject); $i < $iMax; $i++){
                 $bar = new Bar(0);
                 $chart->addBar($bar, $dataset);
             }
@@ -38,12 +38,12 @@ class BarChart {
     }
 
     /** @var ArrayObject */
-    private $datasets;
+    private ArrayObject $datasets;
 
     /**
-     * @var array
+     * @var ArrayObject
      */
-    private $labels;
+    private ArrayObject $labels;
 
     /**
      * @var int
@@ -76,19 +76,19 @@ class BarChart {
     }
 
 
-    protected function addBar(Bar $bar, string $dataset) {
-        if($this->hasDataset($dataset) === false){
-            $this->datasets->append(new ArrayObject(['label' => $dataset, 'data' => new ArrayObject()]));
+    protected function addBar(Bar $bar, string $datasetName) :void {
+        if($this->hasDataset($datasetName) === false){
+            $this->datasets->append(new ArrayObject(['label' => $datasetName, 'data' => new ArrayObject()]));
         }
-        $dataset = $this->getDataset($dataset);
-        $dataset["data"]->append($bar);
+        $dataset = $this->getDataset($datasetName);
+        $dataset['data']->append($bar);
     }
 
     public function getBarByIndex(string $dataset, int $index) : ?Bar{
-        if($this->hasDataset($dataset) === false || isset($this->getDataset($dataset)["data"][$index]) === false){
+        if($this->hasDataset($dataset) === false || isset($this->getDataset($dataset)['data'][$index]) === false){
             return null;
         }
-        return $this->getDataset($dataset)["data"][$index];
+        return $this->getDataset($dataset)['data'][$index];
     }
 
     public function getPoints(string $dataset) : array {
@@ -97,9 +97,9 @@ class BarChart {
         }
 
         $values = [];
-        foreach ($this->getDataset($dataset)["data"] as $bar){
+        foreach ($this->getDataset($dataset)['data'] as $bar){
             /** @var $bar Bar */
-            array_push($values, $bar->getY());
+            $values[] = $bar->getY();
         }
         return $values;
     }
@@ -121,13 +121,13 @@ class BarChart {
      * @param string $dataset
      * @return Bar[]
      */
-    public function getDataset(string $dataset): ?array {
+    public function getDataset(string $dataset): array {
         foreach ($this->datasets as $datasetI){
-            if($datasetI["label"] === $dataset){
+            if($datasetI['label'] === $dataset){
                 return $datasetI->getArrayCopy();
             }
         }
-        return null;
+        return [];
     }
 
     public function getDatasets() : array {
@@ -135,11 +135,11 @@ class BarChart {
 
         foreach ($datasets as $key => $dataset) {
             $data = [];
-            foreach ($datasets[$key]["data"] as $bar){
+            foreach ($datasets[$key]['data'] as $bar){
                 /** @var $bar Bar */
-                array_push($data, round($bar->getY(), $this->getDecimalPlaces()));
+                $data[] = round($bar->getY(), $this->getDecimalPlaces());
             }
-            $datasets[$key]["data"] = $data;
+            $datasets[$key]['data'] = $data;
         }
 
         return $datasets;

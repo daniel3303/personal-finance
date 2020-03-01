@@ -5,6 +5,7 @@ namespace App\Service;
 
 
 use App\Entity\Media\Image;
+use League\Flysystem\FileExistsException;
 use League\Flysystem\FilesystemInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -30,7 +31,9 @@ class ImageManager {
      * @param string $context
      * @param Image|null $image
      * @return Image|null
-     * @throws \League\Flysystem\FileExistsException
+     * @throws FileExistsException
+     * @throws \Exception
+     * @throws \Exception
      */
     public function upload(UploadedFile $uploadedFile, string $context, ?Image $image = null): ?Image {
         if ($uploadedFile->isValid() === false) {

@@ -22,7 +22,7 @@ class MetaParameterSubscriber implements EventSubscriberInterface {
     public function __construct() {
     }
 
-    public function onKernelController(ControllerEvent $event){
+    public function onKernelController(ControllerEvent $event) :void {
         $request = $event->getRequest();
         if($request->query->has('per-page')){
             $perPage = max($request->query->getInt('per-page', 0), 10);
@@ -31,7 +31,7 @@ class MetaParameterSubscriber implements EventSubscriberInterface {
 
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents() : array {
         return [
             KernelEvents::CONTROLLER => 'onKernelController',
         ];

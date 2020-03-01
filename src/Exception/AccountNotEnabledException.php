@@ -15,7 +15,6 @@ class AccountNotEnabledException extends AccountStatusException {
 
     /**
      * AccountNotEnabledException constructor.
-     * @param string $string
      */
     public function __construct() {
         parent::__construct('Your account is not enabled.');

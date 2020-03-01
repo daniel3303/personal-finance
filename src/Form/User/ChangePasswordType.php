@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 
 class ChangePasswordType extends AbstractType {
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options) :void {
         $builder
             ->add('oldPassword', PasswordType::class, [
                 'label' => 'Current password',
@@ -24,14 +24,14 @@ class ChangePasswordType extends AbstractType {
                 'constraints' => [
                     new NotCompromisedPassword([
                         'threshold' => 6,
-                        'message' => "This password has been leaked in a data breach, it must not be used. Please use another password.",
+                        'message' => 'This password has been leaked in a data breach, it must not be used. Please use another password.',
                         'skipOnError' => true
                     ])
                 ]
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver) :void  {
         $resolver->setDefaults([
             'data_class' => ChangePasswordData::class,
         ]);

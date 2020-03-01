@@ -9,25 +9,17 @@
 namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class LocaleSubscriber implements EventSubscriberInterface {
-    private $defaultLocale;
+    private string $defaultLocale;
 
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    public function __construct(TokenStorageInterface $tokenStorage, string $defaultLocale) {
+    public function __construct(string $defaultLocale) {
         $this->defaultLocale = $defaultLocale;
-        $this->tokenStorage = $tokenStorage;
     }
 
-    public function onKernelRequest(RequestEvent $event) {
+    public function onKernelRequest(RequestEvent $event) :void {
         $request = $event->getRequest();
         if (!$request->hasPreviousSession()) {
             return;
@@ -42,7 +34,7 @@ class LocaleSubscriber implements EventSubscriberInterface {
     }
 
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents() : array {
         return [
             // must be registered before (i.e. with a higher priority than) the default Locale listener
             KernelEvents::REQUEST => [['onKernelRequest', 20]],

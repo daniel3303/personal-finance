@@ -10,69 +10,69 @@ namespace App\Util;
 
 
 class Month {
-    static function monthsIndexes() {
+    public static function monthsIndexes(): array {
         return range(1, 12);
     }
 
-    static function numberToName(int $number) {
+    public static function numberToName(int $number): string {
         switch ($number) {
             case 1:
-                return "Janeiro";
+                return 'Janeiro';
             case 2:
-                return "Fevereiro";
+                return 'Fevereiro';
             case 3:
-                return "Março";
+                return 'Março';
             case 4:
-                return "Abril";
+                return 'Abril';
             case 5:
-                return "Maio";
+                return 'Maio';
             case 6:
-                return "Junho";
+                return 'Junho';
             case 7:
-                return "Julho";
+                return 'Julho';
             case 8:
-                return "Agosto";
+                return 'Agosto';
             case 9:
-                return "Setembro";
+                return 'Setembro';
             case 10:
-                return "Outubro";
+                return 'Outubro';
             case 11:
-                return "Novembro";
+                return 'Novembro';
             case 12:
-                return "Dezembro";
+                return 'Dezembro';
             default:
                 return "";
         }
     }
 
-    static function numberToShortName(int $number) {
+    public static function numberToShortName(int $number): string {
         switch ($number) {
             case 1:
-                return "Jan";
+                return 'Jan';
             case 2:
-                return "Fev";
+                return 'Fev';
             case 3:
-                return "Mar";
+                return 'Mar';
             case 4:
-                return "Abr";
+                return 'Abr';
             case 5:
-                return "Mai";
+                return 'Mai';
             case 6:
-                return "Jun";
+                return 'Jun';
             case 7:
-                return "Jul";
+                return 'Jul';
             case 8:
-                return "Ago";
+                return 'Ago';
             case 9:
-                return "Set";
+                return 'Set';
             case 10:
-                return "Out";
+                return 'Out';
             case 11:
-                return "Nov";
+                return 'Nov';
             case 12:
-                return "Dez";
+                return 'Dez';
             default:
-                return "";
+                return '';
         }
 
     }

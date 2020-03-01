@@ -53,7 +53,7 @@ class ImageType extends AbstractType {
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options) :void {
         $builder->add('image', FileType::class, array_merge([
             'mapped' => false,
             'multiple' => false,

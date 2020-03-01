@@ -14,27 +14,18 @@ use Carbon\CarbonInterval;
 use Carbon\CarbonPeriod;
 use DateInterval;
 use DateTime;
+use DateTimeInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class DateExtension extends AbstractExtension {
-
-    /**
-     * @var string
-     */
-    private $locale;
-
-    public function __construct(string $defaultLocale) {
-        $this->locale = $defaultLocale;
-    }
-
     /**
      * Returns a list of functions to add to the existing list.
      *
      * @return array An array of filters
      */
-    public function getFunctions() {
+    public function getFunctions() : array {
         return array(
             new TwigFunction('datePeriod', array($this, 'datePeriodFilter')),
             new TwigFunction('intervalToText', array($this, 'dateIntervalToText')),
@@ -42,7 +33,7 @@ class DateExtension extends AbstractExtension {
         );
     }
 
-    public function getFilters() {
+    public function getFilters() : array {
         return array(
             new TwigFilter('intervalToText', array($this, 'dateIntervalToText')),
             new TwigFilter('dateDiffForHumans', array($this, 'dateDiffForHumans')),
@@ -56,16 +47,16 @@ class DateExtension extends AbstractExtension {
      *
      * @param DateTime $start The start date of the period
      * @param DateTime $end The end date of the period
-     * @param DateInterval $interval The interval between recurrences within the period
+     * @param string $interval The interval between recurrences within the period
      * @return CarbonPeriod
      */
     public function datePeriodFilter($start, $end, $interval = '1 day'): CarbonPeriod {
         if($interval instanceof DateInterval) {
-            $interval = CarbonInterval::instance($interval);
+            $intervalC = CarbonInterval::instance($interval);
         }else{
-            $interval = CarbonInterval::createFromDateString($interval);
+            $intervalC = CarbonInterval::createFromDateString($interval);
         }
-        return new CarbonPeriod($start, $interval, $end);
+        return new CarbonPeriod($start, $intervalC, $end);
     }
 
     public function dateIntervalToText(DateInterval $interval): string {
@@ -86,7 +77,7 @@ class DateExtension extends AbstractExtension {
     }
 
     public function carbon($date) : Carbon{
-        if($date instanceof \DateTimeInterface){
+        if($date instanceof DateTimeInterface){
             return  Carbon::instance($date);
         }
 

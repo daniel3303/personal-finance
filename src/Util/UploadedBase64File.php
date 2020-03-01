@@ -9,6 +9,7 @@
 namespace App\Util;
 
 
+use RuntimeException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadedBase64File extends UploadedFile {
@@ -19,7 +20,7 @@ class UploadedBase64File extends UploadedFile {
             $base64String = explode(',', $base64String)[1];
         }
         if(base64_decode($base64String, true) === false){
-            throw new \RuntimeException('Invalid Base64 file', 1);
+            throw new RuntimeException('Invalid Base64 file', 1);
         }
 
         $filePath = tempnam(sys_get_temp_dir(), 'Base64UploadedFile');

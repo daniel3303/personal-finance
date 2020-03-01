@@ -29,11 +29,11 @@ class ImageFixtures extends BaseFixture {
     /**
      * @param ObjectManager $manager
      */
-    public function loadData(ObjectManager $manager) {
+    public function loadData(ObjectManager $manager) :void {
         $this->createMany(Image::class, 1, function (int $count) {
             $image = new Image();
             $imagePathname = $this->container->getParameter('kernel.project_dir').'/assets/images/backend/avatar.png';
-            $imageFile = new UploadedFile($imagePathname, 'avatar.png', 'image/png', 0, true);
+            $imageFile = new UploadedFile($imagePathname, $count.'avatar.png', 'image/png', 0, true);
             $this->imageManager->upload($imageFile, 'user_photo', $image);
             return $image;
         });

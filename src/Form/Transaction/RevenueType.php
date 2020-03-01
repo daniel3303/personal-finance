@@ -15,10 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RevenueType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+class RevenueType extends AbstractType {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Title',
@@ -34,7 +32,7 @@ class RevenueType extends AbstractType
             ->add('taxPayer', EntityType::class, [
                 'label' => 'Source',
                 'class' => TaxPayer::class,
-                'query_builder' => static function(TaxPayerRepository $taxPayerRepository){
+                'query_builder' => static function (TaxPayerRepository $taxPayerRepository) {
                     return $taxPayerRepository->createQueryBuilder('tp')
                         ->where('tp.enabled = true')
                         ->orderBy('tp.name', 'ASC');
@@ -49,12 +47,10 @@ class RevenueType extends AbstractType
                         ->orderBy('a.name', 'ASC');
                 },
                 'choice_label' => 'name',
-            ])
-        ;
+            ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
+    public function configureOptions(OptionsResolver $resolver) :void {
         $resolver->setDefaults([
             'data_class' => RevenueData::class,
         ]);

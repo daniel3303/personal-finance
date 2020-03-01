@@ -16,9 +16,9 @@ class ChartExtension extends AbstractExtension {
     /**
      * @var int
      */
-    protected $colorIndex = 0;
+    protected int $colorIndex = 0;
 
-    protected $colors = ["#A93226", "#2E86C1", "#7D3C98", "#229954", "#F4D03F", "#D35400", "#7F8C8D", "#2E4053"];
+    protected array $colors = ['#A93226', '#2E86C1', '#7D3C98', '#229954', '#F4D03F', '#D35400', '#7F8C8D', '#2E4053'];
 
     public function getFunctions(): array {
         return [
@@ -27,36 +27,36 @@ class ChartExtension extends AbstractExtension {
     }
 
     public function renderChart($chart, $type = 'bar'): string {
-        if ($chart instanceof BarChart) {
+        if ($chart instanceof BarChart && $type === 'bar') {
             $datasets = $chart->getDatasets();
-            $uniqueId = uniqid("chart-", true);
+            $uniqueId = uniqid('chart-', true);
 
             //Add colors to the dataset
             foreach ($datasets as $dataset){
-                $dataset["backgroundColor"] = $this->getColor();
+                $dataset['backgroundColor'] = $this->getColor();
             }
 
-            $labels = json_encode($chart->getLabels(), true);
-            $datasets = json_encode($datasets, true);
+            $labels = json_encode($chart->getLabels(), JSON_THROW_ON_ERROR | true, 512);
+            $datasets = json_encode($datasets, JSON_THROW_ON_ERROR | true, 512);
 
             return '
                 <canvas id="'.$uniqueId.'" class="chartjs" width="undefined" height="undefined"></canvas>
                 <script>
                     window.addEventListener("load", function () {
-                        var myLineChart = new Chart(document.getElementById("'.$uniqueId.'"), {
+                        new Chart(document.getElementById("'.$uniqueId.'"), {
                             type: \'bar\',
                             data: {
                                 labels: '.$labels.',
                                 datasets: '.$datasets.'
                                 
                             }
-                        });
+                        })
                     });
 
                 </script>
                 ';
         }
-        return "";
+        return '';
     }
 
     protected function getColor(){

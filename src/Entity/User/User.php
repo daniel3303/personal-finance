@@ -5,6 +5,7 @@ namespace App\Entity\User;
 
 use App\Entity\Media\Image;
 use Carbon\Carbon;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,7 +25,7 @@ class User implements UserInterface {
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $enabled = false;
+    private bool $enabled;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Media\Image", cascade={"persist", "remove"})
@@ -54,7 +55,7 @@ class User implements UserInterface {
     /**
      * @ORM\Column(type="datetime")
      */
-    private \DateTime $birthday;
+    private DateTime $birthday;
 
 
     /**
@@ -76,7 +77,7 @@ class User implements UserInterface {
     /**
      * @ORM\Column(type="datetime")
      */
-    private \DateTime $creationTime;
+    private DateTime $creationTime;
 
     /**
      * @ORM\Column(type="string", length=512, nullable=true)
@@ -86,9 +87,9 @@ class User implements UserInterface {
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private ?\DateTime $passwordTokenExpirationTime = null;
+    private ?DateTime $passwordTokenExpirationTime = null;
 
-    public function __construct(bool $enabled, string $name, string $gender, string $email, ?PhoneNumber $phone, \DateTime $birthday, array $roles) {
+    public function __construct(bool $enabled, string $name, string $gender, string $email, ?PhoneNumber $phone, DateTime $birthday, array $roles) {
         $this->enabled = $enabled;
         $this->name = $name;
         $this->gender = $gender;
@@ -96,7 +97,7 @@ class User implements UserInterface {
         $this->phone = $phone;
         $this->birthday = $birthday;
         $this->roles = $roles;
-        $this->creationTime = new \DateTime();
+        $this->creationTime = new DateTime();
     }
 
 
@@ -198,7 +199,7 @@ class User implements UserInterface {
     }
 
     public function __toString() {
-        return (string)$this->email;
+        return $this->email;
     }
 
     public function getPlainPassword(): ?string {
@@ -217,7 +218,7 @@ class User implements UserInterface {
         return Carbon::instance($this->creationTime);
     }
 
-    public function setCreationTime(\DateTime $creationTime): self {
+    public function setCreationTime(DateTime $creationTime): self {
         $this->creationTime = $creationTime;
 
         return $this;
@@ -237,7 +238,7 @@ class User implements UserInterface {
         return $this->passwordTokenExpirationTime !== null ? Carbon::instance($this->passwordTokenExpirationTime) : null;
     }
 
-    public function setPasswordTokenExpirationTime(?\DateTime $passwordTokenExpirationTime): self {
+    public function setPasswordTokenExpirationTime(?DateTime $passwordTokenExpirationTime): self {
         $this->passwordTokenExpirationTime = $passwordTokenExpirationTime;
 
         return $this;
@@ -273,7 +274,7 @@ class User implements UserInterface {
         return Carbon::instance($this->birthday);
     }
 
-    public function setBirthday(\DateTime $birthday): self {
+    public function setBirthday(DateTime $birthday): self {
         $this->birthday = $birthday;
 
         return $this;

@@ -9,4 +9,6 @@
 namespace App\Exception;
 
 
-class UserResetPasswordException extends \RuntimeException {}
+use RuntimeException;
+
+class UserResetPasswordException extends RuntimeException {}

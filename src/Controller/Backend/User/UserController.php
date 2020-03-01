@@ -7,7 +7,6 @@ use App\Dto\User\ChangePasswordData;
 use App\Dto\User\UserData;
 use App\Entity\User\User;
 use App\Form\Filter\UserFilterType;
-use App\Form\Model\ChangePassword;
 use App\Form\User\ChangePasswordType;
 use App\Form\User\UserType;
 use App\Repository\User\UserRepository;
@@ -45,10 +44,12 @@ class UserController extends BaseController {
 
     /**
      * @Route("/new", name="backend_user_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response {
         $userData = new UserData();
-        $form = $this->createForm(UserType::class, $userData, ['allow_change_roles' => $this->isGranted("ROLE_SUPER_ADMIN")]);
+        $form = $this->createForm(UserType::class, $userData, ['allow_change_roles' => $this->isGranted('ROLE_SUPER_ADMIN')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,6 +67,8 @@ class UserController extends BaseController {
 
     /**
      * @Route("/{id}", name="backend_user_show", methods={"GET"})
+     * @param User $user
+     * @return Response
      */
     public function show(User $user): Response {
         return $this->render('backend/user/show.html.twig', [
@@ -75,10 +78,13 @@ class UserController extends BaseController {
 
     /**
      * @Route("/{id}/edit", name="backend_user_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param User $user
+     * @return Response
      */
     public function edit(Request $request, User $user): Response {
         $userData = new UserData($user);
-        $form = $this->createForm(UserType::class, $userData, ['allow_change_roles' => $this->isGranted("ROLE_SUPER_ADMIN")]);
+        $form = $this->createForm(UserType::class, $userData, ['allow_change_roles' => $this->isGranted('ROLE_SUPER_ADMIN')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -98,12 +104,16 @@ class UserController extends BaseController {
     /**
      * @Route("/{id}", name="backend_user_delete", methods={"DELETE"})
      * @IsGranted("ROLE_SUPER_ADMIN")
+     * @param Request $request
+     * @param User $user
+     * @param TranslatorInterface $translator
+     * @return Response
      */
     public function delete(Request $request, User $user, TranslatorInterface $translator): Response {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             if($user === $this->getUser()){
-                $this->addFlash("error", $translator->trans('You can not delete your own user.'));
-                return $this->redirectToRoute("backend_user_index");
+                $this->addFlash('error', $translator->trans('You can not delete your own user.'));
+                return $this->redirectToRoute('backend_user_index');
             }
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -117,6 +127,9 @@ class UserController extends BaseController {
     /**
      * Changes current user password
      * @Route("/backend/user/change-password", name="backend_user_change_password")
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function changePassword(Request $request, TranslatorInterface $translator) {
         /**

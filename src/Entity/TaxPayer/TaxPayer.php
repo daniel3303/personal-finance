@@ -88,7 +88,7 @@ class TaxPayer {
         return Carbon::instance($this->creationTime);
     }
 
-    public function setCreationTime(\DateTime $creationTime): self {
+    public function setCreationTime(DateTime $creationTime): self {
         $this->creationTime = $creationTime;
 
         return $this;

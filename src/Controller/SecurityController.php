@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
+use App\Dto\User\RecoverPasswordData;
+use App\Dto\User\ResetPasswordData;
 use App\Exception\UserResetPasswordException;
-use App\Form\Model\RecoverPassword;
-use App\Form\Model\ResetPassword;
 use App\Form\User\RecoverPasswordType;
 use App\Form\User\ResetPasswordType;
 use App\Repository\User\UserRepository;
 use App\Service\UserHelper;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,7 @@ class SecurityController extends AbstractController {
     /**
      * @var TranslatorInterface
      */
-    private $translator;
+    private TranslatorInterface $translator;
 
     public function __construct(TranslatorInterface $translator) {
         $this->translator = $translator;
@@ -30,6 +31,8 @@ class SecurityController extends AbstractController {
 
     /**
      * @Route("/login", name="login")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response {
         // get the login error if there is one
@@ -42,9 +45,13 @@ class SecurityController extends AbstractController {
 
     /**
      * @Route("/recover-password", name="recover_password", methods={"GET","POST"})
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param UserHelper $userHelper
+     * @return Response
      */
     public function recoverPassword(Request $request, UserRepository $userRepository,  UserHelper $userHelper): Response {
-        $model = new RecoverPassword();
+        $model = new RecoverPasswordData();
         $form = $this->createForm(RecoverPasswordType::class, $model);
         $form->handleRequest($request);
 
@@ -71,16 +78,23 @@ class SecurityController extends AbstractController {
 
     /**
      * @Route("/reset-password/{email}/{token}", name="reset_password", methods={"GET","POST"})
+     * @param string $email
+     * @param string $token
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param TranslatorInterface $translator
+     * @return Response
+     * @throws \Exception
      */
     public function resetPassword(string $email, string $token, Request $request, UserRepository $userRepository, TranslatorInterface $translator): Response {
         $user = $userRepository->findOneBy(['email' => $email, 'passwordToken' => $token]);
 
-        if($user === null || $user->getPasswordTokenExpirationTime() <= new \DateTime()){
+        if($user === null || $user->getPasswordTokenExpirationTime() <= new DateTime()){
             $this->addFlash('warning', $translator->trans('Invalid password recover token.'));
             return $this->redirectToRoute('login');
         }
 
-        $model = new ResetPassword();
+        $model = new ResetPasswordData();
         $form = $this->createForm(ResetPasswordType::class, $model);
 
         $form->handleRequest($request);
@@ -105,6 +119,6 @@ class SecurityController extends AbstractController {
      */
     public function logout(): Response {
 
-        return $this->redirectToRoute("login");
+        return $this->redirectToRoute('login');
     }
 }
