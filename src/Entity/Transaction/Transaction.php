@@ -33,7 +33,7 @@ abstract class Transaction {
     private ?string $title = null;
 
     /**
-     * @ORM\Column(type="decimal", precision=18, scale=2)
+     * @ORM\Column(type="float")
      */
     private float $total = 0;
 
@@ -71,11 +71,11 @@ abstract class Transaction {
         return $this;
     }
 
-    public function getTotal(): ?string {
+    public function getTotal(): float {
         return $this->total;
     }
 
-    public function setTotal(string $total): self {
+    public function setTotal(float $total): self {
         $this->total = $total;
 
         return $this;
