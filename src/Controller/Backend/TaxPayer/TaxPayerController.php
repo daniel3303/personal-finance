@@ -4,11 +4,8 @@ namespace App\Controller\Backend\TaxPayer;
 
 use App\Controller\Backend\BaseController;
 use App\Entity\TaxPayer\TaxPayer;
-use App\Entity\User\User;
 use App\Form\TaxPayer\TaxPayerType;
-use App\Form\User\UserType;
 use App\Repository\TaxPayer\TaxPayerRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
