@@ -5,8 +5,6 @@ namespace App\Entity\Account;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Represents a transfer of money between accounts.

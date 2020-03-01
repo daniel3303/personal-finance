@@ -9,9 +9,6 @@
 namespace App\Form\Filter;
 
 
-use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\QueryBuilder;
-use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderExecuterInterface;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterOperands;
 use Lexik\Bundle\FormFilterBundle\Filter\Form\Type as Filters;
 use Symfony\Component\Form\AbstractType;

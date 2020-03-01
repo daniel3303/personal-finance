@@ -4,7 +4,6 @@ namespace App\Repository\Account;
 
 use App\Entity\Account\Account;
 use App\Repository\BaseRepository;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**

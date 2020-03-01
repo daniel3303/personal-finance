@@ -7,7 +7,6 @@ use App\Entity\TaxPayer\TaxPayer;
 use App\Entity\Transaction\Transaction;
 use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
-use function Pinky\transformManyDocs;
 
 abstract class TransactionData {
     /**

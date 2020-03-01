@@ -4,16 +4,10 @@
 namespace App\Twig;
 
 
-use App\Entity\Media\Image;
 use App\Service\UploaderHelper;
-use League\Flysystem\FilesystemInterface;
-use Psr\Container\ContainerInterface;
-use Symfony\Component\Asset\Context\RequestStackContext;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Service\ServiceSubscriberInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Twig\TwigFunction;
 
 class PublicStorageExtension extends AbstractExtension {
 

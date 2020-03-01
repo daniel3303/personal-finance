@@ -4,10 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Media\Image;
 use App\Service\ImageManager;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Hoa\Iterator\FileSystem;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

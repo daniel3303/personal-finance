@@ -3,7 +3,6 @@
 namespace App\Dto\Transaction;
 
 use App\Entity\Transaction\Indebtedness;
-use App\Entity\Transaction\Transaction;
 
 class IndebtednessData extends TransactionData {
 

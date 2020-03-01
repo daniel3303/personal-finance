@@ -4,7 +4,6 @@ namespace App\Dto\TaxPayer;
 
 use App\Entity\Media\Image;
 use App\Entity\TaxPayer\TaxPayer;
-use App\Entity\Transaction\Transaction;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TaxPayerData {

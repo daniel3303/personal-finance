@@ -7,9 +7,6 @@ use App\Entity\TaxPayer\TaxPayer;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use DoctrineExtensions\Query\Mysql\Date;
-use JMS\Serializer\Tests\Fixtures\Discriminator\Car;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Represents a exchange of goods between you and a tax payer. Usually you provide a service and

@@ -5,7 +5,6 @@ namespace App\Form\Transaction;
 use App\Dto\Transaction\IndebtednessData;
 use App\Entity\Account\Account;
 use App\Entity\TaxPayer\TaxPayer;
-use App\Entity\Transaction\Indebtedness;
 use App\Repository\Account\AccountRepository;
 use App\Repository\TaxPayer\TaxPayerRepository;
 use DateTime;

@@ -3,7 +3,6 @@
 namespace App\Form\User;
 
 use App\Dto\User\ResetPasswordData;
-use App\Entity\User;
 use App\Form\Model\ChangePassword;
 use App\Form\Model\ResetPassword;
 use Symfony\Component\Form\AbstractType;

@@ -10,7 +10,6 @@ namespace App\Twig;
 
 use App\Chart\Type\Bar\BarChart;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 class ChartExtension extends AbstractExtension {

@@ -2,9 +2,7 @@
 
 namespace App\Dto\Transaction;
 
-use App\Entity\Transaction\Expense;
 use App\Entity\Transaction\Revenue;
-use App\Entity\Transaction\Transaction;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class RevenueData extends TransactionData {

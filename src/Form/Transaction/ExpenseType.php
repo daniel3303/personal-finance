@@ -5,8 +5,6 @@ namespace App\Form\Transaction;
 use App\Dto\Transaction\ExpenseData;
 use App\Entity\Account\Account;
 use App\Entity\TaxPayer\TaxPayer;
-use App\Entity\Transaction\Expense;
-use App\Entity\Transaction\Revenue;
 use App\Repository\Account\AccountRepository;
 use App\Repository\TaxPayer\TaxPayerRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

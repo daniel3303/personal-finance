@@ -2,12 +2,7 @@
 
 namespace App\Dto\Transaction;
 
-use App\Entity\TaxPayer\TaxPayer;
 use App\Entity\Transaction\Expense;
-use App\Entity\Transaction\Transaction;
-use Doctrine\ORM\Mapping as ORM;
-use mysql_xdevapi\XSession;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ExpenseData extends TransactionData {

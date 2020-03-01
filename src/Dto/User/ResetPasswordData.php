@@ -9,7 +9,6 @@
 namespace App\Dto\User;
 
 use App\Entity\User\User;
-use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 

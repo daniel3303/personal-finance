@@ -11,7 +11,6 @@ namespace App\Security;
 
 use App\Entity\User\User;
 use App\Exception\AccountNotEnabledException;
-use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

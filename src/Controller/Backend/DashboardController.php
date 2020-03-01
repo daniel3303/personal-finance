@@ -2,9 +2,7 @@
 
 namespace App\Controller\Backend;
 
-use App\Entity\User\User;
 use Pagerfanta\Pagerfanta;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 

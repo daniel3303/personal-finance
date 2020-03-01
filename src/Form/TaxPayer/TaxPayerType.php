@@ -3,9 +3,7 @@
 namespace App\Form\TaxPayer;
 
 use App\Dto\TaxPayer\TaxPayerData;
-use App\Entity\TaxPayer\TaxPayer;
 use App\Form\Type\ImageType;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;

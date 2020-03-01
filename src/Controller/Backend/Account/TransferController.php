@@ -4,7 +4,6 @@ namespace App\Controller\Backend\Account;
 
 use App\Controller\Backend\BaseController;
 use App\Dto\Account\TransferData;
-use App\Entity\Account\Account;
 use App\Entity\Account\Transfer;
 use App\Form\Account\TransferType;
 use App\Repository\Account\AccountRepository;

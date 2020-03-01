@@ -4,7 +4,6 @@ namespace App\Dto\Account;
 
 use App\Entity\Account\Account;
 use App\Entity\Account\Transfer;
-use App\Entity\TaxPayer\TaxPayer;
 use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 
