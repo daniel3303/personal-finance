@@ -7,13 +7,13 @@ use App\Entity\TaxPayer\TaxPayer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TaxPayerData {
-    private ?TaxPayer $entity;
+    private ?TaxPayer $entity = null;
 
     /**
      * @var bool
      * @Assert\NotNull()
      */
-    private ?bool $enabled;
+    private ?bool $enabled = null;
 
     /**
      * @var Image|null
@@ -24,7 +24,7 @@ class TaxPayerData {
      * @Assert\NotNull()
      * @Assert\Length(min=1, max=128)
      */
-    private ?string $name;
+    private ?string $name = null;
 
     /**
      * @Assert\Length(max="65535")
@@ -34,7 +34,6 @@ class TaxPayerData {
     public function __construct(?TaxPayer $taxPayer = null) {
         $this->entity = $taxPayer;
     }
-
 
     public function getName(): ?string {
         return $this->name;
@@ -76,6 +75,10 @@ class TaxPayerData {
         $this->enabled = $enabled;
 
         return $this;
+    }
+
+    public function getEntity() : ?TaxPayer{
+        return $this->entity;
     }
 
     public function createOrUpdateEntity(): TaxPayer{

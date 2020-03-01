@@ -23,14 +23,14 @@ class ResetPasswordData {
      *     maxMessage="A nova password pode no máximo ter 64 caracteres."
      * )
      */
-    private $newPassword;
+    private ?string $newPassword = null;
 
     public function __construct() {
     }
 
     public function update(User $user){
         $user->setPlainPassword($this->getNewPassword());
-        $user->setPassword("");
+        $user->setPassword('');
     }
 
     /**
@@ -44,7 +44,7 @@ class ResetPasswordData {
      * @param ?string $newPassword
      * @return self
      */
-    public function setNewPassword($newPassword): self {
+    public function setNewPassword(?string $newPassword): self {
         $this->newPassword = $newPassword;
         return $this;
     }

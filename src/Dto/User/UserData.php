@@ -17,7 +17,7 @@ class UserData {
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
      */
-    private ?bool $enabled;
+    private ?bool $enabled = null;
 
     /**
      * @var Image|null
@@ -29,19 +29,19 @@ class UserData {
      * @Assert\NotNull(message="The name is required.")
      * @Assert\Length(max=255, maxMessage="The name can have at most {{ limit }} chars.")
      */
-    private ?string $name;
+    private ?string $name = null;
 
     /**
      * @Assert\NotNull(message="The gender is required.")
      * @Assert\Choice(choices={"M", "F"})
      */
-    private ?string $gender;
+    private ?string $gender = null;
 
     /**
      * @Assert\NotNull()
      * @Assert\Email(message="The email address {{ value }} is not valid.")
      */
-    private ?string $email;
+    private ?string $email = null;
 
     /**
      * @PhoneNumberConstraint(message="This phone number is not valid.", type="mobile")
@@ -52,14 +52,14 @@ class UserData {
      * @Assert\NotNull()
      * @Assert\DateTime()
      */
-    private ?\DateTime $birthday;
+    private ?\DateTime $birthday = null;
 
 
     /**
      * @Assert\NotNull()
      * @Assert\Type(type="array")
      */
-    private ?array $roles;
+    private ?array $roles = null;
 
     /**
      * @Assert\Length(
@@ -223,6 +223,10 @@ class UserData {
         $user->setRoles($this->roles);
         $user->setPhoto($this->photo);
 
+        return $this->entity;
+    }
+
+    public function getEntity() : ?User{
         return $this->entity;
     }
 }

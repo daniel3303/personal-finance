@@ -8,35 +8,35 @@ use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TransferData {
-    private ?Transfer $entity;
+    private ?Transfer $entity = null;
 
     /**
      * @Assert\NotNull()
      * @Assert\Length(min=1, max=64)
      */
-    private ?string $title;
+    private ?string $title = null;
 
     /**
      * @Assert\Type(type="float")
      * @Assert\NotNull()
      */
-    private ?float $total;
+    private ?float $total = null;
 
     /**
      * @Assert\NotNull()
      */
-    private ?DateTime $time;
+    private ?DateTime $time = null;
 
     /**
      * @Assert\NotNull()
      */
-    private ?Account $source;
+    private ?Account $source = null;
 
     /**
      * @Assert\NotNull()
      * @Assert\NotEqualTo(propertyPath="target", message="The target account can not be equal to the source account.")
      */
-    private ?Account $target;
+    private ?Account $target = null;
 
     public function __construct(?Transfer $transfer = null) {
         $this->entity = $transfer;
@@ -89,6 +89,10 @@ class TransferData {
         $this->target = $target;
 
         return $this;
+    }
+
+    public function getEntity() : ?Transfer{
+        return $this->entity;
     }
 
     public function createOrUpdateEntity(): Transfer{

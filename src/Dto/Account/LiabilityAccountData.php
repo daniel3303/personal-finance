@@ -8,18 +8,18 @@ use DateInterval;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class LiabilityAccountData extends AccountData {
-    private ?LiabilityAccount $entity;
+    private ?LiabilityAccount $entity = null;
 
     /**
      * @Assert\NotNull()
      * @Assert\GreaterThan(value=0)
      */
-    private ?float $interest;
+    private ?float $interest = null;
 
     /**
      * @Assert\NotNull()
      */
-    private ?DateInterval $interestInterval;
+    private ?DateInterval $interestInterval = null;
 
     public function __construct(?AssetAccount $assetAccount = null) {
         parent::__construct($assetAccount);
@@ -44,6 +44,10 @@ class LiabilityAccountData extends AccountData {
         $this->interestInterval = $interestInterval;
 
         return $this;
+    }
+
+    public function getEntity() : ?LiabilityAccount{
+        return $this->entity;
     }
 
     public function createOrUpdateEntity(): LiabilityAccount {

@@ -2,8 +2,7 @@
 
 namespace App\Form\User;
 
-use App\Entity\User;
-use App\Form\Model\ChangePassword;
+use App\Dto\User\ChangePasswordData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -11,10 +10,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 
-class ChangePasswordType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+class ChangePasswordType extends AbstractType {
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('oldPassword', PasswordType::class, [
                 'label' => 'Current password',
@@ -28,17 +25,15 @@ class ChangePasswordType extends AbstractType
                     new NotCompromisedPassword([
                         'threshold' => 6,
                         'message' => "This password has been leaked in a data breach, it must not be used. Please use another password.",
-                        'skipOnError' =>true
+                        'skipOnError' => true
                     ])
                 ]
-            ])
-        ;
+            ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
-            'data_class' => ChangePassword::class,
+            'data_class' => ChangePasswordData::class,
         ]);
     }
 }

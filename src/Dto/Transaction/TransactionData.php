@@ -18,28 +18,28 @@ abstract class TransactionData {
     /**
      * @Assert\NotNull()
      */
-    private ?float $total;
+    private ?float $total = null;
 
 
     /**
      * @Assert\NotNull()
      */
-    private ?DateTime $time;
+    private ?DateTime $time = null;
 
     /**
      * @Assert\Length(max=65535)
      */
-    private ?string $description;
+    private ?string $description = null;
 
     /**
      * @Assert\NotNull()
      */
-    private ?Account $account;
+    private ?Account $account = null;
 
     /**
      * @Assert\NotNull()
      */
-    private ?TaxPayer $taxPayer;
+    private ?TaxPayer $taxPayer = null;
 
     public function __construct(Transaction $transaction = null) {
         if($transaction !== null){

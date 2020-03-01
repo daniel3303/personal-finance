@@ -11,11 +11,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ExpenseData extends TransactionData {
-    private ?Expense $entity;
+    private ?Expense $entity = null;
 
     public function __construct(Expense $expense = null) {
         parent::__construct($expense);
         $this->entity = $expense;
+    }
+
+    public function getEntity() : ?Expense{
+        return $this->entity;
     }
 
     public function createOrUpdateEntity(): Expense{

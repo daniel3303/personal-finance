@@ -19,7 +19,7 @@ class RecoverPasswordData {
      * @Assert\NotNull(message="O email é obrigatório.")
      * @Assert\Email(message="O formato do email não é valido.")
      */
-    private $email;
+    private ?string $email = null;
 
     public function __construct() {
     }

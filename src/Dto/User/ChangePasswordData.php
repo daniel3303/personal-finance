@@ -20,7 +20,7 @@ class ChangePasswordData {
      * @Assert\NotNull(message="A password atual é obrigatória.")
      * @SecurityAssert\UserPassword(message="A password actual está incorrecta.")
      */
-    private $oldPassword;
+    private ?string $oldPassword = null;
 
     /**
      * @Assert\NotNull(message="A nova password é obrigatória.")
@@ -31,7 +31,7 @@ class ChangePasswordData {
      *     maxMessage="A nova password pode no máximo ter 64 caracteres."
      * )
      */
-    private $newPassword;
+    private ?string $newPassword = null;
 
     public function __construct(User $user) {
         $this->entity = $user;
@@ -54,7 +54,7 @@ class ChangePasswordData {
      * @param string|null $oldPassword
      * @return self
      */
-    public function setOldPassword($oldPassword): self {
+    public function setOldPassword(?string $oldPassword): self {
         $this->oldPassword = $oldPassword;
         return $this;
     }
@@ -67,10 +67,10 @@ class ChangePasswordData {
     }
 
     /**
-     * @param ?string $newPassword
+     * @param string|null $newPassword
      * @return self
      */
-    public function setNewPassword($newPassword): self {
+    public function setNewPassword(?string $newPassword): self {
         $this->newPassword = $newPassword;
         return $this;
     }

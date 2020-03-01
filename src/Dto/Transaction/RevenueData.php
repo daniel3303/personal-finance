@@ -22,6 +22,10 @@ class RevenueData extends TransactionData {
         return $this->entity;
     }
 
+    public function getEntity() : ?Revenue{
+        return $this->entity;
+    }
+
     public static function validate(RevenueData $revenueData, ExecutionContextInterface $context, $payload): void {
         // Revenue total must be equal or greater than 0
         if ($revenueData->getTotal() < 0) {

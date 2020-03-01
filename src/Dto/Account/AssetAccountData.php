@@ -7,11 +7,15 @@ use App\Entity\Account\AssetAccount;
 use Doctrine\ORM\Mapping as ORM;
 
 class AssetAccountData extends AccountData {
-    private ?AssetAccount $entity;
+    private ?AssetAccount $entity = null;
 
     public function __construct(?AssetAccount $assetAccount = null) {
         parent::__construct($assetAccount);
         $this->entity = $assetAccount;
+    }
+
+    public function getEntity() : ?AssetAccount{
+        return $this->entity;
     }
 
     public function createOrUpdateEntity(): AssetAccount {

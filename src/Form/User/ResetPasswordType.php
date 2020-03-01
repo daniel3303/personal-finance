@@ -2,6 +2,7 @@
 
 namespace App\Form\User;
 
+use App\Dto\User\ResetPasswordData;
 use App\Entity\User;
 use App\Form\Model\ChangePassword;
 use App\Form\Model\ResetPassword;
@@ -28,7 +29,7 @@ class ResetPasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ResetPassword::class,
+            'data_class' => ResetPasswordData::class,
         ]);
     }
 }

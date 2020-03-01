@@ -3,7 +3,6 @@
 namespace App\Form\User;
 
 use App\Dto\User\UserData;
-use App\Entity\User\User;
 use App\Form\Field\LocaleType;
 use App\Form\Type\GenderType;
 use App\Form\Type\ImageType;
@@ -20,9 +19,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        /** @var User|null $product */
+        /** @var UserData|null $user */
         $user = $options['data'] ?? null;
-        $isEdit = $user && $user->getId();
+        $isEdit = $user->getEntity() && $user->getEntity()->getId();
 
         $builder->add('enabled', CheckboxType::class, [
             'label' => 'Enabled',
@@ -69,7 +68,7 @@ class UserType extends AbstractType {
             'widget' => 'single_text',
         ]);
 
-        if($options['allow_change_roles']) {
+        if ($options['allow_change_roles']) {
             $builder->add('roles', ChoiceType::class, [
                 'label' => 'Permissions',
                 'choices' => [
