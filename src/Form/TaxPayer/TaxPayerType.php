@@ -2,7 +2,7 @@
 
 namespace App\Form\TaxPayer;
 
-use App\Dto\TaxPayer\TaxPayerData;
+use App\Dto\TaxPayer\CategoryData;
 use App\Form\Type\ImageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -32,7 +32,7 @@ class TaxPayerType extends AbstractType {
 
     public function configureOptions(OptionsResolver $resolver) :void {
         $resolver->setDefaults([
-            'data_class' => TaxPayerData::class,
+            'data_class' => CategoryData::class,
         ]);
     }
 }

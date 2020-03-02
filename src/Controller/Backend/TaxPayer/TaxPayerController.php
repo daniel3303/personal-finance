@@ -3,7 +3,7 @@
 namespace App\Controller\Backend\TaxPayer;
 
 use App\Controller\Backend\BaseController;
-use App\Dto\TaxPayer\TaxPayerData;
+use App\Dto\TaxPayer\CategoryData;
 use App\Entity\TaxPayer\TaxPayer;
 use App\Form\TaxPayer\TaxPayerType;
 use App\Repository\TaxPayer\TaxPayerRepository;
@@ -40,7 +40,7 @@ class TaxPayerController extends BaseController {
      * @return Response
      */
     public function new(Request $request): Response {
-        $taxPayerData = new TaxPayerData();
+        $taxPayerData = new CategoryData();
         $form = $this->createForm(TaxPayerType::class, $taxPayerData);
         $form->handleRequest($request);
 
@@ -64,7 +64,7 @@ class TaxPayerController extends BaseController {
      * @return Response
      */
     public function edit(Request $request, TaxPayer $taxPayer): Response {
-        $taxPayerData = new TaxPayerData($taxPayer);
+        $taxPayerData = new CategoryData($taxPayer);
         $form = $this->createForm(TaxPayerType::class, $taxPayerData);
         $form->handleRequest($request);
 
