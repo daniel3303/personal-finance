@@ -3,6 +3,7 @@
 namespace App\Dto\Transaction;
 
 use App\Entity\Account\Account;
+use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
 use App\Entity\TaxPayer\TaxPayer;
 use App\Entity\Transaction\Transaction;
@@ -42,6 +43,11 @@ abstract class TransactionData {
      * @Assert\NotNull()
      */
     private ?TaxPayer $taxPayer = null;
+
+    /**
+     * @Assert\NotNull()
+     */
+    private ?Category $category = null;
 
     /**
      * @var Collection
@@ -137,6 +143,20 @@ abstract class TransactionData {
     }
 
     /**
+     * @return Category|null
+     */
+    public function getCategory(): ?Category {
+        return $this->category;
+    }
+
+    /**
+     * @param Category|null $category
+     */
+    public function setCategory(?Category $category): void {
+        $this->category = $category;
+    }
+
+    /**
      * @return Collection
      */
     public function getTags(): Collection {
@@ -161,7 +181,8 @@ abstract class TransactionData {
         $transaction->setDescription($this->description);
         $transaction->setAccount($this->account);
         $transaction->setTaxPayer($this->taxPayer);
-        $transaction->setTime($this->getTime());
+        $transaction->setTime($this->time);
+        $transaction->setCategory($this->category);
 
         // Add new tags
         foreach ($this->tags as $tag){
@@ -185,6 +206,7 @@ abstract class TransactionData {
         $this->account = $transaction->getAccount();
         $this->taxPayer = $transaction->getTaxPayer();
         $this->time = $transaction->getTime();
+        $this->category = $transaction->getCategory();
 
         $this->tags->clear();
         foreach ($transaction->getTags() as $tag){

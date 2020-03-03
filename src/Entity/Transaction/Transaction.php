@@ -3,6 +3,7 @@
 namespace App\Entity\Transaction;
 
 use App\Entity\Account\Account;
+use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
 use App\Entity\Tag\TaggableInterface;
 use App\Entity\TaxPayer\TaxPayer;
@@ -70,15 +71,22 @@ abstract class Transaction implements TaggableInterface {
     private TaxPayer $taxPayer;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category\Category")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Category $category;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag\Tag")
      */
     private Collection $tags;
 
-    public function __construct(float $total, DateTime $time, Account $account, TaxPayer $taxPayer) {
+    public function __construct(float $total, DateTime $time, Account $account, TaxPayer $taxPayer, Category $category) {
         $this->total = $total;
         $this->time = $time;
         $this->account = $account;
         $this->taxPayer = $taxPayer;
+        $this->category = $category;
         $this->creationTime = new DateTime();
         $this->tags = new ArrayCollection();
     }
@@ -172,6 +180,23 @@ abstract class Transaction implements TaggableInterface {
         }
         $this->account = $account;
         $account->addTransaction($this);
+
+        return $this;
+    }
+
+    /**
+     * @return Category
+     */
+    public function getCategory(): Category {
+        return $this->category;
+    }
+
+    /**
+     * @param Category $category
+     * @return Transaction
+     */
+    public function setCategory(Category $category): self {
+        $this->category = $category;
 
         return $this;
     }

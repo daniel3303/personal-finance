@@ -30,7 +30,7 @@ class ExpenseData extends TransactionData {
 
     public function createOrUpdateEntity(): Expense{
         if($this->entity === null){
-            $this->entity = new Expense($this->getTotal(), $this->getTime(), $this->getAccount(), $this->getTaxPayer());
+            $this->entity = new Expense($this->getTotal(), $this->getTime(), $this->getAccount(), $this->getTaxPayer(), $this->getCategory());
         }
         $this->transfer($this->entity);
         return $this->entity;
