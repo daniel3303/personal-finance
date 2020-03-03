@@ -1,40 +1,40 @@
 {% extends 'backend/master.html.twig' %}
-{% block title %}{{ 'Categories'|trans }}{% endblock %}
-{% block contentTitle %}{{ 'Categories'|trans }}{% endblock %}
+{% block title %}{{ 'Tags'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'Tags'|trans }}{% endblock %}
 
 {% block body %}
     <div class="row">
         <div class="col-12">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Categories'|trans }}</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Tags'|trans }}</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        {% embed 'backend/component/pagination/header.html.twig' with {pagination: categories} %}{% endembed %}
+                        {% embed 'backend/component/pagination/header.html.twig' with {pagination: tags} %}{% endembed %}
 
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>{{ knp_pagination_sortable(categories, 'Name'|trans, 'o.name') }}</th>
-                                    <th>{{ knp_pagination_sortable(categories, 'Created'|trans, 'o.creationTime') }}</th>
+                                    <th>{{ knp_pagination_sortable(tags, 'Name'|trans, 'o.name') }}</th>
+                                    <th>{{ knp_pagination_sortable(tags, 'Created'|trans, 'o.creationTime') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for category in categories %}
-                                    {# @var category \App\Entity\Category\Category #}
+                                {% for tag in tags %}
+                                    {# @var tag \App\Entity\Tag\Tag #}
                                     <tr>
-                                        <td>{{ category.name }}</td>
-                                        <td>{{ category.creationTime|dateDiffForHumans }}</td>
+                                        <td>{{ tag.name }}</td>
+                                        <td>{{ tag.creationTime|dateDiffForHumans }}</td>
                                         <td>
-                                            <a href="{{ path('backend_category_edit', {'id': category.id}) }}"
+                                            <a href="{{ path('backend_tag_edit', {'id': tag.id}) }}"
                                                class="btn btn-info btn-icon-split">
                                                 <span class="icon text-white-50">
                                                   <i class="fas fa-edit"></i>
                                                 </span>
                                             </a>
-                                            {{ include('backend/category/partials/delete_form.html.twig') }}
+                                            {{ include('backend/tag/partials/delete_form.html.twig') }}
                                         </td>
                                     </tr>
                                 {% else %}
@@ -45,16 +45,16 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>{{ knp_pagination_sortable(categories, 'Name'|trans, 'o.name') }}</th>
-                                    <th>{{ knp_pagination_sortable(categories, 'Created'|trans, 'o.creationTime') }}</th>
+                                    <th>{{ knp_pagination_sortable(tags, 'Name'|trans, 'o.name') }}</th>
+                                    <th>{{ knp_pagination_sortable(tags, 'Created'|trans, 'o.creationTime') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </tfoot>
                         </table>
-                        {% embed 'backend/component/pagination/footer.html.twig' with {pagination: categories} %}{% endembed %}
+                        {% embed 'backend/component/pagination/footer.html.twig' with {pagination: tags} %}{% endembed %}
                     </div>
 
-                    <a href="{{ path('backend_category_new') }}"
+                    <a href="{{ path('backend_tag_new') }}"
                        class="btn btn-success btn-icon-split">
                         <span class="icon text-white-50">
                           <i class="fas fa-plus"></i>

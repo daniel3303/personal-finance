@@ -71,7 +71,7 @@ class CategoryController extends BaseController {
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('backend_user_index', [
+            return $this->redirectToRoute('backend_category_index', [
                 'id' => $category->getId(),
             ]);
         }

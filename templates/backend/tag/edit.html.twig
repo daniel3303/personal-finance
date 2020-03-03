@@ -1,0 +1,29 @@
+{% extends 'backend/master.html.twig' %}
+
+{% block title %}{{ 'Editing tag'|trans }}: {{ tag.name }}{% endblock %}
+{% block contentTitle %}{{ 'Editing tag'|trans }}: {{ tag.name }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Edit tag'|trans }}:
+                        {{ tag.name }}
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {{ include('backend/tag/partials/form.html.twig', {'button_label': 'Update'}) }}
+                    <hr/>
+                    <a href="{{ path('backend_tag_index') }}"
+                       class="btn btn-secondary btn-icon-split">
+                        <span class="icon text-white-50">
+                          <i class="fas fa-arrow-left"></i>
+                        </span>
+                        <span class="text">{{ 'Back to the list'|trans }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

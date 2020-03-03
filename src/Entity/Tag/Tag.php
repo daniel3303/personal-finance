@@ -23,7 +23,7 @@ class Tag {
     private string $name;
 
     /**
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="datetime")
      */
     private DateTime $creationTime;
 

@@ -1,0 +1,10 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+<button class="btn btn-success btn-icon-split">
+        <span class="icon text-white-50">
+          <i class="fas fa-check"></i>
+        </span>
+    <span class="text">{{ button_label|default('Save')|trans }}</span>
+</button>
+{{ form_end(form) }}
+
