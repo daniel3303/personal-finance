@@ -69,9 +69,10 @@ class TaxPayerController extends BaseController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $taxPayerData->createOrUpdateEntity();
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('backend_user_index', [
+            return $this->redirectToRoute('backend_tax_payer_index', [
                 'id' => $taxPayer->getId(),
             ]);
         }

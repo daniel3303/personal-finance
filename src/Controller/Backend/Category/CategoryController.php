@@ -86,7 +86,6 @@ class CategoryController extends BaseController {
      * @Route("/{id}", name="backend_category_delete", methods={"DELETE"})
      * @param Request $request
      * @param Category $category
-     * @param TranslatorInterface $translator
      * @return Response
      */
     public function delete(Request $request, Category $category): Response {

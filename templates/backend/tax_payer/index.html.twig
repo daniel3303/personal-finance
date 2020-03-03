@@ -19,7 +19,7 @@
                                     <th>{{ knp_pagination_sortable(taxPayers, 'Enabled'|trans, 'o.enabled') }}</th>
                                     <th>{{ knp_pagination_sortable(taxPayers, 'Name'|trans, 'o.name') }}</th>
                                     <th title="dewd">{{ knp_pagination_sortable(taxPayers, 'Total received'|trans, 'o.total') }}</th>
-                                    <th>{{ knp_pagination_sortable(taxPayers, 'Creation time'|trans, 'o.creationTime') }}</th>
+                                    <th>{{ knp_pagination_sortable(taxPayers, 'Created'|trans, 'o.creationTime') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </thead>
@@ -36,7 +36,7 @@
                                         </td>
                                         <td>{{ taxPayer.name }}</td>
                                         <td>{{ taxPayer.total|number_format(2, ',', '.') }}€</td>
-                                        <td>{{ taxPayer.creationTime|date("d-m-Y H:i") }}h</td>
+                                        <td>{{ taxPayer.creationTime|dateDiffForHumans }}</td>
                                         <td>
                                             <a href="{{ path('backend_tax_payer_edit', {'id': taxPayer.id}) }}"
                                                class="btn btn-info btn-icon-split">
@@ -58,7 +58,7 @@
                                     <th>{{ knp_pagination_sortable(taxPayers, 'Enabled'|trans, 'o.enabled') }}</th>
                                     <th>{{ knp_pagination_sortable(taxPayers, 'Name'|trans, 'o.name') }}</th>
                                     <th>{{ knp_pagination_sortable(taxPayers, 'Total received'|trans, 'o.total') }}</th>
-                                    <th>{{ knp_pagination_sortable(taxPayers, 'Creation time'|trans, 'o.creationTime') }}</th>
+                                    <th>{{ knp_pagination_sortable(taxPayers, 'Created'|trans, 'o.creationTime') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </tfoot>

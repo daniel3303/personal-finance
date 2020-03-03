@@ -4,8 +4,10 @@ namespace App\Form\Transaction;
 
 use App\Dto\Transaction\RevenueData;
 use App\Entity\Account\Account;
+use App\Entity\Tag\Tag;
 use App\Entity\TaxPayer\TaxPayer;
 use App\Repository\Account\AccountRepository;
+use App\Repository\Tag\TagRepository;
 use App\Repository\TaxPayer\TaxPayerRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -47,7 +49,18 @@ class RevenueType extends AbstractType {
                         ->orderBy('a.name', 'ASC');
                 },
                 'choice_label' => 'name',
-            ]);
+            ])
+            ->add('tags', EntityType::class, [
+                'label' => 'Tags',
+                'class' => Tag::class,
+                'query_builder' => static function (TagRepository $tagRepository) {
+                    return $tagRepository->createQueryBuilder('t')
+                        ->orderBy('t.name', 'ASC');
+                },
+                'choice_label' => 'name',
+                'multiple' => true,
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver) :void {

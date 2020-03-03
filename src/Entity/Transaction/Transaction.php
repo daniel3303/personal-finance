@@ -3,9 +3,13 @@
 namespace App\Entity\Transaction;
 
 use App\Entity\Account\Account;
+use App\Entity\Tag\Tag;
+use App\Entity\Tag\TaggableInterface;
 use App\Entity\TaxPayer\TaxPayer;
 use Carbon\Carbon;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     "indebtedness" = "Indebtedness",
  * })
  */
-abstract class Transaction {
+abstract class Transaction implements TaggableInterface {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -65,12 +69,18 @@ abstract class Transaction {
      */
     private TaxPayer $taxPayer;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag\Tag")
+     */
+    private Collection $tags;
+
     public function __construct(float $total, DateTime $time, Account $account, TaxPayer $taxPayer) {
         $this->total = $total;
         $this->time = $time;
         $this->account = $account;
         $this->taxPayer = $taxPayer;
         $this->creationTime = new DateTime();
+        $this->tags = new ArrayCollection();
     }
 
 
@@ -164,6 +174,25 @@ abstract class Transaction {
         $account->addTransaction($this);
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag) : void {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+    }
+
+    public function removeTag(Tag $tag): void {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
     }
 
     /** @ORM\PreRemove() */
