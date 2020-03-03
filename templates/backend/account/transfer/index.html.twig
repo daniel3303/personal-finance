@@ -17,6 +17,8 @@
                             <thead>
                                 <tr>
                                     <th>{{ knp_pagination_sortable(transfers, 'Title'|trans, 'o.title') }}</th>
+                                    <th>{{ knp_pagination_sortable(transfers, 'From'|trans, 'o.source') }}</th>
+                                    <th>{{ knp_pagination_sortable(transfers, 'To'|trans, 'o.target') }}</th>
                                     <th>{{ knp_pagination_sortable(transfers, 'Total'|trans, 'o.total') }}</th>
                                     <th>{{ knp_pagination_sortable(transfers, 'Created'|trans, 'o.creationTime') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
@@ -27,7 +29,10 @@
                                     {# @var transfer \App\Entity\Account\Transfer #}
                                     <tr>
                                         <td>{{ transfer.title }}</td>
+                                        <td>{{ transfer.source.name }}</td>
+                                        <td>{{ transfer.target.name }}</td>
                                         <td>{{ transfer.total|number_format(2, ',', '.') }}€</td>
+                                        <td>{{ transfer.creationTime|dateDiffForHumans }}</td>
                                         <td>
                                             <a href="{{ path('backend_account_transfer_edit', {'id': transfer.id}) }}"
                                                class="btn btn-info btn-icon-split">
@@ -46,7 +51,9 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>{{ knp_pagination_sortable(transfers, 'Title'|trans, 'o.name') }}</th>
+                                    <th>{{ knp_pagination_sortable(transfers, 'Title'|trans, 'o.title') }}</th>
+                                    <th>{{ knp_pagination_sortable(transfers, 'From'|trans, 'o.source') }}</th>
+                                    <th>{{ knp_pagination_sortable(transfers, 'To'|trans, 'o.target') }}</th>
                                     <th>{{ knp_pagination_sortable(transfers, 'Total'|trans, 'o.total') }}</th>
                                     <th>{{ knp_pagination_sortable(transfers, 'Created'|trans, 'o.creationTime') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>

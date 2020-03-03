@@ -4,7 +4,10 @@ namespace App\Dto\Account;
 
 use App\Entity\Account\Account;
 use App\Entity\Account\Transfer;
+use App\Entity\Tag\Tag;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TransferData {
@@ -38,8 +41,14 @@ class TransferData {
      */
     private ?Account $target = null;
 
+    /**
+     * @var Collection
+     */
+    private Collection $tags;
+
     public function __construct(?Transfer $transfer = null) {
         $this->entity = $transfer;
+        $this->tags = new ArrayCollection();
         if($transfer){
             $this->reverseTransfer($transfer);
         }
@@ -94,6 +103,25 @@ class TransferData {
         return $this;
     }
 
+    /**
+     * @return Collection
+     */
+    public function getTags(): Collection {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag) : void {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+    }
+
+    public function removeTag(Tag $tag): void {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
+    }
+
     public function getEntity() : ?Transfer{
         return $this->entity;
     }
@@ -104,6 +132,20 @@ class TransferData {
         $entity->setTime($this->time);
         $entity->setSource($this->source);
         $entity->setTarget($this->target);
+
+        // Add new tags
+        foreach ($this->tags as $tag){
+            if(!$entity->getTags()->contains($tag)){
+                $entity->addTag($tag);
+            }
+        }
+
+        // Remove old tags
+        foreach ($entity->getTags() as $tag){
+            if(!$this->tags->contains($tag)){
+                $entity->removeTag($tag);
+            }
+        }
     }
 
     public function reverseTransfer(Transfer $transfer): void {
@@ -112,6 +154,11 @@ class TransferData {
         $this->time = $transfer->getTime();
         $this->source = $transfer->getSource();
         $this->target = $transfer->getTarget();
+
+        $this->tags->clear();
+        foreach ($transfer->getTags() as $tag){
+            $this->addTag($tag);
+        }
     }
 
     public function createOrUpdateEntity(): Transfer{

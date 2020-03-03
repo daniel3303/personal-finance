@@ -2,8 +2,12 @@
 
 namespace App\Entity\Account;
 
+use App\Entity\Tag\Tag;
+use App\Entity\Tag\TaggableInterface;
 use Carbon\Carbon;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="App\Repository\Account\TransferRepository")
  */
-class Transfer {
+class Transfer implements TaggableInterface {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -45,6 +49,11 @@ class Transfer {
     private Account $target;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag\Tag")
+     */
+    private Collection $tags;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private DateTime $creationTime;
@@ -56,6 +65,7 @@ class Transfer {
         $this->time = $time;
         $this->source = $source;
         $this->target = $target;
+        $this->tags = new ArrayCollection();
         $this->creationTime = new DateTime();
     }
 
@@ -122,6 +132,25 @@ class Transfer {
         $target->addTransferAsTarget($this);
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag) : void {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+    }
+
+    public function removeTag(Tag $tag): void {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
     }
 
     public function getCreationTime(): Carbon {
