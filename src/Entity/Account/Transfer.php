@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Represents a transfer of money between accounts.
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="App\Repository\Account\TransferRepository")
  */
 class Transfer {
@@ -78,7 +79,10 @@ class Transfer {
     }
 
     public function setTotal(float $total): self {
+        $diff = $total - $this->total;
         $this->total = $total;
+        $this->source->addTotal(-$diff);
+        $this->target->addTotal($diff);
         return $this;
     }
 
@@ -128,5 +132,11 @@ class Transfer {
         $this->creationTime = $time;
 
         return $this;
+    }
+
+    /** @ORM\PreRemove() */
+    public function onRemove(): void {
+        $this->source->removeTransferAsSource($this);
+        $this->target->removeTransferAsTarget($this);
     }
 }

@@ -106,6 +106,11 @@ abstract class Account {
         return $this;
     }
 
+    public function addTotal(float $value) : self {
+        $this->total += $value;
+        return $this;
+    }
+
     public function getNotes(): ?string {
         return $this->notes;
     }

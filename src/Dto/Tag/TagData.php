@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Category;
+namespace App\Dto\Tag;
 
 use App\Entity\Tag\Tag;
 use Symfony\Component\Validator\Constraints as Assert;

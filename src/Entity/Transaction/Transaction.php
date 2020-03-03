@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Represents a exchange of goods between you and a tax payer. Usually you provide a service and
  * get paid for it or you buy something or some service and pay for it.
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="App\Repository\Transaction\TransactionRepository")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorMap({
@@ -36,7 +37,6 @@ abstract class Transaction {
      * @ORM\Column(type="float")
      */
     private float $total;
-
 
     /**
      * @ORM\Column(type="datetime")
@@ -93,7 +93,11 @@ abstract class Transaction {
     }
 
     public function setTotal(float $total): self {
+        $diff = $total - $this->total;
         $this->total = $total;
+
+        $this->taxPayer->addTotal(-$diff);
+        $this->account->addTotal($diff);
 
         return $this;
     }
@@ -161,4 +165,11 @@ abstract class Transaction {
 
         return $this;
     }
+
+    /** @ORM\PreRemove() */
+    public function onRemove(): void {
+        $this->account->removeTransaction($this);
+        $this->taxPayer->removeTransaction($this);
+    }
+
 }

@@ -38,6 +38,12 @@ class TaxPayer {
     private string $name;
 
     /**
+     * Total received from this tax payer minus total spent
+     * @ORM\Column(type="float")
+     */
+    private float $total;
+
+    /**
      * @ORM\Column(type="text", length=65535, nullable=true)
      */
     private ?string $description = null;
@@ -56,6 +62,7 @@ class TaxPayer {
     public function __construct(bool $enabled, string $name) {
         $this->enabled = $enabled;
         $this->name = $name;
+        $this->total = 0;
         $this->creationTime = new DateTime();
         $this->transactions = new ArrayCollection();
     }
@@ -127,6 +134,7 @@ class TaxPayer {
         if (!$this->transactions->contains($transaction)) {
             $this->transactions[] = $transaction;
             $transaction->setTaxPayer($this);
+            $this->total += $transaction->getTotal();
         }
 
         return $this;
@@ -135,8 +143,23 @@ class TaxPayer {
     public function removeTransaction(Transaction $transaction): self {
         if ($this->transactions->contains($transaction)) {
             $this->transactions->removeElement($transaction);
+            $this->total -= $transaction->getTotal();
         }
 
+        return $this;
+    }
+
+    public function getTotal(): float {
+        return $this->total;
+    }
+
+    public function setTotal(float $total): self {
+        $this->total = $total;
+        return $this;
+    }
+
+    public function addTotal(float $value) : self {
+        $this->total += $value;
         return $this;
     }
 }

@@ -1,6 +1,6 @@
 parameters:
     app_name: 'Personal Finance'
     from_mail: 'noreply@domain.tld'
-    locale: 'pt'
+    locale: 'en'
     public_storage_path: '%kernel.project_dir%/public/storage'
     images_path: 'images' # relative to the public storage

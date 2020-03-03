@@ -30,7 +30,7 @@ class RevenueType extends AbstractType {
                 'widget' => 'single_text'
             ])
             ->add('taxPayer', EntityType::class, [
-                'label' => 'Source',
+                'label' => 'Payer',
                 'class' => TaxPayer::class,
                 'query_builder' => static function (TaxPayerRepository $taxPayerRepository) {
                     return $taxPayerRepository->createQueryBuilder('tp')
@@ -40,7 +40,7 @@ class RevenueType extends AbstractType {
                 'choice_label' => 'name',
             ])
             ->add('account', EntityType::class, [
-                'label' => 'Target',
+                'label' => 'Receiver account',
                 'class' => Account::class,
                 'query_builder' => static function (AccountRepository $accountRepository) {
                     return $accountRepository->createQueryBuilder('a')

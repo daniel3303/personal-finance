@@ -3,9 +3,6 @@
 namespace App\Dto\Category;
 
 use App\Entity\Category\Category;
-use App\Entity\Media\Image;
-use App\Entity\TaxPayer\TaxPayer;
-use Metadata\Tests\Driver\Fixture\C\SubDir\C;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CategoryData {
