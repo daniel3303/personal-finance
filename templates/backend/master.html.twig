@@ -41,10 +41,22 @@
                 <span>{{ 'Control Panel'|trans() }}</span></a>
         </li>
 
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+            Accounts
+        </div>
+
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('backend_account_asset_index') }}">
-                <i class="fas fa-fw fa-building"></i>
-                <span>{{ 'Asset Accounts'|trans }}</span></a>
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menu-accounts">
+                <i class="fas fa-fw fa-money-check"></i>
+                <span>{{ 'Accounts'|trans }}</span>
+            </a>
+            <div id="menu-accounts" class="collapse">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">{{ 'Types of transactions'|trans }}:</h6>
+                    <a class="collapse-item" href="{{ path('backend_account_asset_index') }}"><i class="fas fa-fw fa-money-bill-wave"></i> <span>{{ 'Asset Accounts'|trans }}</span></a>
+                </div>
+            </div>
         </li>
 
         <li class="nav-item">
@@ -53,29 +65,37 @@
                 <span>{{ 'Transfers'|trans }}</span></a>
         </li>
 
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+            {{ 'Transactions'|trans }}
+        </div>
+
         <li class="nav-item">
             <a class="nav-link" href="{{ path('backend_tax_payer_index') }}">
                 <i class="fas fa-fw fa-building"></i>
                 <span>{{ 'Tax Payers'|trans }}</span></a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('backend_transaction_revenue_index') }}">
-                <i class="fas fa-fw fa-building"></i>
-                <span>{{ 'Revenues'|trans }}</span></a>
-        </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="{{ path('backend_transaction_expense_index') }}">
-                <i class="fas fa-fw fa-building"></i>
-                <span>{{ 'Expenses'|trans }}</span></a>
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menu-transactions">
+                <i class="fas fa-fw fa-exchange-alt"></i>
+                <span>{{ 'Transactions'|trans }}</span>
+            </a>
+            <div id="menu-transactions" class="collapse">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">{{ 'Types of transactions'|trans }}:</h6>
+                    <a class="collapse-item" href="{{ path('backend_transaction_revenue_index') }}"><i class="fas fa-fw fa-plus"></i> <span>{{ 'Revenues'|trans }}</span></a>
+                    <a class="collapse-item" href="{{ path('backend_transaction_expense_index') }}"><i class="fas fa-fw fa-minus"></i> <span>{{ 'Expenses'|trans }}</span></a>
+                    <a class="collapse-item" href="{{ path('backend_transaction_indebtedness_index') }}"><i class="fas fa-fw fa-clock"></i> <span>{{ 'Indebtednesses'|trans }}</span></a>
+                </div>
+            </div>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link" href="{{ path('backend_transaction_indebtedness_index') }}">
-                <i class="fas fa-fw fa-building"></i>
-                <span>{{ 'Indebtednesses'|trans }}</span></a>
-        </li>
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+            Categories
+        </div>
 
         <li class="nav-item">
             <a class="nav-link" href="{{ path('backend_category_index') }}">
@@ -89,10 +109,7 @@
                 <span>{{ 'Tags'|trans }}</span></a>
         </li>
 
-        <!-- Divider -->
         <hr class="sidebar-divider">
-
-        <!-- Heading -->
         <div class="sidebar-heading">
             Backoffice
         </div>
@@ -132,7 +149,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ app.user.name }}</span>
-                            <img class="img-profile rounded-circle" src="{{ asset('build/images/backend/avatar.png') }}">
+                            <img class="img-profile rounded-circle" src="{{ app.user.photo|imagine_filter('thumbnail_small') }}">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
