@@ -18,6 +18,7 @@
                                 <tr>
                                     <th>{{ knp_pagination_sortable(assetAccounts, 'Name'|trans, 'o.name') }}</th>
                                     <th>{{ knp_pagination_sortable(assetAccounts, 'Total'|trans, 'o.total') }}</th>
+                                    <th>{{ knp_pagination_sortable(assetAccounts, 'Created'|trans, 'o.creationTime') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </thead>
@@ -27,6 +28,7 @@
                                     <tr>
                                         <td>{{ assetAccount.name }}</td>
                                         <td>{{ assetAccount.total|number_format(2, ',', '.') }}€</td>
+                                        <td>{{ assetAccount.creationTime|dateDiffForHumans }}</td>
                                         <td>
                                             <a href="{{ path('backend_account_asset_edit', {'id': assetAccount.id}) }}"
                                                class="btn btn-info btn-icon-split">
@@ -47,6 +49,8 @@
                                 <tr>
                                     <th>{{ knp_pagination_sortable(assetAccounts, 'Name'|trans, 'o.name') }}</th>
                                     <th>{{ knp_pagination_sortable(assetAccounts, 'Total'|trans, 'o.total') }}</th>
+                                    <th>{{ knp_pagination_sortable(assetAccounts, 'Created'|trans, 'o.creationTime') }}</th>
+
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </tfoot>

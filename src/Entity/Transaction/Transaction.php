@@ -96,7 +96,7 @@ abstract class Transaction {
         $diff = $total - $this->total;
         $this->total = $total;
 
-        $this->taxPayer->addTotal(-$diff);
+        $this->taxPayer->addTotal($diff);
         $this->account->addTotal($diff);
 
         return $this;

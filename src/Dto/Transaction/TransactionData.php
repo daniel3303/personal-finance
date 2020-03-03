@@ -133,6 +133,7 @@ abstract class TransactionData {
         $transaction->setDescription($this->description);
         $transaction->setAccount($this->account);
         $transaction->setTaxPayer($this->taxPayer);
+        $transaction->setTime($this->getTime());
     }
 
     protected function transactionReverseTransfer(Transaction $transaction): void {
@@ -141,6 +142,7 @@ abstract class TransactionData {
         $this->description = $transaction->getDescription();
         $this->account = $transaction->getAccount();
         $this->taxPayer = $transaction->getTaxPayer();
+        $this->time = $transaction->getTime();
     }
 
 }

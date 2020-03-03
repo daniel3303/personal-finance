@@ -69,9 +69,10 @@ class RevenueController extends BaseController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $revenueData->createOrUpdateEntity();
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('backend_user_index', [
+            return $this->redirectToRoute('backend_transaction_revenue_index', [
                 'id' => $revenue->getId(),
             ]);
         }
@@ -89,7 +90,7 @@ class RevenueController extends BaseController {
      * @param TranslatorInterface $translator
      * @return Response
      */
-    public function delete(Request $request, Revenue $revenue, TranslatorInterface $translator): Response {
+    public function delete(Request $request, Revenue $revenue): Response {
         if ($this->isCsrfTokenValid('delete' . $revenue->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($revenue);

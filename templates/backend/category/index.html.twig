@@ -1,41 +1,40 @@
 {% extends 'backend/master.html.twig' %}
-{% block title %}{{ 'Transfer'|trans }}{% endblock %}
-{% block contentTitle %}{{ 'Transfer'|trans }}{% endblock %}
+{% block title %}{{ 'Tax Payers'|trans }}{% endblock %}
+{% block contentTitle %}{{ 'Tax Payers'|trans }}{% endblock %}
 
 {% block body %}
     <div class="row">
         <div class="col-12">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Transfer'|trans }}</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">{{ 'Tax Payers'|trans }}</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        {% embed 'backend/component/pagination/header.html.twig' with {pagination: transfers} %}{% endembed %}
+                        {% embed 'backend/component/pagination/header.html.twig' with {pagination: categories} %}{% endembed %}
 
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>{{ knp_pagination_sortable(transfers, 'Title'|trans, 'o.title') }}</th>
-                                    <th>{{ knp_pagination_sortable(transfers, 'Total'|trans, 'o.total') }}</th>
-                                    <th>{{ knp_pagination_sortable(transfers, 'Created'|trans, 'o.creationTime') }}</th>
+                                    <th>{{ knp_pagination_sortable(categories, 'Name'|trans, 'o.name') }}</th>
+                                    <th>{{ knp_pagination_sortable(categories, 'Created'|trans, 'o.creationTime') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for transfer in transfers %}
-                                    {# @var transfer \App\Entity\Account\Transfer #}
+                                {% for category in categories %}
+                                    {# @var category \App\Entity\Category\Category #}
                                     <tr>
-                                        <td>{{ transfer.title }}</td>
-                                        <td>{{ transfer.total|number_format(2, ',', '.') }}€</td>
+                                        <td>{{ category.name }}</td>
+                                        <td>{{ category.creationTime|dateDiffForHumans }}</td>
                                         <td>
-                                            <a href="{{ path('backend_account_transfer_edit', {'id': transfer.id}) }}"
+                                            <a href="{{ path('backend_category_edit', {'id': category.id}) }}"
                                                class="btn btn-info btn-icon-split">
                                                 <span class="icon text-white-50">
                                                   <i class="fas fa-edit"></i>
                                                 </span>
                                             </a>
-                                            {{ include('backend/account/transfer/partials/delete_form.html.twig') }}
+                                            {{ include('backend/category/partials/delete_form.html.twig') }}
                                         </td>
                                     </tr>
                                 {% else %}
@@ -46,17 +45,16 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>{{ knp_pagination_sortable(transfers, 'Title'|trans, 'o.name') }}</th>
-                                    <th>{{ knp_pagination_sortable(transfers, 'Total'|trans, 'o.total') }}</th>
-                                    <th>{{ knp_pagination_sortable(transfers, 'Created'|trans, 'o.creationTime') }}</th>
+                                    <th>{{ knp_pagination_sortable(categories, 'Name'|trans, 'o.name') }}</th>
+                                    <th>{{ knp_pagination_sortable(categories, 'Created'|trans, 'o.creationTime') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </tfoot>
                         </table>
-                        {% embed 'backend/component/pagination/footer.html.twig' with {pagination: transfers} %}{% endembed %}
+                        {% embed 'backend/component/pagination/footer.html.twig' with {pagination: categories} %}{% endembed %}
                     </div>
 
-                    <a href="{{ path('backend_account_transfer_new') }}"
+                    <a href="{{ path('backend_category_new') }}"
                        class="btn btn-success btn-icon-split">
                         <span class="icon text-white-50">
                           <i class="fas fa-plus"></i>

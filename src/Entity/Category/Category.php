@@ -29,6 +29,7 @@ class Category {
 
     public function __construct(string $name) {
         $this->name = $name;
+        $this->creationTime = new DateTime();
     }
 
     public function getId(): ?int {
