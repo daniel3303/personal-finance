@@ -4,9 +4,11 @@ namespace App\Form\Transaction;
 
 use App\Dto\Transaction\IndebtednessData;
 use App\Entity\Account\Account;
+use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
 use App\Entity\TaxPayer\TaxPayer;
 use App\Repository\Account\AccountRepository;
+use App\Repository\Category\CategoryRepository;
 use App\Repository\Tag\TagRepository;
 use App\Repository\TaxPayer\TaxPayerRepository;
 use DateTime;
@@ -56,6 +58,16 @@ class IndebtednessType extends AbstractType {
                         ->orderBy('tp.name', 'ASC');
                 },
                 'choice_label' => 'name',
+            ])
+            ->add('category', EntityType::class, [
+                'label' => 'Category',
+                'class' => Category::class,
+                'query_builder' => static function (CategoryRepository $categoryRepository) {
+                    return $categoryRepository->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+                },
+                'choice_label' => 'name',
+                'multiple' => true,
             ])
             ->add('tags', EntityType::class, [
                 'label' => 'Tags',
