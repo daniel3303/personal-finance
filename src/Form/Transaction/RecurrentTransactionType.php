@@ -2,7 +2,7 @@
 
 namespace App\Form\Transaction;
 
-use App\Dto\Transaction\RevenueData;
+use App\Dto\Transaction\RecurrentTransactionData;
 use App\Entity\Account\Account;
 use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
@@ -13,42 +13,51 @@ use App\Repository\Tag\TagRepository;
 use App\Repository\TaxPayer\TaxPayerRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RevenueType extends AbstractType {
-    public function buildForm(FormBuilderInterface $builder, array $options): void {
+class RecurrentTransactionType extends AbstractType {
+    public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $builder
-            ->add('title', TextType::class, [
-                'label' => 'Title',
-                'required' => false
+            ->add('name', TextType::class, [
+                'label' => 'Name',
             ])
             ->add('total', MoneyType::class, [
-                'label' => 'Total'
+                'label' => 'Average amount',
             ])
-            ->add('time', DateTimeType::class, [
-                'label' => 'Date',
-                'widget' => 'single_text'
+            ->add('startTime', DateType::class, [
+                'label' => 'Start date',
+                'widget' => 'single_text',
+            ])
+            ->add('interval', DateIntervalType::class, [
+                'label' => 'Interval',
+            ])
+            ->add('endTime', DateType::class, [
+                'label' => 'Valid until',
+                'required' => false,
+                'widget' => 'single_text',
+            ])
+            ->add('account', EntityType::class, [
+                'label' => 'Payment from',
+                'class' => Account::class,
+                'query_builder' => static function (AccountRepository $accountRepository) {
+                    return $accountRepository->createQueryBuilder('a')
+                        ->orderBy('a.name', 'ASC');
+                },
+                'choice_label' => 'name',
             ])
             ->add('taxPayer', EntityType::class, [
-                'label' => 'Payer',
+                'label' => 'Payment to',
                 'class' => TaxPayer::class,
                 'query_builder' => static function (TaxPayerRepository $taxPayerRepository) {
                     return $taxPayerRepository->createQueryBuilder('tp')
                         ->where('tp.enabled = true')
                         ->orderBy('tp.name', 'ASC');
-                },
-                'choice_label' => 'name',
-            ])
-            ->add('account', EntityType::class, [
-                'label' => 'Receiver account',
-                'class' => Account::class,
-                'query_builder' => static function (AccountRepository $accountRepository) {
-                    return $accountRepository->createQueryBuilder('a')
-                        ->orderBy('a.name', 'ASC');
                 },
                 'choice_label' => 'name',
             ])
@@ -72,13 +81,12 @@ class RevenueType extends AbstractType {
                 'choice_label' => 'name',
                 'multiple' => true,
                 'required' => false,
-            ])
-        ;
+            ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver) :void {
+    public function configureOptions(OptionsResolver $resolver) : void {
         $resolver->setDefaults([
-            'data_class' => RevenueData::class,
+            'data_class' => RecurrentTransactionData::class,
         ]);
     }
 }

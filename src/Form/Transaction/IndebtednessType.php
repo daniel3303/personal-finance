@@ -78,6 +78,7 @@ class IndebtednessType extends AbstractType {
                 },
                 'choice_label' => 'name',
                 'multiple' => true,
+                'required' => false,
             ]);
     }
 

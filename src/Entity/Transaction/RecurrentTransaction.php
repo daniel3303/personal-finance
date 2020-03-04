@@ -2,12 +2,17 @@
 
 namespace App\Entity\Transaction;
 
+use App\Entity\Account\Account;
+use App\Entity\Account\AssetAccount;
 use App\Entity\Category\Category;
+use App\Entity\Tag\Tag;
 use App\Entity\TaxPayer\TaxPayer;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use DateInterval;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,6 +35,12 @@ class RecurrentTransaction {
      * @ORM\Column(type="float")
      */
     private float $total;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Account\AssetAccount")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private AssetAccount $account;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TaxPayer\TaxPayer")
@@ -59,21 +70,28 @@ class RecurrentTransaction {
     private ?DateTime $endTime;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag\Tag")
+     */
+    private Collection $tags;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private DateTime $creationTime;
 
-    public function __construct(string $name, float $total, TaxPayer $taxPayer,
+    public function __construct(string $name, float $total, AssetAccount $account, TaxPayer $taxPayer,
                                 Category $category, DateTime $startTime,
                                 DateInterval $interval, ?DateTime $endTime = null) {
 
         $this->name = $name;
         $this->total = $total;
+        $this->account = $account;
         $this->taxPayer = $taxPayer;
         $this->category = $category;
         $this->startTime = $startTime;
         $this->interval = $interval;
         $this->endTime = $endTime;
+        $this->tags = new ArrayCollection();
         $this->creationTime = new DateTime();
     }
 
@@ -131,6 +149,24 @@ class RecurrentTransaction {
         return $this;
     }
 
+    /**
+     * @return AssetAccount
+     */
+    public function getAccount(): AssetAccount {
+        return $this->account;
+    }
+
+    /**
+     * @param AssetAccount $account
+     * @return RecurrentTransaction
+     */
+    public function setAccount(AssetAccount $account): self {
+        $this->account = $account;
+
+        return $this;
+    }
+
+
     public function getTaxPayer(): TaxPayer {
         return $this->taxPayer;
     }
@@ -149,6 +185,25 @@ class RecurrentTransaction {
         $this->category = $category;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): void {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+    }
+
+    public function removeTag(Tag $tag): void {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
     }
 
     public function getCreationTime(): Carbon {
