@@ -19,6 +19,7 @@ security:
 
         main:
             anonymous: true
+            switch_user: true
             user_checker: App\Security\UserChecker
             guard:
                 authenticators:

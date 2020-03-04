@@ -150,7 +150,9 @@
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ app.user.name }}</span>
-                            <img class="img-profile rounded-circle" src="{{ app.user.photo|imagine_filter('thumbnail_small') }}">
+                            {% if app.user.photo != null %}
+                            <img class="img-profile rounded-circle" src="{{ app.user.photo|imagine_filter('thumbnail_small') }}" alt="{{ app.user.name }}">
+                            {% endif %}
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -172,7 +174,9 @@
             <div class="container-fluid">
                 <!-- If you are impersonating -->
                 {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                    <a href="{{ path('backend_dashboard', {'_switch_user': '_exit'}) }}">{{ 'Exit impersonation'|trans }}</a>
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-user-friends"></i> {{ 'You are impersonating the user {{ name }}.'|trans({'{{ name }}': app.user.name}) }} <a href="{{ path('backend_dashboard', {'_switch_user': '_exit'}) }}">{{ 'Exit impersonation'|trans }}</a>
+                    </div>
                 {% endif %}
                 <!-- End you are impersonating -->
 

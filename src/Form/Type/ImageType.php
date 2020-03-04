@@ -38,6 +38,7 @@ class ImageType extends AbstractType {
             'file_options' => [],
             'checkbox_options' => [],
             'multiple' => false,
+            'empty_data' => null,
         ]);
         $resolver->setRequired('context');
         $resolver->setAllowedTypes('context', 'string');
