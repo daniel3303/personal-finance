@@ -2,6 +2,7 @@
 
 namespace App\Entity\Category;
 
+use App\Entity\User\User;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,7 +28,14 @@ class Category {
      */
     private DateTime $creationTime;
 
-    public function __construct(string $name) {
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private User $user;
+
+    public function __construct(User $user, string $name) {
+        $this->user = $user;
         $this->name = $name;
         $this->creationTime = new DateTime();
     }
@@ -52,6 +60,16 @@ class Category {
 
     public function setCreationTime(DateTime $creationTime): self {
         $this->creationTime = $creationTime;
+
+        return $this;
+    }
+
+    public function getUser(): User {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self {
+        $this->user = $user;
 
         return $this;
     }
