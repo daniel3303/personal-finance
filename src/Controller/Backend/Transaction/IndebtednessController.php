@@ -69,6 +69,7 @@ class IndebtednessController extends BaseController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $indebtednessData->createOrUpdateEntity();
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('backend_user_index', [
@@ -89,7 +90,7 @@ class IndebtednessController extends BaseController {
      * @param TranslatorInterface $translator
      * @return Response
      */
-    public function delete(Request $request, Indebtedness $indebtedness, TranslatorInterface $translator): Response {
+    public function delete(Request $request, Indebtedness $indebtedness): Response {
         if ($this->isCsrfTokenValid('delete' . $indebtedness->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($indebtedness);

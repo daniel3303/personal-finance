@@ -69,6 +69,7 @@ class ExpenseController extends BaseController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $expenseData->createOrUpdateEntity();
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('backend_user_index', [
@@ -89,7 +90,7 @@ class ExpenseController extends BaseController {
      * @param TranslatorInterface $translator
      * @return Response
      */
-    public function delete(Request $request, Expense $expense, TranslatorInterface $translator): Response {
+    public function delete(Request $request, Expense $expense): Response {
         if ($this->isCsrfTokenValid('delete' . $expense->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($expense);
