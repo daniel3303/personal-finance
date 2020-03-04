@@ -24,8 +24,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class RecurrentTransactionType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $builder
-            ->add('name', TextType::class, [
-                'label' => 'Name',
+            ->add('title', TextType::class, [
+                'label' => 'Title',
             ])
             ->add('total', MoneyType::class, [
                 'label' => 'Average amount',

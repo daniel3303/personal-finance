@@ -21,7 +21,7 @@ class RecurrentTransactionData {
      * @Assert\NotNull()
      * @Assert\Length(min=1, max=64)
      */
-    private ?string $name = null;
+    private ?string $title = null;
 
     /**
      * @var float|null
@@ -81,15 +81,15 @@ class RecurrentTransactionData {
     /**
      * @return string|null
      */
-    public function getName(): ?string {
-        return $this->name;
+    public function getTitle(): ?string {
+        return $this->title;
     }
 
     /**
-     * @param string|null $name
+     * @param string|null $title
      */
-    public function setName(?string $name): void {
-        $this->name = $name;
+    public function setTitle(?string $title): void {
+        $this->title = $title;
     }
 
     /**
@@ -214,7 +214,7 @@ class RecurrentTransactionData {
     }
 
     public function transfer(RecurrentTransaction $recurrentTransaction): void {
-        $recurrentTransaction->setName($this->name);
+        $recurrentTransaction->setTitle($this->title);
         $recurrentTransaction->setTotal($this->total);
         $recurrentTransaction->setStartTime($this->startTime);
         $recurrentTransaction->setInterval($this->interval);
@@ -239,7 +239,7 @@ class RecurrentTransactionData {
     }
 
     public function reverseTransfer(RecurrentTransaction $recurrentTransaction): void {
-        $this->name = $recurrentTransaction->getName();
+        $this->title = $recurrentTransaction->getTitle();
         $this->total = $recurrentTransaction->getTotal();
         $this->startTime = $recurrentTransaction->getStartTime();
         $this->interval = $recurrentTransaction->getInterval();
@@ -256,7 +256,7 @@ class RecurrentTransactionData {
 
     public function createOrUpdateEntity(): RecurrentTransaction {
         if ($this->entity === null) {
-            $this->entity = new RecurrentTransaction($this->name, $this->total, $this->account, $this->taxPayer, $this->category, $this->startTime, $this->interval, $this->endTime);
+            $this->entity = new RecurrentTransaction($this->title, $this->total, $this->account, $this->taxPayer, $this->category, $this->startTime, $this->interval, $this->endTime);
         }
         $this->transfer($this->entity);
         return $this->entity;

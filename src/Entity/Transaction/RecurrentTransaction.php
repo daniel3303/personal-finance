@@ -28,7 +28,7 @@ class RecurrentTransaction {
     /**
      * @ORM\Column(type="string", length=64)
      */
-    private string $name;
+    private string $title;
 
     /**
      * The value of this recurrent transaction. Should be a positive number if the
@@ -85,7 +85,7 @@ class RecurrentTransaction {
                                 Category $category, DateTime $startTime,
                                 DateInterval $interval, ?DateTime $endTime = null) {
 
-        $this->name = $name;
+        $this->title = $name;
         $this->total = $total;
         $this->account = $account;
         $this->taxPayer = $taxPayer;
@@ -101,12 +101,12 @@ class RecurrentTransaction {
         return $this->id;
     }
 
-    public function getName(): string {
-        return $this->name;
+    public function getTitle(): string {
+        return $this->title;
     }
 
-    public function setName(string $name): self {
-        $this->name = $name;
+    public function setTitle(string $title): self {
+        $this->title = $title;
 
         return $this;
     }
