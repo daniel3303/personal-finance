@@ -6,6 +6,7 @@ use App\Entity\Account\AssetAccount;
 use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
 use App\Entity\TaxPayer\TaxPayer;
+use App\Entity\User\User;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use DateInterval;
@@ -81,10 +82,17 @@ class RecurrentTransaction {
      */
     private DateTime $creationTime;
 
-    public function __construct(string $name, float $total, AssetAccount $account, TaxPayer $taxPayer,
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private User $user;
+
+    public function __construct(User $user, string $name, float $total, AssetAccount $account, TaxPayer $taxPayer,
                                 Category $category, DateTime $startTime,
                                 DateInterval $interval, ?DateTime $endTime = null) {
 
+        $this->user = $user;
         $this->title = $name;
         $this->total = $total;
         $this->account = $account;
@@ -214,6 +222,16 @@ class RecurrentTransaction {
 
     public function setCreationTime(DateTime $creationTime): self {
         $this->creationTime = $creationTime;
+
+        return $this;
+    }
+
+    public function getUser(): User {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self {
+        $this->user = $user;
 
         return $this;
     }

@@ -7,17 +7,23 @@ use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
 use App\Entity\TaxPayer\TaxPayer;
 use App\Entity\Transaction\RecurrentTransaction;
+use App\Entity\User\User;
 use Carbon\CarbonInterval;
 use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class RecurrentTransactionData {
     private ?RecurrentTransaction $entity;
+
+    /**
+     * @var User|null
+     * @Assert\NotNull()
+     */
+    private ?User $user = null;
 
     /**
      * @var string|null
@@ -212,11 +218,27 @@ class RecurrentTransactionData {
         }
     }
 
+    /**
+     * @return User|null
+     */
+    public function getUser(): ?User {
+        return $this->user;
+    }
+
+    /**
+     * @param User|null $user
+     */
+    public function setUser(?User $user): void {
+        $this->user = $user;
+    }
+
+
     public function getEntity(): ?RecurrentTransaction {
         return $this->entity;
     }
 
     public function transfer(RecurrentTransaction $recurrentTransaction): void {
+        $recurrentTransaction->setUser($this->user);
         $recurrentTransaction->setTitle($this->title);
         $recurrentTransaction->setTotal($this->total);
         $recurrentTransaction->setStartTime($this->startTime);
@@ -242,6 +264,7 @@ class RecurrentTransactionData {
     }
 
     public function reverseTransfer(RecurrentTransaction $recurrentTransaction): void {
+        $this->user = $recurrentTransaction->getUser();
         $this->title = $recurrentTransaction->getTitle();
         $this->total = $recurrentTransaction->getTotal();
         $this->startTime = $recurrentTransaction->getStartTime();
@@ -259,7 +282,7 @@ class RecurrentTransactionData {
 
     public function createOrUpdateEntity(): RecurrentTransaction {
         if ($this->entity === null) {
-            $this->entity = new RecurrentTransaction($this->title, $this->total, $this->account, $this->taxPayer, $this->category, $this->startTime, $this->interval, $this->endTime);
+            $this->entity = new RecurrentTransaction($this->user, $this->title, $this->total, $this->account, $this->taxPayer, $this->category, $this->startTime, $this->interval, $this->endTime);
         }
         $this->transfer($this->entity);
         return $this->entity;
