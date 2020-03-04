@@ -170,6 +170,12 @@
             </nav>
             <!-- End of Topbar -->
             <div class="container-fluid">
+                <!-- If you are impersonating -->
+                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                    <a href="{{ path('backend_dashboard', {'_switch_user': '_exit'}) }}">{{ 'Exit impersonation'|trans }}</a>
+                {% endif %}
+                <!-- End you are impersonating -->
+
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">{% block contentTitle %}{% endblock %}</h1>
@@ -177,7 +183,8 @@
 
                 {% include 'backend/component/session_messages.html.twig' %}
 
-                {% block body %}{% endblock %}
+                {% block body %}
+                {% endblock %}
             </div>
 
 

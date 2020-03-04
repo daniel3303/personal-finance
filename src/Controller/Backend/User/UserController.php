@@ -49,7 +49,7 @@ class UserController extends BaseController {
      */
     public function new(Request $request): Response {
         $userData = new UserData();
-        $form = $this->createForm(UserType::class, $userData, ['allow_change_roles' => $this->isGranted('ROLE_SUPER_ADMIN')]);
+        $form = $this->createForm(UserType::class, $userData, ['allow_change_roles' => $this->isGranted('ROLE_ADMIN')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -84,7 +84,7 @@ class UserController extends BaseController {
      */
     public function edit(Request $request, User $user): Response {
         $userData = new UserData($user);
-        $form = $this->createForm(UserType::class, $userData, ['allow_change_roles' => $this->isGranted('ROLE_SUPER_ADMIN')]);
+        $form = $this->createForm(UserType::class, $userData, ['allow_change_roles' => $this->isGranted('ROLE_ADMIN')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -103,7 +103,7 @@ class UserController extends BaseController {
 
     /**
      * @Route("/{id}", name="backend_user_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
      * @param User $user
      * @param TranslatorInterface $translator

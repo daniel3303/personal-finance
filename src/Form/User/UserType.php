@@ -73,9 +73,8 @@ class UserType extends AbstractType {
                 'choices' => [
                     'User' => 'ROLE_USER',
                     'Administrator' => 'ROLE_ADMIN',
-                    'Super Administrator' => 'ROLE_SUPER_ADMIN',
                 ],
-                'help' => 'Permissions for this user. Administrator and Super Administrator provide access to this panel.',
+                'help' => 'Permissions for this user. Administrator provides access to this panel.',
                 'multiple' => true,
             ]);
         }

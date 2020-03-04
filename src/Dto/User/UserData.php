@@ -48,7 +48,6 @@ class UserData {
 
     /**
      * @Assert\NotNull()
-     * @Assert\DateTime()
      */
     private ?DateTime $birthday = null;
 
@@ -211,11 +210,9 @@ class UserData {
 
     public function createOrUpdateEntity() : User {
         if($this->entity !== null){
-            $user = new User($this->enabled, $this->name, $this->gender, $this->email, $this->phone, $this->birthday, $this->roles);
-            $this->entity = $user;
+            $this->entity = new User($this->enabled, $this->name, $this->gender, $this->email, $this->phone, $this->birthday, $this->roles);
         }
-        $user = $this->entity;
-        $this->transfer($user);
+        $this->transfer($this->entity);
 
         return $this->entity;
     }

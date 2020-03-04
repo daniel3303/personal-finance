@@ -1,3 +1,6 @@
 <span class="employee">
     <a href="{{ path('backend_user_show', {id: user.id}) }}"><i class="far fa-user"></i> {{ user.name }}</a>
+    {% if is_granted('ROLE_ALLOWED_TO_SWITCH', user) %}
+        <a href="{{ path('backend_dashboard', {'_switch_user': user.id}) }}">({{ 'Impersonate'|trans }})</a>
+    {% endif %}
 </span>
