@@ -209,7 +209,7 @@ class UserData {
 
 
     public function createOrUpdateEntity() : User {
-        if($this->entity !== null){
+        if($this->entity === null){
             $this->entity = new User($this->enabled, $this->name, $this->gender, $this->email, $this->phone, $this->birthday, $this->roles);
         }
         $this->transfer($this->entity);
