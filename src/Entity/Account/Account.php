@@ -79,7 +79,7 @@ abstract class Account {
      */
     private User $user;
 
-    public function __construct(string $name, float $total, DateTime $initialAmountTime, User $user) {
+    public function __construct(User $user, string $name, float $total, DateTime $initialAmountTime) {
         $this->name = $name;
         $this->total = $total;
         $this->initialAmountTime = $initialAmountTime;

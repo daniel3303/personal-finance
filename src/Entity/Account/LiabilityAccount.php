@@ -22,8 +22,8 @@ class LiabilityAccount extends Account {
      */
     private DateInterval $interestInterval;
 
-    public function __construct(string $name, float $total, DateTime $initialAmountTime, User $user, float $interest, DateInterval $interestInterval) {
-        parent::__construct($name, $total, $initialAmountTime, $user);
+    public function __construct(User $user, string $name, float $total, DateTime $initialAmountTime, float $interest, DateInterval $interestInterval) {
+        parent::__construct($user, $name, $total, $initialAmountTime);
         $this->interest = $interest;
         $this->interestInterval = $interestInterval;
     }

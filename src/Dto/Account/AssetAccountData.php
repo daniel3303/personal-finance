@@ -29,7 +29,7 @@ class AssetAccountData extends AccountData {
 
     public function createOrUpdateEntity(): AssetAccount {
         if($this->entity === null){
-            $this->entity = new AssetAccount($this->getName(), $this->getTotal(), $this->getInitialAmountTime(), $this->getUser());
+            $this->entity = new AssetAccount($this->getUser(), $this->getName(), $this->getTotal(), $this->getInitialAmountTime());
         }
         $this->transfer($this->entity);
         return $this->entity;

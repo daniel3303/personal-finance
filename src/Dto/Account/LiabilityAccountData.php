@@ -23,7 +23,7 @@ class LiabilityAccountData extends AccountData {
     public function __construct(?LiabilityAccount $liabilityAccount = null) {
         parent::__construct($liabilityAccount);
         $this->entity = $liabilityAccount;
-        if($liabilityAccount){
+        if ($liabilityAccount) {
             $this->reverseTransfer($liabilityAccount);
         }
     }
@@ -48,7 +48,7 @@ class LiabilityAccountData extends AccountData {
         return $this;
     }
 
-    public function getEntity() : ?LiabilityAccount{
+    public function getEntity(): ?LiabilityAccount {
         return $this->entity;
     }
 
@@ -66,8 +66,8 @@ class LiabilityAccountData extends AccountData {
     }
 
     public function createOrUpdateEntity(): LiabilityAccount {
-        if($this->entity === null){
-            $this->entity = new LiabilityAccount($this->getName(), $this->getTotal(), $this->getInitialAmountTime(), $this->getUser(), $this->interest, $this->interestInterval);
+        if ($this->entity === null) {
+            $this->entity = new LiabilityAccount($this->getUser(), $this->getName(), $this->getTotal(), $this->getInitialAmountTime(), $this->interest, $this->interestInterval);
         }
         $this->transfer($this->entity);
         return $this->entity;
