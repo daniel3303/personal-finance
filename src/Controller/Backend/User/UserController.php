@@ -88,6 +88,7 @@ class UserController extends BaseController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $userData->createOrUpdateEntity();
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('backend_user_index', [

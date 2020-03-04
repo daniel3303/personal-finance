@@ -228,9 +228,13 @@ class UserData {
         $user->setEmail($this->email);
         $user->setPhone($this->phone);
         $user->setBirthday($this->birthday);
-        $user->setPlainPassword($this->plainPassword);
         $user->setRoles($this->roles);
         $user->setPhoto($this->photo);
+
+        //Optional field, only required to change the password
+        if($this->plainPassword !== null){
+            $user->setPlainPassword($this->plainPassword);
+        }
     }
 
     public function reverseTransfer(User $user): void {
