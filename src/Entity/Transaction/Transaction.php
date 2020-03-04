@@ -7,6 +7,7 @@ use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
 use App\Entity\Tag\TaggableInterface;
 use App\Entity\TaxPayer\TaxPayer;
+use App\Entity\User\User;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -81,7 +82,14 @@ abstract class Transaction implements TaggableInterface {
      */
     private Collection $tags;
 
-    public function __construct(float $total, DateTime $time, Account $account, TaxPayer $taxPayer, Category $category) {
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private User $user;
+
+    public function __construct(User $user, float $total, DateTime $time, Account $account, TaxPayer $taxPayer, Category $category) {
+        $this->user = $user;
         $this->total = $total;
         $this->time = $time;
         $this->account = $account;
@@ -208,7 +216,7 @@ abstract class Transaction implements TaggableInterface {
         return $this->tags;
     }
 
-    public function addTag(Tag $tag) : void {
+    public function addTag(Tag $tag): void {
         if (!$this->tags->contains($tag)) {
             $this->tags[] = $tag;
         }
@@ -218,6 +226,16 @@ abstract class Transaction implements TaggableInterface {
         if ($this->tags->contains($tag)) {
             $this->tags->removeElement($tag);
         }
+    }
+
+    public function getUser(): User {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self {
+        $this->user = $user;
+
+        return $this;
     }
 
     /** @ORM\PreRemove() */

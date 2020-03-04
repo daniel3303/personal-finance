@@ -30,7 +30,7 @@ class IndebtednessData extends TransactionData {
 
     public function createOrUpdateEntity(): Indebtedness{
         if($this->entity === null){
-            $this->entity = new Indebtedness($this->getTotal(), $this->getTime(), $this->getAccount(), $this->getTaxPayer(), $this->getCategory());
+            $this->entity = new Indebtedness($this->getUser(), $this->getTotal(), $this->getTime(), $this->getAccount(), $this->getTaxPayer(), $this->getCategory());
         }
         $this->transfer($this->entity);
         return $this->entity;

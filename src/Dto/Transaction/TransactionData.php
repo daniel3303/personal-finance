@@ -7,12 +7,20 @@ use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
 use App\Entity\TaxPayer\TaxPayer;
 use App\Entity\Transaction\Transaction;
+use App\Entity\User\User;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 abstract class TransactionData {
+
+    /**
+     * @var User|null
+     * @Assert\NotNull()
+     */
+    private ?User $user = null;
+
     /**
      * @Assert\Length(max=128)
      */
@@ -163,7 +171,7 @@ abstract class TransactionData {
         return $this->tags;
     }
 
-    public function addTag(Tag $tag) : void {
+    public function addTag(Tag $tag): void {
         if (!$this->tags->contains($tag)) {
             $this->tags[] = $tag;
         }
@@ -175,7 +183,22 @@ abstract class TransactionData {
         }
     }
 
+    /**
+     * @return User|null
+     */
+    public function getUser(): ?User {
+        return $this->user;
+    }
+
+    /**
+     * @param User|null $user
+     */
+    public function setUser(?User $user): void {
+        $this->user = $user;
+    }
+
     protected function transactionTransfer(Transaction $transaction): void {
+        $transaction->setUser($this->user);
         $transaction->setTitle($this->title);
         $transaction->setTotal($this->total);
         $transaction->setDescription($this->description);
@@ -185,21 +208,22 @@ abstract class TransactionData {
         $transaction->setCategory($this->category);
 
         // Add new tags
-        foreach ($this->tags as $tag){
-            if(!$transaction->getTags()->contains($tag)){
+        foreach ($this->tags as $tag) {
+            if (!$transaction->getTags()->contains($tag)) {
                 $transaction->addTag($tag);
             }
         }
 
         // Remove old tags
-        foreach ($transaction->getTags() as $tag){
-            if(!$this->tags->contains($tag)){
+        foreach ($transaction->getTags() as $tag) {
+            if (!$this->tags->contains($tag)) {
                 $transaction->removeTag($tag);
             }
         }
     }
 
     protected function transactionReverseTransfer(Transaction $transaction): void {
+        $this->user = $transaction->getUser();
         $this->title = $transaction->getTitle();
         $this->total = $transaction->getTotal();
         $this->description = $transaction->getDescription();
@@ -209,7 +233,7 @@ abstract class TransactionData {
         $this->category = $transaction->getCategory();
 
         $this->tags->clear();
-        foreach ($transaction->getTags() as $tag){
+        foreach ($transaction->getTags() as $tag) {
             $this->addTag($tag);
         }
     }

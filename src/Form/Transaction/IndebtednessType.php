@@ -7,6 +7,7 @@ use App\Entity\Account\Account;
 use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
 use App\Entity\TaxPayer\TaxPayer;
+use App\Entity\User\User;
 use App\Repository\Account\AccountRepository;
 use App\Repository\Category\CategoryRepository;
 use App\Repository\Tag\TagRepository;
@@ -19,10 +20,31 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 
 class IndebtednessType extends AbstractType {
-    public function buildForm(FormBuilderInterface $builder, array $options) :void{
+    /**
+     * @var Security
+     */
+    private Security $security;
+
+    public function __construct(Security $security) {
+        $this->security = $security;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
+        /**
+         * @var IndebtednessData $indebtedness
+         */
+        $indebtedness = $options['data'];
+
+        /**
+         * @var User $user
+         */
+        $user = $this->security->getUser();
+        $indebtedness->setUser($user);
+
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Title',

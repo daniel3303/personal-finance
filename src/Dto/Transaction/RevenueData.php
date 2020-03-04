@@ -19,7 +19,7 @@ class RevenueData extends TransactionData {
 
     public function createOrUpdateEntity(): Revenue{
         if($this->entity === null){
-            $this->entity = new Revenue($this->getTotal(), $this->getTime(), $this->getAccount(), $this->getTaxPayer(), $this->getCategory());
+            $this->entity = new Revenue($this->getUser(), $this->getTotal(), $this->getTime(), $this->getAccount(), $this->getTaxPayer(), $this->getCategory());
         }
         $this->transactionTransfer($this->entity);
         return $this->entity;
