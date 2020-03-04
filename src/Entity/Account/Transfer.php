@@ -4,6 +4,7 @@ namespace App\Entity\Account;
 
 use App\Entity\Tag\Tag;
 use App\Entity\Tag\TaggableInterface;
+use App\Entity\User\User;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -58,8 +59,15 @@ class Transfer implements TaggableInterface {
      */
     private DateTime $creationTime;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private User $user;
 
-    public function __construct(string $title, float $total, DateTime $time, Account $source, Account $target) {
+
+    public function __construct(User $user, string $title, float $total, DateTime $time, Account $source, Account $target) {
+        $this->user = $user;
         $this->title = $title;
         $this->total = $total;
         $this->time = $time;
@@ -141,7 +149,7 @@ class Transfer implements TaggableInterface {
         return $this->tags;
     }
 
-    public function addTag(Tag $tag) : void {
+    public function addTag(Tag $tag): void {
         if (!$this->tags->contains($tag)) {
             $this->tags[] = $tag;
         }
@@ -167,5 +175,15 @@ class Transfer implements TaggableInterface {
     public function onRemove(): void {
         $this->source->removeTransferAsSource($this);
         $this->target->removeTransferAsTarget($this);
+    }
+
+    public function getUser(): User {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self {
+        $this->user = $user;
+
+        return $this;
     }
 }

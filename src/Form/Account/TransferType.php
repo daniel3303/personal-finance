@@ -2,9 +2,11 @@
 
 namespace App\Form\Account;
 
+use App\Dto\Account\AssetAccountData;
 use App\Dto\Account\TransferData;
 use App\Entity\Account\Account;
 use App\Entity\Tag\Tag;
+use App\Entity\User\User;
 use App\Repository\Account\AccountRepository;
 use App\Repository\Tag\TagRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -14,9 +16,30 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class TransferType extends AbstractType {
+    /**
+     * @var Security
+     */
+    private Security $security;
+
+    public function __construct(Security $security) {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options) :void {
+        /**
+         * @var TransferData $transfer
+         */
+        $transfer = $options['data'];
+
+        /**
+         * @var User $user
+         */
+        $user = $this->security->getUser();
+        $transfer->setUser($user);
+
         $builder
             ->add('title', TextType::class, [
                 'label' => 'Title',

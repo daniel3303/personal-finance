@@ -5,6 +5,7 @@ namespace App\Dto\Account;
 use App\Entity\Account\Account;
 use App\Entity\Account\Transfer;
 use App\Entity\Tag\Tag;
+use App\Entity\User\User;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,6 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class TransferData {
     private ?Transfer $entity = null;
+
+    /**
+     * @Assert\NotNull()
+     */
+    private ?User $user = null;
 
     /**
      * @Assert\NotNull()
@@ -122,11 +128,26 @@ class TransferData {
         }
     }
 
+    /**
+     * @return User|null
+     */
+    public function getUser(): ?User {
+        return $this->user;
+    }
+
+    /**
+     * @param User|null $user
+     */
+    public function setUser(?User $user): void {
+        $this->user = $user;
+    }
+
     public function getEntity() : ?Transfer{
         return $this->entity;
     }
 
     public function transfer(Transfer $entity): void {
+        $entity->setUser($this->user);
         $entity->setTitle($this->title);
         $entity->setTotal($this->total);
         $entity->setTime($this->time);
@@ -149,6 +170,7 @@ class TransferData {
     }
 
     public function reverseTransfer(Transfer $transfer): void {
+        $this->user = $transfer->getUser();
         $this->title = $transfer->getTitle();
         $this->total = $transfer->getTotal();
         $this->time = $transfer->getTime();
@@ -163,7 +185,7 @@ class TransferData {
 
     public function createOrUpdateEntity(): Transfer{
         if($this->entity === null){
-            $this->entity = new Transfer($this->title, $this->total, $this->time, $this->source, $this->target);
+            $this->entity = new Transfer($this->user, $this->title, $this->total, $this->time, $this->source, $this->target);
         }
         $this->transfer($this->entity);
 
