@@ -62,12 +62,12 @@ class RecurrentTransaction {
     private DateTime $startTime;
 
     /**
-     * @ORM\Column(type="dateinterval")
+     * @ORM\Column(type="dateinterval", name="`interval`")
      */
     private DateInterval $interval;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private ?DateTime $endTime;
 
@@ -141,11 +141,11 @@ class RecurrentTransaction {
         return $this;
     }
 
-    public function getEndTime(): Carbon {
-        return Carbon::instance($this->endTime);
+    public function getEndTime(): ?Carbon {
+        return $this->endTime ? Carbon::instance($this->endTime) : null;
     }
 
-    public function setEndTime(DateTime $endTime): self {
+    public function setEndTime(?DateTime $endTime): self {
         $this->endTime = $endTime;
 
         return $this;

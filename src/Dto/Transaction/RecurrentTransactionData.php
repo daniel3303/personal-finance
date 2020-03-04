@@ -7,11 +7,14 @@ use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
 use App\Entity\TaxPayer\TaxPayer;
 use App\Entity\Transaction\RecurrentTransaction;
+use Carbon\CarbonInterval;
 use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class RecurrentTransactionData {
     private ?RecurrentTransaction $entity;
@@ -71,11 +74,11 @@ class RecurrentTransactionData {
 
 
     public function __construct(RecurrentTransaction $recurrentTransaction = null) {
+        $this->tags = new ArrayCollection();
         $this->entity = $recurrentTransaction;
         if($recurrentTransaction !== null){
             $this->reverseTransfer($recurrentTransaction);
         }
-        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -260,6 +263,24 @@ class RecurrentTransactionData {
         }
         $this->transfer($this->entity);
         return $this->entity;
+    }
+
+    /**
+     * @param RecurrentTransactionData $recurrentTransactionData
+     * @param ExecutionContextInterface $context
+     * @param $payload
+     * @Assert\Callback()
+     */
+    public static function validate(RecurrentTransactionData $recurrentTransactionData, ExecutionContextInterface $context, $payload): void {
+        // Revenue total must be equal or greater than 0
+        $interval = $recurrentTransactionData->getInterval();
+
+        // The interval should be equal or greater than one day
+        if ($interval && CarbonInterval::instance($interval)->lessThan(CarbonInterval::day())) {
+            $context->buildViolation('The interval must be equal or greater than one day.')
+                ->atPath('interval')
+                ->addViolation();
+        }
     }
 
 }

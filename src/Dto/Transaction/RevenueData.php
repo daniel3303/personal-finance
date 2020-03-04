@@ -3,6 +3,7 @@
 namespace App\Dto\Transaction;
 
 use App\Entity\Transaction\Revenue;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class RevenueData extends TransactionData {
@@ -28,6 +29,12 @@ class RevenueData extends TransactionData {
         return $this->entity;
     }
 
+    /**
+     * @param RevenueData $revenueData
+     * @param ExecutionContextInterface $context
+     * @param $payload
+     * @Assert\Callback()
+     */
     public static function validate(RevenueData $revenueData, ExecutionContextInterface $context, $payload): void {
         // Revenue total must be equal or greater than 0
         if ($revenueData->getTotal() < 0) {
