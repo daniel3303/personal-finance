@@ -5,6 +5,7 @@ namespace App\Entity\TaxPayer;
 use App\Entity\Media\Image;
 use App\Entity\Transaction\Revenue;
 use App\Entity\Transaction\Transaction;
+use App\Entity\User\User;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -58,8 +59,15 @@ class TaxPayer {
      */
     private Collection $transactions;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private User $user;
 
-    public function __construct(bool $enabled, string $name) {
+
+    public function __construct(User $user, bool $enabled, string $name) {
+        $this->user = $user;
         $this->enabled = $enabled;
         $this->name = $name;
         $this->total = 0;
@@ -158,8 +166,18 @@ class TaxPayer {
         return $this;
     }
 
-    public function addTotal(float $value) : self {
+    public function addTotal(float $value): self {
         $this->total += $value;
+        return $this;
+    }
+
+    public function getUser(): User {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self {
+        $this->user = $user;
+
         return $this;
     }
 }

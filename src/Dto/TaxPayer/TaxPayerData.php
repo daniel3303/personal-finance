@@ -4,10 +4,17 @@ namespace App\Dto\TaxPayer;
 
 use App\Entity\Media\Image;
 use App\Entity\TaxPayer\TaxPayer;
+use App\Entity\User\User;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TaxPayerData {
     private ?TaxPayer $entity = null;
+
+    /**
+     * @var User|null
+     * @Assert\NotNull()
+     */
+    private ?User $user = null;
 
     /**
      * @var bool
@@ -80,11 +87,27 @@ class TaxPayerData {
         return $this;
     }
 
+    /**
+     * @return User
+     */
+    public function getUser(): ?User {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function setUser(?User $user): void {
+        $this->user = $user;
+    }
+
+
     public function getEntity() : ?TaxPayer{
         return $this->entity;
     }
 
     public function transfer(TaxPayer $entity): void {
+        $entity->setUser($this->user);
         $entity->setEnabled($this->enabled);
         $entity->setName($this->name);
         $entity->setPhoto($this->photo);
@@ -92,6 +115,7 @@ class TaxPayerData {
     }
 
     public function reverseTransfer(TaxPayer $taxPayer): void {
+        $this->user = $taxPayer->getUser();
         $this->enabled = $taxPayer->isEnabled();
         $this->photo = $taxPayer->getPhoto();
         $this->name = $taxPayer->getName();
@@ -100,7 +124,7 @@ class TaxPayerData {
 
     public function createOrUpdateEntity(): TaxPayer{
         if($this->entity === null){
-            $this->entity = new TaxPayer($this->enabled, $this->name);
+            $this->entity = new TaxPayer($this->user, $this->enabled, $this->name);
         }
         $this->transfer($this->entity);
         return $this->entity;
