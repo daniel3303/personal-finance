@@ -72,7 +72,7 @@ class IndebtednessController extends BaseController {
             $indebtednessData->createOrUpdateEntity();
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('backend_user_index', [
+            return $this->redirectToRoute('backend_transaction_indebtedness_index', [
                 'id' => $indebtedness->getId(),
             ]);
         }
@@ -87,7 +87,6 @@ class IndebtednessController extends BaseController {
      * @Route("/{id}", name="backend_transaction_indebtedness_delete", methods={"DELETE"})
      * @param Request $request
      * @param Indebtedness $indebtedness
-     * @param TranslatorInterface $translator
      * @return Response
      */
     public function delete(Request $request, Indebtedness $indebtedness): Response {

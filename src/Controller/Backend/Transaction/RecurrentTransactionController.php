@@ -25,7 +25,7 @@ class RecurrentTransactionController extends BaseController {
     public function index(RecurrentTransactionRepository $recurrentTransactionRepository, Request $request): Response {
         /** @var RecurrentTransaction[] $recurrentTransactions */
         $recurrentTransactions = $this->paginate($recurrentTransactionRepository->findAllWithQuery(), $request, [
-            'defaultSortFieldName' => 'o.time',
+            'defaultSortFieldName' => 'o.creationTime',
             'defaultSortDirection' => 'desc'
         ]);
 
@@ -72,7 +72,7 @@ class RecurrentTransactionController extends BaseController {
             $recurrentTransactionData->createOrUpdateEntity();
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('backend_user_index', [
+            return $this->redirectToRoute('backend_transaction_recurrent_index', [
                 'id' => $recurrentTransaction->getId(),
             ]);
         }
@@ -87,7 +87,6 @@ class RecurrentTransactionController extends BaseController {
      * @Route("/{id}", name="backend_transaction_recurrent_delete", methods={"DELETE"})
      * @param Request $request
      * @param RecurrentTransaction $recurrentTransaction
-     * @param TranslatorInterface $translator
      * @return Response
      */
     public function delete(Request $request, RecurrentTransaction $recurrentTransaction): Response {

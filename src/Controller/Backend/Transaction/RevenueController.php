@@ -87,7 +87,6 @@ class RevenueController extends BaseController {
      * @Route("/{id}", name="backend_transaction_revenue_delete", methods={"DELETE"})
      * @param Request $request
      * @param Revenue $revenue
-     * @param TranslatorInterface $translator
      * @return Response
      */
     public function delete(Request $request, Revenue $revenue): Response {

@@ -72,7 +72,7 @@ class ExpenseController extends BaseController {
             $expenseData->createOrUpdateEntity();
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('backend_user_index', [
+            return $this->redirectToRoute('backend_transaction_expense_index', [
                 'id' => $expense->getId(),
             ]);
         }
@@ -87,7 +87,6 @@ class ExpenseController extends BaseController {
      * @Route("/{id}", name="backend_transaction_expense_delete", methods={"DELETE"})
      * @param Request $request
      * @param Expense $expense
-     * @param TranslatorInterface $translator
      * @return Response
      */
     public function delete(Request $request, Expense $expense): Response {
