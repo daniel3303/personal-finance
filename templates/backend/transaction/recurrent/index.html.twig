@@ -18,7 +18,9 @@
                                 <tr>
                                     <th>{{ knp_pagination_sortable(recurrentTransactions, 'Title'|trans, 'o.title') }}</th>
                                     <th>{{ knp_pagination_sortable(recurrentTransactions, 'Total'|trans, 'o.total') }}</th>
-                                    <th>{{ knp_pagination_sortable(recurrentTransactions, 'Date'|trans, 'o.time') }}</th>
+                                    <th>{{ 'Account'|trans }}</th>
+                                    <th>{{ 'Tax Payer'|trans }}</th>
+                                    <th>{{ knp_pagination_sortable(recurrentTransactions, 'Repetition'|trans, 'o.interval') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </thead>
@@ -28,7 +30,9 @@
                                     <tr>
                                         <td>{{ recurrentTransaction.title }}</td>
                                         <td>{{ recurrentTransaction.total|number_format(2, ',', '.') }}€</td>
-                                        <td>{{ recurrentTransaction.time|dateDiffForHumans }}</td>
+                                        <td>{{ recurrentTransaction.account.name }}</td>
+                                        <td>{{ recurrentTransaction.taxPayer.name }}</td>
+                                        <td>{{ recurrentTransaction.interval|intervalToText }}</td>
                                         <td>
                                             <a href="{{ path('backend_transaction_recurrent_edit', {'id': recurrentTransaction.id}) }}"
                                                class="btn btn-info btn-icon-split">
@@ -49,7 +53,9 @@
                                 <tr>
                                     <th>{{ knp_pagination_sortable(recurrentTransactions, 'Title'|trans, 'o.title') }}</th>
                                     <th>{{ knp_pagination_sortable(recurrentTransactions, 'Total'|trans, 'o.total') }}</th>
-                                    <th>{{ knp_pagination_sortable(recurrentTransactions, 'Date'|trans, 'o.time') }}</th>
+                                    <th>{{ 'Account'|trans }}</th>
+                                    <th>{{ 'Tax Payer'|trans }}</th>
+                                    <th>{{ knp_pagination_sortable(recurrentTransactions, 'Repetition'|trans, 'o.interval') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </tfoot>
