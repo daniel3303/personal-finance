@@ -256,7 +256,7 @@ class RecurrentTransactionData {
 
     public function createOrUpdateEntity(): RecurrentTransaction {
         if ($this->entity === null) {
-            $this->entity = new RecurrentTransaction($this->name, $this->total, $this->taxPayer, $this->category, $this->startTime, $this->interval, $this->endTime);
+            $this->entity = new RecurrentTransaction($this->name, $this->total, $this->account, $this->taxPayer, $this->category, $this->startTime, $this->interval, $this->endTime);
         }
         $this->transfer($this->entity);
         return $this->entity;
