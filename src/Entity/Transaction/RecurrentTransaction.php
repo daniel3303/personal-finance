@@ -32,21 +32,6 @@ class RecurrentTransaction {
     private float $total;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private DateTime $startTime;
-
-    /**
-     * @ORM\Column(type="dateinterval")
-     */
-    private DateInterval $interval;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private DateTime $endTime;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TaxPayer\TaxPayer")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -61,9 +46,35 @@ class RecurrentTransaction {
     /**
      * @ORM\Column(type="datetime")
      */
+    private DateTime $startTime;
+
+    /**
+     * @ORM\Column(type="dateinterval")
+     */
+    private DateInterval $interval;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private ?DateTime $endTime;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
     private DateTime $creationTime;
 
-    public function __construct() {
+    public function __construct(string $name, float $total, TaxPayer $taxPayer,
+                                Category $category, DateTime $startTime,
+                                DateInterval $interval, ?DateTime $endTime = null) {
+
+        $this->name = $name;
+        $this->total = $total;
+        $this->taxPayer = $taxPayer;
+        $this->category = $category;
+        $this->startTime = $startTime;
+        $this->interval = $interval;
+        $this->endTime = $endTime;
+        $this->creationTime = new DateTime();
     }
 
     public function getId(): ?int {
