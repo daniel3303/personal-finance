@@ -69,7 +69,6 @@ class RecurrentTransactionType extends AbstractType {
                         ->orderBy('c.name', 'ASC');
                 },
                 'choice_label' => 'name',
-                'multiple' => true,
             ])
             ->add('tags', EntityType::class, [
                 'label' => 'Tags',

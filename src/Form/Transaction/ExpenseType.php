@@ -60,7 +60,7 @@ class ExpenseType extends AbstractType {
                         ->orderBy('c.name', 'ASC');
                 },
                 'choice_label' => 'name',
-                'multiple' => true,
+                'multiple' => false,
             ])
             ->add('tags', EntityType::class, [
                 'label' => 'Tags',
