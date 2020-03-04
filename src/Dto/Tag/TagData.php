@@ -3,6 +3,7 @@
 namespace App\Dto\Tag;
 
 use App\Entity\Tag\Tag;
+use App\Entity\User\User;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TagData {
@@ -13,6 +14,11 @@ class TagData {
      * @Assert\Length(min=1, max=64)
      */
     private ?string $name = null;
+
+    /**
+     * @Assert\NotNull()
+     */
+    private ?User $user = null;
 
     public function __construct(?Tag $category = null) {
         $this->entity = $category;
@@ -31,6 +37,20 @@ class TagData {
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
+    public function getUser(): ?User {
+        return $this->user;
+    }
+
+    /**
+     * @param User|null $user
+     */
+    public function setUser(?User $user): void {
+        $this->user = $user;
+    }
+
     public function getEntity() : ?Tag{
         return $this->entity;
     }
@@ -45,7 +65,7 @@ class TagData {
 
     public function createOrUpdateEntity(): Tag{
         if($this->entity === null){
-            $this->entity = new Tag($this->name);
+            $this->entity = new Tag($this->user, $this->name);
         }
         $this->transfer($this->entity);
         return $this->entity;
