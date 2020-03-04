@@ -2,6 +2,7 @@
 
 namespace App\Entity\Account;
 
+use App\Entity\User\User;
 use Carbon\CarbonInterval;
 use DateInterval;
 use DateTime;
@@ -21,8 +22,8 @@ class LiabilityAccount extends Account {
      */
     private DateInterval $interestInterval;
 
-    public function __construct(string $name, float $total, DateTime $initialAmountTime, float $interest, DateInterval $interestInterval) {
-        parent::__construct($name, $total, $initialAmountTime);
+    public function __construct(string $name, float $total, DateTime $initialAmountTime, User $user, float $interest, DateInterval $interestInterval) {
+        parent::__construct($name, $total, $initialAmountTime, $user);
         $this->interest = $interest;
         $this->interestInterval = $interestInterval;
     }

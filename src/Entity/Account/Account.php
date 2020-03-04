@@ -3,6 +3,7 @@
 namespace App\Entity\Account;
 
 use App\Entity\Transaction\Transaction;
+use App\Entity\User\User;
 use Carbon\Carbon;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -72,10 +73,17 @@ abstract class Account {
      */
     private Collection $transactions;
 
-    public function __construct(string $name, float $total, DateTime $initialAmountTime) {
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private User $user;
+
+    public function __construct(string $name, float $total, DateTime $initialAmountTime, User $user) {
         $this->name = $name;
         $this->total = $total;
         $this->initialAmountTime = $initialAmountTime;
+        $this->user = $user;
         $this->creationTime = new DateTime();
         $this->transfersAsSource = new ArrayCollection();
         $this->transfersAsTarget = new ArrayCollection();
@@ -106,7 +114,7 @@ abstract class Account {
         return $this;
     }
 
-    public function addTotal(float $value) : self {
+    public function addTotal(float $value): self {
         $this->total += $value;
         return $this;
     }
@@ -164,7 +172,7 @@ abstract class Account {
             $transfer->setSource($this);
 
             // Update total
-            if($transfer->getTime()->isAfter($this->getInitialAmountTime())){
+            if ($transfer->getTime()->isAfter($this->getInitialAmountTime())) {
                 $this->total -= $transfer->getTotal();
             }
         }
@@ -177,7 +185,7 @@ abstract class Account {
             $this->transfersAsSource->removeElement($transfer);
 
             // Update total
-            if($transfer->getTime()->isAfter($this->getInitialAmountTime())){
+            if ($transfer->getTime()->isAfter($this->getInitialAmountTime())) {
                 $this->total += $transfer->getTotal();
             }
         }
@@ -198,7 +206,7 @@ abstract class Account {
             $transfer->setTarget($this);
 
             // Update total
-            if($transfer->getTime()->isAfter($this->getInitialAmountTime())){
+            if ($transfer->getTime()->isAfter($this->getInitialAmountTime())) {
                 $this->total += $transfer->getTotal();
             }
         }
@@ -211,7 +219,7 @@ abstract class Account {
             $this->transfersAsTarget->removeElement($transfer);
 
             // Update total
-            if($transfer->getTime()->isAfter($this->getInitialAmountTime())){
+            if ($transfer->getTime()->isAfter($this->getInitialAmountTime())) {
                 $this->total -= $transfer->getTotal();
             }
         }
@@ -232,7 +240,7 @@ abstract class Account {
             $transaction->setAccount($this);
 
             // Update total
-            if($transaction->getTime()->isAfter($this->getInitialAmountTime())){
+            if ($transaction->getTime()->isAfter($this->getInitialAmountTime())) {
                 $this->total += $transaction->getTotal();
             }
         }
@@ -245,10 +253,20 @@ abstract class Account {
             $this->transactions->removeElement($transaction);
 
             // Update total
-            if($transaction->getTime()->isAfter($this->getInitialAmountTime())){
+            if ($transaction->getTime()->isAfter($this->getInitialAmountTime())) {
                 $this->total -= $transaction->getTotal();
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): User {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self {
+        $this->user = $user;
 
         return $this;
     }

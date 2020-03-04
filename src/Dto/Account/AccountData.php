@@ -3,6 +3,7 @@
 namespace App\Dto\Account;
 
 use App\Entity\Account\Account;
+use App\Entity\User\User;
 use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -33,6 +34,12 @@ abstract class AccountData {
      * @Assert\Length(max=65535)
      */
     private ?string $notes = null;
+
+    /**
+     * @var User|null
+     * @Assert\NotNull()
+     */
+    private ?User $user = null;
 
     public function __construct(?Account $account) {
     }
@@ -88,12 +95,28 @@ abstract class AccountData {
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
+    public function getUser(): ?User {
+        return $this->user;
+    }
+
+    /**
+     * @param User|null $user
+     */
+    public function setUser(?User $user): void {
+        $this->user = $user;
+    }
+
+    
     protected function accountTransfer(Account $account): void {
         $account->setName($this->name);
         $account->setIban($this->iban);
         $account->setNotes($this->notes);
         $account->setTotal($this->total);
         $account->setInitialAmountTime($this->initialAmountTime);
+        $account->setUser($this->user);
     }
 
     protected function accountReverseTransfer(Account $account): void {
@@ -102,5 +125,6 @@ abstract class AccountData {
         $this->total = $account->getTotal();
         $this->initialAmountTime = $account->getInitialAmountTime();
         $this->notes = $account->getNotes();
+        $this->user = $account->getUser();
     }
 }
