@@ -2,7 +2,6 @@
 
 namespace App\Entity\Transaction;
 
-use App\Entity\Account\Account;
 use App\Entity\Account\AssetAccount;
 use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
@@ -32,6 +31,9 @@ class RecurrentTransaction {
     private string $name;
 
     /**
+     * The value of this recurrent transaction. Should be a positive number if the
+     * tax payer is putting money into your account. Should be a negative value if you
+     * are paying to the tax payer.
      * @ORM\Column(type="float")
      */
     private float $total;
