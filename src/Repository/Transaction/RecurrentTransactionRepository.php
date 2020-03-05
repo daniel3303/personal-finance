@@ -4,6 +4,7 @@ namespace App\Repository\Transaction;
 
 use App\Entity\Transaction\RecurrentTransaction;
 use App\Repository\BaseRepository;
+use App\Repository\UserAwareRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -13,7 +14,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method RecurrentTransaction[]    findAll()
  * @method RecurrentTransaction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class RecurrentTransactionRepository extends BaseRepository
+class RecurrentTransactionRepository extends UserAwareRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

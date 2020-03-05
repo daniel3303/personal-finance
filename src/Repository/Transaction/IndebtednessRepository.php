@@ -4,6 +4,7 @@ namespace App\Repository\Transaction;
 
 use App\Entity\Transaction\Indebtedness;
 use App\Repository\BaseRepository;
+use App\Repository\UserAwareRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -12,7 +13,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Indebtedness[]    findAll()
  * @method Indebtedness[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class IndebtednessRepository extends BaseRepository {
+class IndebtednessRepository extends UserAwareRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Indebtedness::class);
     }

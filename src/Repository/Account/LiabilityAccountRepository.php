@@ -3,6 +3,7 @@
 namespace App\Repository\Account;
 
 use App\Entity\Account\LiabilityAccount;
+use App\Repository\UserAwareRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -12,7 +13,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method LiabilityAccount[]    findAll()
  * @method LiabilityAccount[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class LiabilityAccountRepository extends ServiceEntityRepository
+class LiabilityAccountRepository extends UserAwareRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

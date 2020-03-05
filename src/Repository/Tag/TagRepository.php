@@ -4,6 +4,7 @@ namespace App\Repository\Tag;
 
 use App\Entity\Tag\Tag;
 use App\Repository\BaseRepository;
+use App\Repository\UserAwareRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -13,7 +14,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Tag[]    findAll()
  * @method Tag[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TagRepository extends BaseRepository {
+class TagRepository extends UserAwareRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Tag::class);
     }

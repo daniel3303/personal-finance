@@ -4,6 +4,7 @@ namespace App\Repository\Transaction;
 
 use App\Entity\Transaction\Expense;
 use App\Repository\BaseRepository;
+use App\Repository\UserAwareRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -12,7 +13,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Expense[]    findAll()
  * @method Expense[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ExpenseRepository extends BaseRepository
+class ExpenseRepository extends UserAwareRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

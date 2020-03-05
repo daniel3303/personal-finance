@@ -4,6 +4,7 @@ namespace App\Repository\Account;
 
 use App\Entity\Account\Transfer;
 use App\Repository\BaseRepository;
+use App\Repository\UserAwareRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -12,7 +13,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @method Transfer[]    findAll()
  * @method Transfer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TransferRepository extends BaseRepository {
+class TransferRepository extends UserAwareRepository {
     public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Transfer::class);
     }
