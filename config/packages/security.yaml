@@ -1,6 +1,6 @@
 security:
     role_hierarchy:
-        ROLE_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH, ROLE_USER_VIEW, ROLE_USER_EDIT, ROLE_USER_DELETE, ROLE_USER_LIST, ROLE_USER_CREATE]
     encoders:
         App\Entity\User\User:
             algorithm: auto

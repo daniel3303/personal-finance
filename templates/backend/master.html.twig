@@ -110,6 +110,7 @@
                 <span>{{ 'Tags'|trans }}</span></a>
         </li>
 
+        {% if is_granted("ROLE_ADMIN") %}
         <hr class="sidebar-divider">
         <div class="sidebar-heading">
             Backoffice
@@ -120,6 +121,7 @@
                 <i class="fas fa-fw fa-users"></i>
                 <span>{{ 'Users'|trans }}</span></a>
         </li>
+        {% endif %}
 
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">

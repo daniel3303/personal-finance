@@ -14,6 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TaxPayer\TaxPayerRepository")
+ * @ORM\Table(uniqueConstraints={
+ *     @ORM\UniqueConstraint(columns={"name", "user_id"})
+ * })
  */
 class TaxPayer {
     /**
@@ -34,7 +37,7 @@ class TaxPayer {
     private ?Image $photo = null;
 
     /**
-     * @ORM\Column(type="string", length=128, unique=true)
+     * @ORM\Column(type="string", length=128)
      */
     private string $name;
 

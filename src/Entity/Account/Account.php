@@ -13,12 +13,14 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Account\AccountRepository")
+ * @ORM\Table(uniqueConstraints={
+ *     @ORM\UniqueConstraint(columns={"name", "user_id"})
+ * })
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorMap({
  *     "assetAccount" = "AssetAccount",
  *     "liabilityAccount" = "LiabilityAccount"
  * })
- * @UniqueEntity(errorPath="name", fields={"name"})
  */
 abstract class Account {
     /**
@@ -29,7 +31,7 @@ abstract class Account {
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=64, unique=true)
+     * @ORM\Column(type="string", length=64)
      */
     private string $name;
 

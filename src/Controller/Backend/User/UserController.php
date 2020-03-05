@@ -27,6 +27,8 @@ class UserController extends BaseController {
      * @return Response
      */
     public function index(UserRepository $userRepository, Request $request): Response {
+        $this->denyAccessUnlessGranted('ROLE_USER_LIST');
+
         // Filtering
         $filterForm = $this->createForm(UserFilterType::class);
 
@@ -48,6 +50,8 @@ class UserController extends BaseController {
      * @return Response
      */
     public function new(Request $request): Response {
+        $this->denyAccessUnlessGranted('ROLE_USER_CREATE');
+
         $userData = new UserData();
         $form = $this->createForm(UserType::class, $userData, ['allow_change_roles' => $this->isGranted('ROLE_ADMIN')]);
         $form->handleRequest($request);
@@ -71,6 +75,8 @@ class UserController extends BaseController {
      * @return Response
      */
     public function show(User $user): Response {
+        $this->denyAccessUnlessGranted('ROLE_USER_VIEW', $user);
+
         return $this->render('backend/user/show.html.twig', [
             'user' => $user,
         ]);
@@ -83,6 +89,8 @@ class UserController extends BaseController {
      * @return Response
      */
     public function edit(Request $request, User $user): Response {
+        $this->denyAccessUnlessGranted('ROLE_USER_EDIT', $user);
+
         $userData = new UserData($user);
         $form = $this->createForm(UserType::class, $userData, ['allow_change_roles' => $this->isGranted('ROLE_ADMIN')]);
         $form->handleRequest($request);
@@ -104,13 +112,13 @@ class UserController extends BaseController {
 
     /**
      * @Route("/{id}", name="backend_user_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
      * @param User $user
      * @param TranslatorInterface $translator
      * @return Response
      */
     public function delete(Request $request, User $user, TranslatorInterface $translator): Response {
+        $this->denyAccessUnlessGranted('ROLE_USER_DELETE', $user);
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             if($user === $this->getUser()){
                 $this->addFlash('error', $translator->trans('You can not delete your own user.'));

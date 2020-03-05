@@ -45,7 +45,7 @@
                                                   <i class="fas fa-edit"></i>
                                                 </span>
                                             </a>
-                                            {% if is_granted("ROLE_ADMIN") %}
+                                            {% if is_granted("ROLE_USER_DELETE") %}
                                                 {{ include('backend/user/partials/delete_form.html.twig') }}
                                             {% endif %}
                                         </td>

@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Category\CategoryRepository")
+ * @ORM\Table(uniqueConstraints={
+ *     @ORM\UniqueConstraint(columns={"name", "user_id"})
+ * })
  */
 class Category {
     /**
@@ -19,7 +22,7 @@ class Category {
     private ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=64, unique=true)
+     * @ORM\Column(type="string", length=64)
      */
     private string $name;
 
