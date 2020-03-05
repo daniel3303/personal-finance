@@ -24,7 +24,7 @@ class TransferController extends BaseController {
      */
     public function index(TransferRepository $transferRepository, Request $request): Response {
         /** @var Transfer[] $transfers */
-        $transfers = $this->paginate($transferRepository->findAllWithQuery(), $request, [
+        $transfers = $this->paginate($transferRepository->findAllForUserWithQuery($this->user), $request, [
             'defaultSortFieldName' => 'o.creationTime',
             'defaultSortDirection' => 'desc'
         ]);

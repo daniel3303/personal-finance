@@ -24,7 +24,7 @@ class TagController extends BaseController {
      */
     public function index(TagRepository $tagRepository, Request $request): Response {
         /** @var Tag[] $tags */
-        $tags = $this->paginate($tagRepository->findAllWithQuery(), $request, [
+        $tags = $this->paginate($tagRepository->findAllForUserWithQuery($this->user), $request, [
             'defaultSortFieldName' => 'o.name',
             'defaultSortDirection' => 'asc'
         ]);

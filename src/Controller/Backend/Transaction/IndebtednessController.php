@@ -24,7 +24,7 @@ class IndebtednessController extends BaseController {
      */
     public function index(IndebtednessRepository $indebtednessRepository, Request $request): Response {
         /** @var Indebtedness[] $indebtednesses */
-        $indebtednesses = $this->paginate($indebtednessRepository->findAllWithQuery(), $request, [
+        $indebtednesses = $this->paginate($indebtednessRepository->findAllForUserWithQuery($this->user), $request, [
             'defaultSortFieldName' => 'o.time',
             'defaultSortDirection' => 'desc'
         ]);

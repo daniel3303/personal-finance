@@ -24,7 +24,7 @@ class RecurrentTransactionController extends BaseController {
      */
     public function index(RecurrentTransactionRepository $recurrentTransactionRepository, Request $request): Response {
         /** @var RecurrentTransaction[] $recurrentTransactions */
-        $recurrentTransactions = $this->paginate($recurrentTransactionRepository->findAllWithQuery(), $request, [
+        $recurrentTransactions = $this->paginate($recurrentTransactionRepository->findAllForUserWithQuery($this->user), $request, [
             'defaultSortFieldName' => 'o.creationTime',
             'defaultSortDirection' => 'desc'
         ]);

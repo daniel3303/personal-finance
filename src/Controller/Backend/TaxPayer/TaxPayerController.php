@@ -24,7 +24,7 @@ class TaxPayerController extends BaseController {
      */
     public function index(TaxPayerRepository $taxPayerRepository, Request $request): Response {
         /** @var TaxPayer[] $taxPayers */
-        $taxPayers = $this->paginate($taxPayerRepository->findAllWithQuery(), $request, [
+        $taxPayers = $this->paginate($taxPayerRepository->findAllForUserWithQuery($this->user), $request, [
             'defaultSortFieldName' => 'o.name',
             'defaultSortDirection' => 'asc'
         ]);

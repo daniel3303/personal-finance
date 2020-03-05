@@ -7,6 +7,8 @@ use App\Dto\Transaction\RevenueData;
 use App\Entity\Transaction\Revenue;
 use App\Form\Transaction\RevenueType;
 use App\Repository\Transaction\RevenueRepository;
+use Knp\Component\Pager\PaginatorInterface;
+use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @Route("/backend/revenue")
  */
 class RevenueController extends BaseController {
+
     /**
      * @Route("/", name="backend_transaction_revenue_index", methods={"GET"})
      * @param RevenueRepository $revenueRepository
@@ -24,7 +27,7 @@ class RevenueController extends BaseController {
      */
     public function index(RevenueRepository $revenueRepository, Request $request): Response {
         /** @var Revenue[] $revenues */
-        $revenues = $this->paginate($revenueRepository->findAllWithQuery(), $request, [
+        $revenues = $this->paginate($revenueRepository->findAllForUserWithQuery($this->user), $request, [
             'defaultSortFieldName' => 'o.time',
             'defaultSortDirection' => 'desc'
         ]);

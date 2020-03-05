@@ -24,7 +24,7 @@ class AssetAccountController extends BaseController {
      */
     public function index(AssetAccountRepository $assetAccountRepository, Request $request): Response {
         /** @var AssetAccount[] $assetAccounts */
-        $assetAccounts = $this->paginate($assetAccountRepository->findAllWithQuery(), $request, [
+        $assetAccounts = $this->paginate($assetAccountRepository->findAllForUserWithQuery($this->user), $request, [
             'defaultSortFieldName' => 'o.creationTime',
             'defaultSortDirection' => 'desc'
         ]);

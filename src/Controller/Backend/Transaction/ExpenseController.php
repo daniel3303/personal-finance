@@ -24,7 +24,7 @@ class ExpenseController extends BaseController {
      */
     public function index(ExpenseRepository $expenseRepository, Request $request): Response {
         /** @var Expense[] $expenses */
-        $expenses = $this->paginate($expenseRepository->findAllWithQuery(), $request, [
+        $expenses = $this->paginate($expenseRepository->findAllForUserWithQuery($this->user), $request, [
             'defaultSortFieldName' => 'o.time',
             'defaultSortDirection' => 'desc'
         ]);

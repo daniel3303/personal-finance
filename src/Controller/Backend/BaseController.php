@@ -9,6 +9,7 @@
 namespace App\Controller\Backend;
 
 
+use App\Entity\User\User;
 use App\Repository\BaseRepository;
 use Doctrine\ORM\Query;
 use Knp\Component\Pager\Pagination\PaginationInterface;
@@ -17,6 +18,7 @@ use Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 
 class BaseController extends AbstractController {
     public const DEFAULT_PER_PAGE = 10;
@@ -30,7 +32,19 @@ class BaseController extends AbstractController {
      */
     private FilterBuilderUpdaterInterface $filterBuilderUpdater;
 
-    public function __construct(PaginatorInterface $paginator, FilterBuilderUpdaterInterface $filterBuilderUpdater) {
+    /**
+     * BaseController constructor.
+     * @param PaginatorInterface $paginator
+     * @param FilterBuilderUpdaterInterface $filterBuilderUpdater
+     */
+    protected ?User $user;
+
+    public function __construct(PaginatorInterface $paginator, FilterBuilderUpdaterInterface $filterBuilderUpdater, Security $security) {
+        /**
+         * @var User|null $user
+         */
+        $user = $security->getUser();
+        $this->user = $user;
         $this->paginator = $paginator;
         $this->filterBuilderUpdater = $filterBuilderUpdater;
     }

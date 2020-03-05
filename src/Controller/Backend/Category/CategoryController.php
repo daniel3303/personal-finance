@@ -24,7 +24,7 @@ class CategoryController extends BaseController {
      */
     public function index(CategoryRepository $categoryRepository, Request $request): Response {
         /** @var Category[] $categories */
-        $categories = $this->paginate($categoryRepository->findAllWithQuery(), $request, [
+        $categories = $this->paginate($categoryRepository->findAllForUserWithQuery($this->user), $request, [
             'defaultSortFieldName' => 'o.name',
             'defaultSortDirection' => 'asc'
         ]);
