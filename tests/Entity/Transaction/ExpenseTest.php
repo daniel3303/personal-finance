@@ -44,7 +44,7 @@ class ExpenseTest extends TestCase {
     }
 
     public function testSpendingMoney(): void {
-        $transaction = new Expense($this->user, -10, new DateTime(), $this->account, $this->taxPayer, new Category($this->user, 'Test'));
+        $transaction = new Expense($this->user, '',-10, new DateTime(), $this->account, $this->taxPayer, new Category($this->user, 'Test'));
         $this->assertSame($this->account->getTotal(), 90.0);
         $this->assertSame($this->taxPayer->getTotal(), -10.0);
         $this->assertSame($transaction->getAccount(), $this->account);

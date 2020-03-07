@@ -43,7 +43,7 @@ class RevenueTest extends TestCase {
     }
 
     public function testReceivingMoney(): void {
-        $transaction = new Revenue($this->user, 10, new DateTime(), $this->account, $this->taxPayer, new Category($this->user, 'Test'));
+        $transaction = new Revenue($this->user, '', 10, new DateTime(), $this->account, $this->taxPayer, new Category($this->user, 'Test'));
         $this->assertSame($this->account->getTotal(), 110.0);
         $this->assertSame($this->taxPayer->getTotal(), 10.0);
         $this->assertSame($transaction->getAccount(), $this->account);
