@@ -97,6 +97,8 @@ abstract class Transaction implements TaggableInterface {
         $this->category = $category;
         $this->creationTime = new DateTime();
         $this->tags = new ArrayCollection();
+        $this->taxPayer->addTransaction($this);
+        $this->account->addTransaction($this);
     }
 
 
