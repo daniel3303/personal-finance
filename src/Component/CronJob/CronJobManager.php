@@ -25,9 +25,6 @@ use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
 class CronJobManager implements CronJobManagerInterface {
-    // Executes at most one time per 10 seconds
-    public const MIN_EXECUTION_INTERVAL = 10;
-
     /**
      * @var ArrayObject|CronJobSubscriberInterface[]
      */
@@ -48,15 +45,20 @@ class CronJobManager implements CronJobManagerInterface {
      * @var LoggerInterface
      */
     private LoggerInterface $logger;
+    /**
+     * @var int
+     */
+    private int $cronMinExecutionSecs;
 
     public function __construct(CronJobRepository $cronJobRepository,
                                 CacheInterface $cachePool, EntityManagerInterface $entityManager,
-                                LoggerInterface $logger) {
+                                LoggerInterface $logger, int $cronMinExecutionSecs) {
         $this->cronJobs = new ArrayObject();
         $this->cronJobRepository = $cronJobRepository;
         $this->cachePool = $cachePool;
         $this->entityManager = $entityManager;
         $this->logger = $logger;
+        $this->cronMinExecutionSecs = $cronMinExecutionSecs;
     }
 
     public function registerCronJob(CronJobSubscriberInterface $cronJobSubscriber): void {
@@ -79,7 +81,7 @@ class CronJobManager implements CronJobManagerInterface {
         }
 
         // If the last execution was less than MIN_EXECUTION_INTERVAL seconds ago then abort.
-        if($lastExecution->addSeconds(static::MIN_EXECUTION_INTERVAL)->isAfter(Carbon::now())){
+        if($lastExecution->addSeconds($this->cronMinExecutionSecs)->isAfter(Carbon::now())){
             return;
         }
 

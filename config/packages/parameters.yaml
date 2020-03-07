@@ -4,3 +4,4 @@ parameters:
     locale: 'en'
     public_storage_path: '%kernel.project_dir%/public/storage'
     images_path: 'images' # relative to the public storage
+    cron_min_execution_secs: 1

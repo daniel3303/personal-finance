@@ -10,10 +10,11 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
         bind:
-            $fromMail: '%from_mail%'
-            $appName: '%app_name%'
-            $defaultLocale: '%locale%'
+            string $fromMail: '%from_mail%'
+            string $appName: '%app_name%'
+            string $defaultLocale: '%locale%'
             string $imagesPath: '%images_path%'
+            int $cronMinExecutionSecs: '%cron_min_execution_secs%'
 
     _instanceof:
         # services whose classes are instances of CronJobSubscriberInterface will be tagged automatically
