@@ -1,5 +1,7 @@
 {
     "type": "project",
+    "name": "daniel3303/personal-finance",
+    "description": "Free open-sourced personal finance software built using Symfony 5",
     "license": "proprietary",
     "require": {
         "php": "^7.4.0",
