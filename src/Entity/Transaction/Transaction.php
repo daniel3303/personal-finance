@@ -24,6 +24,8 @@ use Doctrine\ORM\Mapping as ORM;
  *     "expense" = "Expense",
  *     "revenue" = "Revenue",
  *     "indebtedness" = "Indebtedness",
+ *     "recurrentRevenue" = "App\Entity\Transaction\Recurrent\RecurrentRevenue",
+ *     "recurrentExpense" = "App\Entity\Transaction\Recurrent\RecurrentExpense",
  * })
  */
 abstract class Transaction implements TaggableInterface {

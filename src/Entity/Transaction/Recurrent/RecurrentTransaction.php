@@ -107,12 +107,12 @@ class RecurrentTransaction {
     private User $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Recurrent\RecurrentExpense", mappedBy="recurrentTransaction")
+     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Recurrent\RecurrentExpense", mappedBy="recurrentTransaction", cascade={"persist", "remove"})
      */
     private Collection $expenses;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Recurrent\RecurrentRevenue", mappedBy="recurrentTransaction")
+     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Recurrent\RecurrentRevenue", mappedBy="recurrentTransaction", cascade={"persist", "remove"})
      */
     private Collection $revenues;
 
@@ -290,14 +290,17 @@ class RecurrentTransaction {
     protected function createTransaction(DateTime $time): void {
         if ($this->total >= 0) {
             $transaction = new RecurrentRevenue($this->user, $this->title, $this->total, $time, $this->account, $this->taxPayer, $this->category, $this);
-            $this->expenses->add($transaction);
+            $this->revenues->add($transaction);
         } else {
-            $transaction = new RecurrentRevenue($this->user, $this->title, $this->total, $time, $this->account, $this->taxPayer, $this->category, $this);
-            $this->revenues->add($this);
+            $transaction = new RecurrentExpense($this->user, $this->title, $this->total, $time, $this->account, $this->taxPayer, $this->category, $this);
+            $this->expenses->add($transaction);
         }
     }
 
     public function createTransactions(): void {
+        if($this->enabled === false){
+            return;
+        }
         if ($this->lastTransactionCreationTime === null) {
             $this->lastTransactionCreationTime = $this->getStartTime();
             $this->nextTransactionCreationTime = $this->getStartTime()->add($this->interval);

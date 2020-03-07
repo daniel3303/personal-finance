@@ -1,5 +1,5 @@
 <form method="post" class="d-inline" action="{{ path('backend_transaction_recurrent_delete', {'id': recurrentTransaction.id}) }}"
-      data-confirm-submit="true" data-confirm-message="{{ 'Are you sure you want to delete this recurrent transaction?'|trans }}">
+      data-confirm-submit="true" data-confirm-message="{{ 'Are you sure you want to delete this recurrent transaction? This will also delete all the transactions created from this template.'|trans }}">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recurrentTransaction.id) }}">
     <button class="btn btn-danger btn-icon-split">

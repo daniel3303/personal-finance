@@ -56,7 +56,8 @@ class RecurrentTransactionType extends AbstractType {
                 'label' => 'Title',
             ])
             ->add('total', MoneyType::class, [
-                'label' => 'Average amount',
+                'label' => 'Amount',
+                'help' => 'Use a positive value if you are going to receive money. Use a negative value if you are going to spend money.'
             ])
             ->add('startTime', DateType::class, [
                 'label' => 'Start date',
@@ -71,7 +72,7 @@ class RecurrentTransactionType extends AbstractType {
                 'widget' => 'single_text',
             ])
             ->add('account', EntityType::class, [
-                'label' => 'Payment from',
+                'label' => 'Account',
                 'class' => Account::class,
                 'query_builder' => static function (AccountRepository $accountRepository) {
                     return $accountRepository->createQueryBuilder('a')
@@ -80,7 +81,7 @@ class RecurrentTransactionType extends AbstractType {
                 'choice_label' => 'name',
             ])
             ->add('taxPayer', EntityType::class, [
-                'label' => 'Payment to',
+                'label' => 'Tax payer',
                 'class' => TaxPayer::class,
                 'query_builder' => static function (TaxPayerRepository $taxPayerRepository) {
                     return $taxPayerRepository->createQueryBuilder('tp')
