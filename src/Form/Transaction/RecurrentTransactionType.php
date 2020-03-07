@@ -15,6 +15,7 @@ use App\Repository\Tag\TagRepository;
 use App\Repository\TaxPayer\TaxPayerRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -47,6 +48,10 @@ class RecurrentTransactionType extends AbstractType {
         $recurrentTransaction->setUser($user);
 
         $builder
+            ->add('enabled', CheckboxType::class, [
+                'label' => 'Enabled',
+                'required' => false,
+            ])
             ->add('title', TextType::class, [
                 'label' => 'Title',
             ])

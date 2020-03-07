@@ -80,7 +80,7 @@ class CronJobManager implements CronJobManagerInterface {
             return;
         }
 
-        // If the last execution was less than MIN_EXECUTION_INTERVAL seconds ago then abort.
+        // If the last execution was less than cronMinExecutionSecs seconds ago then abort.
         if($lastExecution->addSeconds($this->cronMinExecutionSecs)->isAfter(Carbon::now())){
             return;
         }
@@ -91,8 +91,7 @@ class CronJobManager implements CronJobManagerInterface {
         foreach ($this->cronJobs as $cronJob){
             $serviceId = get_class($cronJob);
             $lastCron = $this->cronJobRepository->findLastCronJobForService($serviceId);
-            $lastExecutionDatetime = $lastCron ? $lastCron->getExecutionTime()->getTimestamp() : Carbon::createFromTimestamp(0);
-            $deltaTime = $now->diffInSeconds($lastExecutionDatetime);
+            $lastExecutionDatetime = $lastCron ? $lastCron->getExecutionTime() : Carbon::createFromTimestamp(0);
             $minExecutionInterval = CarbonInterval::instance($cronJob::getMinimumTimeBetweenExecutions());
 
             // Cron job was executed recently

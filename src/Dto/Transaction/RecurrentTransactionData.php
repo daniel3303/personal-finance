@@ -26,6 +26,12 @@ class RecurrentTransactionData {
     private ?User $user = null;
 
     /**
+     * @var bool|null
+     * @Assert\NotNull()
+     */
+    private ?bool $enabled = null;
+
+    /**
      * @var string|null
      * @Assert\NotNull()
      * @Assert\Length(min=1, max=64)
@@ -237,8 +243,25 @@ class RecurrentTransactionData {
         return $this->entity;
     }
 
+    /**
+     * @return bool|null
+     */
+    public function getEnabled(): ?bool {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool|null $enabled
+     */
+    public function isEnabled(?bool $enabled): void {
+        $this->enabled = $enabled;
+    }
+
+
+
     public function transfer(RecurrentTransaction $recurrentTransaction): void {
         $recurrentTransaction->setUser($this->user);
+        $recurrentTransaction->setEnabled($this->enabled);
         $recurrentTransaction->setTitle($this->title);
         $recurrentTransaction->setTotal($this->total);
         $recurrentTransaction->setStartTime($this->startTime);
@@ -265,6 +288,7 @@ class RecurrentTransactionData {
 
     public function reverseTransfer(RecurrentTransaction $recurrentTransaction): void {
         $this->user = $recurrentTransaction->getUser();
+        $this->enabled = $recurrentTransaction->isEnabled();
         $this->title = $recurrentTransaction->getTitle();
         $this->total = $recurrentTransaction->getTotal();
         $this->startTime = $recurrentTransaction->getStartTime();
@@ -282,7 +306,7 @@ class RecurrentTransactionData {
 
     public function createOrUpdateEntity(): RecurrentTransaction {
         if ($this->entity === null) {
-            $this->entity = new RecurrentTransaction($this->user, $this->title, $this->total, $this->account, $this->taxPayer, $this->category, $this->startTime, $this->interval, $this->endTime);
+            $this->entity = new RecurrentTransaction($this->user, $this->enabled, $this->title, $this->total, $this->account, $this->taxPayer, $this->category, $this->startTime, $this->interval, $this->endTime);
         }
         $this->transfer($this->entity);
         return $this->entity;

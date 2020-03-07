@@ -27,6 +27,11 @@ class RecurrentTransaction {
     private ?int $id = null;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $enabled;
+
+    /**
      * @ORM\Column(type="string", length=64)
      */
     private string $title;
@@ -88,11 +93,12 @@ class RecurrentTransaction {
      */
     private User $user;
 
-    public function __construct(User $user, string $name, float $total, AssetAccount $account, TaxPayer $taxPayer,
+    public function __construct(User $user, bool $enabled, string $name, float $total, AssetAccount $account, TaxPayer $taxPayer,
                                 Category $category, DateTime $startTime,
                                 DateInterval $interval, ?DateTime $endTime = null) {
 
         $this->user = $user;
+        $this->enabled = $enabled;
         $this->title = $name;
         $this->total = $total;
         $this->account = $account;
@@ -232,6 +238,16 @@ class RecurrentTransaction {
 
     public function setUser(User $user): self {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function isEnabled(): bool {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self {
+        $this->enabled = $enabled;
 
         return $this;
     }

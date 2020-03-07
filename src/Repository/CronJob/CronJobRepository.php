@@ -19,20 +19,21 @@ class CronJobRepository extends BaseRepository {
         parent::__construct($registry, CronJob::class);
     }
 
-    public function findLastCronJobForService(string $service) : ?CronJob{
-       try {
-           return $this->createQueryBuilder('c')
-               ->select('c')
-               ->where('c.service = :service')
-               ->orderBy('c.executionTime', 'DESC')
-               ->setParameter('service', $service)
-               ->setMaxResults(1)
-               ->getQuery()
-               ->getSingleResult();
-       } catch (NoResultException $e) {
-           return null;
-       } catch (NonUniqueResultException $e) {
-           return null;
-       }
-   }
+    public function findLastCronJobForService(string $service): ?CronJob {
+        try {
+            return $this->createQueryBuilder('c')
+                ->select('c')
+                ->where('c.service = :service')
+                ->andWhere('c.success = true')
+                ->orderBy('c.executionTime', 'DESC')
+                ->setParameter('service', $service)
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
+    }
 }
