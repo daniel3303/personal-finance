@@ -85,6 +85,7 @@ class CronJobManager implements CronJobManagerInterface {
             return;
         }
 
+
         // Executes all the jobs
         $now = Carbon::now();
         foreach ($this->cronJobs as $cronJob){
