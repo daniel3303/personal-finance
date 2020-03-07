@@ -11,6 +11,7 @@ use App\Form\User\ChangePasswordType;
 use App\Form\User\UserType;
 use App\Repository\User\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -138,7 +139,7 @@ class UserController extends BaseController {
      * @Route("/backend/user/change-password", name="backend_user_change_password")
      * @param Request $request
      * @param TranslatorInterface $translator
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function changePassword(Request $request, TranslatorInterface $translator) {
         /**

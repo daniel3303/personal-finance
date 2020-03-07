@@ -53,6 +53,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.2",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
+        "symfony/phpunit-bridge": "^5.0",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "*"
     },

@@ -75,6 +75,10 @@ class Transfer implements TaggableInterface {
         $this->target = $target;
         $this->tags = new ArrayCollection();
         $this->creationTime = new DateTime();
+
+        // Notify the accounts about the transfer
+        $this->source->addTransferAsSource($this);
+        $this->target->addTransferAsTarget($this);
     }
 
 
