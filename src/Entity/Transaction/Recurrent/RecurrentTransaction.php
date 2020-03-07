@@ -178,6 +178,9 @@ class RecurrentTransaction {
 
     public function setInterval(DateInterval $interval): self {
         $this->interval = $interval;
+        if($this->getLastTransactionCreationTime() !== null){
+            $this->nextTransactionCreationTime = $this->getLastTransactionCreationTime()->add($interval);
+        }
 
         return $this;
     }
@@ -259,7 +262,7 @@ class RecurrentTransaction {
         return $this;
     }
 
-    public function getNextCreationTime(): Carbon {
+    public function getNextTransactionCreationTime(): Carbon {
         return Carbon::instance($this->nextTransactionCreationTime);
     }
 

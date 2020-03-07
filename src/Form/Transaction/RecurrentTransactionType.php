@@ -47,6 +47,8 @@ class RecurrentTransactionType extends AbstractType {
         $user = $this->security->getUser();
         $recurrentTransaction->setUser($user);
 
+        $isEdit = $recurrentTransaction->getEntity() !== null && $recurrentTransaction->getEntity()->getId();
+
         $builder
             ->add('enabled', CheckboxType::class, [
                 'label' => 'Enabled',
@@ -58,11 +60,16 @@ class RecurrentTransactionType extends AbstractType {
             ->add('total', MoneyType::class, [
                 'label' => 'Amount',
                 'help' => 'Use a positive value if you are going to receive money. Use a negative value if you are going to spend money.'
-            ])
-            ->add('startTime', DateType::class, [
+            ]);
+
+        if ($isEdit === false) {
+            $builder->add('startTime', DateType::class, [
                 'label' => 'Start date',
                 'widget' => 'single_text',
-            ])
+            ]);
+        }
+
+        $builder
             ->add('interval', DateIntervalType::class, [
                 'label' => 'Interval',
             ])
@@ -112,7 +119,7 @@ class RecurrentTransactionType extends AbstractType {
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver) : void {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => RecurrentTransactionData::class,
         ]);

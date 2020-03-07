@@ -16,11 +16,13 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
+                                    <th>{{ knp_pagination_sortable(recurrentTransactions, 'Enabled'|trans, 'o.enabled') }}</th>
                                     <th>{{ knp_pagination_sortable(recurrentTransactions, 'Title'|trans, 'o.title') }}</th>
                                     <th>{{ knp_pagination_sortable(recurrentTransactions, 'Total'|trans, 'o.total') }}</th>
                                     <th>{{ 'Account'|trans }}</th>
                                     <th>{{ 'Tax Payer'|trans }}</th>
                                     <th>{{ knp_pagination_sortable(recurrentTransactions, 'Repetition'|trans, 'o.interval') }}</th>
+                                    <th>{{ knp_pagination_sortable(recurrentTransactions, 'Next'|trans, 'o.nextTransactionCreationTime') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </thead>
@@ -28,11 +30,19 @@
                                 {% for recurrentTransaction in recurrentTransactions %}
                                     {# @var recurrentTransaction \App\Entity\Transaction\RecurrentTransaction #}
                                     <tr>
+                                        <td>
+                                            {% if recurrentTransaction.enabled %}
+                                                <span class="badge badge-success">{{ 'Yes'|trans }}</span>
+                                            {% else %}
+                                                <span class="badge badge-danger">{{ 'No'|trans }}</span>
+                                            {% endif %}
+                                        </td>
                                         <td>{{ recurrentTransaction.title }}</td>
                                         <td>{{ recurrentTransaction.total|number_format(2, ',', '.') }}€</td>
                                         <td>{{ recurrentTransaction.account.name }}</td>
                                         <td>{{ recurrentTransaction.taxPayer.name }}</td>
                                         <td>{{ recurrentTransaction.interval|intervalToText }}</td>
+                                        <td>{{ recurrentTransaction.nextTransactionCreationTime|dateDiffForHumans }}</td>
                                         <td>
                                             <a href="{{ path('backend_transaction_recurrent_edit', {'id': recurrentTransaction.id}) }}"
                                                class="btn btn-info btn-icon-split">
@@ -51,11 +61,13 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <th>{{ knp_pagination_sortable(recurrentTransactions, 'Enabled'|trans, 'o.enabled') }}</th>
                                     <th>{{ knp_pagination_sortable(recurrentTransactions, 'Title'|trans, 'o.title') }}</th>
                                     <th>{{ knp_pagination_sortable(recurrentTransactions, 'Total'|trans, 'o.total') }}</th>
                                     <th>{{ 'Account'|trans }}</th>
                                     <th>{{ 'Tax Payer'|trans }}</th>
                                     <th>{{ knp_pagination_sortable(recurrentTransactions, 'Repetition'|trans, 'o.interval') }}</th>
+                                    <th>{{ knp_pagination_sortable(recurrentTransactions, 'Next'|trans, 'o.nextTransactionCreationTime') }}</th>
                                     <th>{{ 'Actions'|trans }}</th>
                                 </tr>
                             </tfoot>
