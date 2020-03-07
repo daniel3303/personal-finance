@@ -9,12 +9,14 @@
 namespace App\Contracts\CronJob\Model;
 
 
+use DateInterval;
+
 interface ExecutionContextInterface {
     /**
      * Returns the time elapsed since the last execution (in seconds)
      * Returns the current Unix Timestamp on the first execution
      *
-     * @return int
+     * @return DateInterval
      */
-    public function getDeltaTime(): int;
+    public function getDeltaTime(): DateInterval;
 }

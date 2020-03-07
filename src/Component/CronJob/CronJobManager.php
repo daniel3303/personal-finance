@@ -16,6 +16,7 @@ use App\Entity\CronJob\CronJob;
 use App\Repository\CronJob\CronJobRepository;
 use ArrayObject;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Cache\InvalidArgumentException;
@@ -89,8 +90,14 @@ class CronJobManager implements CronJobManagerInterface {
             $lastCron = $this->cronJobRepository->findLastCronJobForService($serviceId);
             $lastExecutionDatetime = $lastCron ? $lastCron->getExecutionTime()->getTimestamp() : Carbon::createFromTimestamp(0);
             $deltaTime = $now->diffInSeconds($lastExecutionDatetime);
+            $minExecutionInterval = CarbonInterval::instance($cronJob::getMinimumTimeBetweenExecutions());
 
-            $context = new ExecutionContext($deltaTime);
+            // Cron job was executed recently
+            if($lastExecutionDatetime->add($minExecutionInterval)->isAfter($now)){
+                return;
+            }
+
+            $context = new ExecutionContext($now->diff($lastExecutionDatetime));
             try {
                 $cronJob->execute($context);
                 $newCronJob = new CronJob($serviceId, $now, true);

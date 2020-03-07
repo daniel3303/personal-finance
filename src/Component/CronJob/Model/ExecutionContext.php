@@ -10,21 +10,23 @@ namespace App\Component\CronJob\Model;
 
 
 use App\Contracts\CronJob\Model\ExecutionContextInterface;
+use Carbon\CarbonInterval;
+use DateInterval;
 
 class ExecutionContext implements ExecutionContextInterface {
     /**
-     * @var int
+     * @var CarbonInterval
      */
-    private int $deltaTime;
+    private CarbonInterval $deltaTime;
 
-    public function __construct(int $deltaTime) {
-        $this->deltaTime = $deltaTime;
+    public function __construct(DateInterval $deltaTime) {
+        $this->deltaTime = CarbonInterval::instance($deltaTime);
     }
 
     /**
-     * @return int
+     * @return CarbonInterval
      */
-    public function getDeltaTime(): int {
+    public function getDeltaTime(): CarbonInterval {
         return $this->deltaTime;
     }
 

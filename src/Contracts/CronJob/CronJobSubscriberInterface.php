@@ -10,15 +10,16 @@ namespace App\Contracts\CronJob;
 
 
 use App\Contracts\CronJob\Model\ExecutionContextInterface;
+use DateInterval;
 use Exception;
 
 interface CronJobSubscriberInterface {
     /**
      * The minimum time in seconds between two distinct executions of this service.
      *
-     * @return int
+     * @return DateInterval
      */
-    public static function getMinimumTimeBetweenExecutions() : int;
+    public static function getMinimumTimeBetweenExecutions() : DateInterval;
 
     /**
      * The code that will be executed by the service.
