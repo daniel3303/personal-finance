@@ -88,8 +88,9 @@ abstract class Transaction implements TaggableInterface {
      */
     private User $user;
 
-    public function __construct(User $user, float $total, DateTime $time, Account $account, TaxPayer $taxPayer, Category $category) {
+    public function __construct(User $user, string $title, float $total, DateTime $time, Account $account, TaxPayer $taxPayer, Category $category) {
         $this->user = $user;
+        $this->title = $title;
         $this->total = $total;
         $this->time = $time;
         $this->account = $account;

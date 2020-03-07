@@ -1,14 +1,17 @@
 <?php
 
-namespace App\Entity\Transaction;
+namespace App\Entity\Transaction\Recurrent;
 
 use App\Entity\Account\AssetAccount;
 use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
 use App\Entity\TaxPayer\TaxPayer;
+use App\Entity\Transaction\Expense;
+use App\Entity\Transaction\Revenue;
 use App\Entity\User\User;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
+use Carbon\CarbonPeriod;
 use DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,7 +19,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Transaction\RecurrentTransactionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Transaction\Recurrent\RecurrentTransactionRepository")
  */
 class RecurrentTransaction {
     /**
@@ -78,6 +81,16 @@ class RecurrentTransaction {
     private ?DateTime $endTime;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?DateTime $lastTransactionCreationTime = null;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private DateTime $nextTransactionCreationTime;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag\Tag")
      */
     private Collection $tags;
@@ -93,6 +106,16 @@ class RecurrentTransaction {
      */
     private User $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Recurrent\RecurrentExpense", mappedBy="recurrentTransaction")
+     */
+    private Collection $expenses;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Transaction\Recurrent\RecurrentRevenue", mappedBy="recurrentTransaction")
+     */
+    private Collection $revenues;
+
     public function __construct(User $user, bool $enabled, string $name, float $total, AssetAccount $account, TaxPayer $taxPayer,
                                 Category $category, DateTime $startTime,
                                 DateInterval $interval, ?DateTime $endTime = null) {
@@ -105,10 +128,14 @@ class RecurrentTransaction {
         $this->taxPayer = $taxPayer;
         $this->category = $category;
         $this->startTime = $startTime;
+        $this->nextTransactionCreationTime = $startTime;
         $this->interval = $interval;
         $this->endTime = $endTime;
         $this->tags = new ArrayCollection();
+        $this->expenses = new ArrayCollection();
+        $this->revenues = new ArrayCollection();
         $this->creationTime = new DateTime();
+        $this->createTransactions();
     }
 
     public function getId(): ?int {
@@ -232,6 +259,10 @@ class RecurrentTransaction {
         return $this;
     }
 
+    public function getNextCreationTime(): Carbon {
+        return Carbon::instance($this->nextTransactionCreationTime);
+    }
+
     public function getUser(): User {
         return $this->user;
     }
@@ -248,6 +279,67 @@ class RecurrentTransaction {
 
     public function setEnabled(bool $enabled): self {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getLastTransactionCreationTime(): ?Carbon {
+        return $this->lastTransactionCreationTime !== null ? Carbon::instance($this->lastTransactionCreationTime) : null;
+    }
+
+    protected function createTransaction(DateTime $time): void {
+        if ($this->total >= 0) {
+            $transaction = new RecurrentRevenue($this->user, $this->title, $this->total, $time, $this->account, $this->taxPayer, $this->category, $this);
+            $this->expenses->add($transaction);
+        } else {
+            $transaction = new RecurrentRevenue($this->user, $this->title, $this->total, $time, $this->account, $this->taxPayer, $this->category, $this);
+            $this->revenues->add($this);
+        }
+    }
+
+    public function createTransactions(): void {
+        if ($this->lastTransactionCreationTime === null) {
+            $this->lastTransactionCreationTime = $this->getStartTime();
+            $this->nextTransactionCreationTime = $this->getStartTime()->add($this->interval);
+            $this->createTransaction($this->getLastTransactionCreationTime());
+        }
+
+        $period = new CarbonPeriod($this->lastTransactionCreationTime, Carbon::now(), $this->interval);
+        $period->excludeStartDate(true);
+
+        foreach ($period as $date) {
+            $this->createTransaction(Carbon::instance($date));
+            $this->lastTransactionCreationTime = Carbon::instance($date);
+            $this->nextTransactionCreationTime = (Carbon::instance($date))->add($this->interval);
+        }
+    }
+
+    /**
+     * @return Collection|RecurrentExpense[]
+     */
+    public function getExpenses(): Collection {
+        return $this->expenses;
+    }
+
+    public function removeExpense(RecurrentExpense $expense): self {
+        if ($this->expenses->contains($expense)) {
+            $this->expenses->removeElement($expense);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RecurrentRevenue[]
+     */
+    public function getRevenues(): Collection {
+        return $this->revenues;
+    }
+
+    public function removeRevenue(RecurrentRevenue $revenue): self {
+        if ($this->revenues->contains($revenue)) {
+            $this->revenues->removeElement($revenue);
+        }
 
         return $this;
     }

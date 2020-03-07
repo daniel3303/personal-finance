@@ -6,7 +6,7 @@ use App\Entity\Account\AssetAccount;
 use App\Entity\Category\Category;
 use App\Entity\Tag\Tag;
 use App\Entity\TaxPayer\TaxPayer;
-use App\Entity\Transaction\RecurrentTransaction;
+use App\Entity\Transaction\Recurrent\RecurrentTransaction;
 use App\Entity\User\User;
 use Carbon\CarbonInterval;
 use DateInterval;
@@ -246,14 +246,14 @@ class RecurrentTransactionData {
     /**
      * @return bool|null
      */
-    public function getEnabled(): ?bool {
+    public function isEnabled(): ?bool {
         return $this->enabled;
     }
 
     /**
      * @param bool|null $enabled
      */
-    public function isEnabled(?bool $enabled): void {
+    public function setEnabled(?bool $enabled): void {
         $this->enabled = $enabled;
     }
 

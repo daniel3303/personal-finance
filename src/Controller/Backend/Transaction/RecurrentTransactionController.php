@@ -4,9 +4,9 @@ namespace App\Controller\Backend\Transaction;
 
 use App\Controller\Backend\BaseController;
 use App\Dto\Transaction\RecurrentTransactionData;
-use App\Entity\Transaction\RecurrentTransaction;
+use App\Entity\Transaction\Recurrent\RecurrentTransaction;
 use App\Form\Transaction\RecurrentTransactionType;
-use App\Repository\Transaction\RecurrentTransactionRepository;
+use App\Repository\Transaction\Recurrent\RecurrentTransactionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
