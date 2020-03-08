@@ -34,7 +34,7 @@ class AssetAccountTest extends TestCase {
     public function __construct($name = null, array $data = [], $dataName = '') {
         parent::__construct($name, $data, $dataName);
 
-        $this->user = new User(true, 'Test', GenderType::MALE, 'test@test.test', null, new DateTime(), []);
+        $this->user = new User(true, 'Test', GenderType::MALE, 'test@test.test', null, new DateTime(), [], 'pt', 'Europe/Lisbon', 'EUR');
         $this->account1 = new AssetAccount($this->user, 'Test Account 1', 100, new DateTime());
     }
 
