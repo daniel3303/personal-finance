@@ -3,9 +3,12 @@
 namespace App\Entity\User;
 
 
+use App\Entity\Account\Account;
 use App\Entity\Media\Image;
 use Carbon\Carbon;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -89,7 +92,30 @@ class User implements UserInterface {
      */
     private ?DateTime $passwordTokenExpirationTime = null;
 
-    public function __construct(bool $enabled, string $name, string $gender, string $email, ?PhoneNumber $phone, DateTime $birthday, array $roles) {
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Account\Account", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Collection $accounts;
+
+    /**
+     * @ORM\Column(type="string", length=8)
+     */
+    private string $locale;
+
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
+    private string $timezone;
+
+    /**
+     * @ORM\Column(type="string", length=16)
+     */
+    private string $currencyCode;
+
+    public function __construct(bool $enabled, string $name, string $gender, string $email,
+                                ?PhoneNumber $phone, DateTime $birthday, array $roles, string $language,
+                                string $timezone, string $currencyCode) {
         $this->enabled = $enabled;
         $this->name = $name;
         $this->gender = $gender;
@@ -98,6 +124,10 @@ class User implements UserInterface {
         $this->birthday = $birthday;
         $this->roles = $roles;
         $this->creationTime = new DateTime();
+        $this->accounts = new ArrayCollection();
+        $this->locale = $language;
+        $this->timezone = $timezone;
+        $this->currencyCode = $currencyCode;
     }
 
 
@@ -276,6 +306,60 @@ class User implements UserInterface {
 
     public function setBirthday(DateTime $birthday): self {
         $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Account[]
+     */
+    public function getAccounts(): Collection {
+        return $this->accounts;
+    }
+
+    public function addAccount(Account $account): self {
+        if (!$this->accounts->contains($account)) {
+            $this->accounts[] = $account;
+            $account->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAccount(Account $account): self {
+        if ($this->accounts->contains($account)) {
+            $this->accounts->removeElement($account);
+        }
+
+        return $this;
+    }
+
+    public function getLocale(): string {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale): self {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    public function getTimezone(): string {
+        return $this->timezone;
+    }
+
+    public function setTimezone(string $timezone): self {
+        $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function getCurrencyCode(): string {
+        return $this->currencyCode;
+    }
+
+    public function setCurrencyCode(string $currencyCode): self {
+        $this->currencyCode = $currencyCode;
 
         return $this;
     }

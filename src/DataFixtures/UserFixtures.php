@@ -8,6 +8,7 @@ use App\Form\Type\GenderType;
 use Carbon\Carbon;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
+use Symfony\Component\Intl\Languages;
 
 class UserFixtures extends BaseFixture {
     /**
@@ -21,7 +22,7 @@ class UserFixtures extends BaseFixture {
              */
             $image = clone $this->getRandomReference(Image::class);
             $user = new User(true,'Admin'.$count, GenderType::MALE, 'admin@domain.tld', null,
-                Carbon::create(1997, 02, 13), ['ROLE_USER', 'ROLE_ADMIN']);
+                Carbon::create(1997, 02, 13), ['ROLE_USER', 'ROLE_ADMIN'], 'pt', 'Europe/Lisbon', 'EUR');
             $user->setPhoto($image);
 
             $user->setPlainPassword('123456');

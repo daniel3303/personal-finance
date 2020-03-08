@@ -8,16 +8,19 @@ use App\Form\Type\ImageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType {
-    public function buildForm(FormBuilderInterface $builder, array $options):void {
+    public function buildForm(FormBuilderInterface $builder, array $options): void {
         /** @var UserData|null $user */
         $user = $options['data'] ?? null;
         $isEdit = $user->getEntity() && $user->getEntity()->getId();
@@ -67,6 +70,17 @@ class UserType extends AbstractType {
             'widget' => 'single_text',
         ]);
 
+        $builder
+            ->add('language', LanguageType::class, [
+                'label' => 'Language',
+            ])
+            ->add('currencyCode', CurrencyType::class, [
+                'label' => 'Currency',
+            ])
+            ->add('timezone', TimezoneType::class, [
+                'label' => 'timezone',
+            ]);
+
         if ($options['allow_change_roles']) {
             $builder->add('roles', ChoiceType::class, [
                 'label' => 'Permissions',
@@ -80,7 +94,7 @@ class UserType extends AbstractType {
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver):void {
+    public function configureOptions(OptionsResolver $resolver): void {
         $resolver->setDefaults([
             'data_class' => UserData::class,
             'allow_change_roles' => false,

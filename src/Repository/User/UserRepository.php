@@ -4,6 +4,8 @@ namespace App\Repository\User;
 
 use App\Entity\User\User;
 use App\Repository\BaseRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -35,16 +37,30 @@ class UserRepository extends BaseRepository {
      * @param $password string|null
      * @return User Returns a single User or null
      */
-    public function findOneByUsernameAndPassword(?string $username, ?string $password): ?User{
+    public function findOneByUsernameAndPassword(?string $username, ?string $password): ?User {
         $user = $this->findOneBy(array('email' => $username));
 
         //Username not found
-        if($user === null){ return null; }
+        if ($user === null) {
+            return null;
+        }
 
-        if($this->passwordEncoder->isPasswordValid($user, $password) === true){
+        if ($this->passwordEncoder->isPasswordValid($user, $password) === true) {
             return $user;
         }
 
         return null;
+    }
+
+    public function sumNetWorth(User $user): float {
+        try {
+            return $this->createQueryBuilder('u')
+                ->select('SUM(accounts.total)')
+                ->innerJoin('u.accounts', 'accounts')->getQuery()->getSingleScalarResult() ?? 0;
+        } catch (NoResultException $e) {
+            return 0;
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
     }
 }

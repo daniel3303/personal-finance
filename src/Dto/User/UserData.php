@@ -73,6 +73,27 @@ class UserData {
      */
     private ?string $plainPassword = null;
 
+    /**
+     * @var string|null
+     * @Assert\NotNull()
+     * @Assert\Language()
+     */
+    private ?string $language = null;
+
+    /**
+     * @var string|null
+     * @Assert\NotNull()
+     * @Assert\Timezone()
+     */
+    private ?string $timezone = null;
+
+    /**
+     * @var string|null
+     * @Assert\NotNull()
+     * @Assert\Currency()
+     */
+    private ?string $currencyCode = null;
+
     public function __construct(?User $entity = null) {
         $this->entity = $entity;
         if($entity){
@@ -207,10 +228,52 @@ class UserData {
         $this->plainPassword = $plainPassword;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getLanguage(): ?string {
+        return $this->language;
+    }
+
+    /**
+     * @param string|null $language
+     */
+    public function setLanguage(?string $language): void {
+        $this->language = $language;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTimezone(): ?string {
+        return $this->timezone;
+    }
+
+    /**
+     * @param string|null $timezone
+     */
+    public function setTimezone(?string $timezone): void {
+        $this->timezone = $timezone;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCurrencyCode(): ?string {
+        return $this->currencyCode;
+    }
+
+    /**
+     * @param string|null $currencyCode
+     */
+    public function setCurrencyCode(?string $currencyCode): void {
+        $this->currencyCode = $currencyCode;
+    }
+
 
     public function createOrUpdateEntity() : User {
         if($this->entity === null){
-            $this->entity = new User($this->enabled, $this->name, $this->gender, $this->email, $this->phone, $this->birthday, $this->roles);
+            $this->entity = new User($this->enabled, $this->name, $this->gender, $this->email, $this->phone, $this->birthday, $this->roles, $this->language, $this->timezone, $this->currencyCode);
         }
         $this->transfer($this->entity);
 
@@ -230,6 +293,9 @@ class UserData {
         $user->setBirthday($this->birthday);
         $user->setRoles($this->roles);
         $user->setPhoto($this->photo);
+        $user->setLocale($this->language);
+        $user->setTimezone($this->timezone);
+        $user->setCurrencyCode($this->currencyCode);
 
         //Optional field, only required to change the password
         if($this->plainPassword !== null){
@@ -247,5 +313,8 @@ class UserData {
         $this->birthday = $user->getBirthday();
         $this->roles = $user->getRoles();
         $this->plainPassword = $user->getPlainPassword();
+        $this->currencyCode = $user->getCurrencyCode();
+        $this->language = $user->getLocale();
+        $this->timezone = $user->getTimezone();
     }
 }

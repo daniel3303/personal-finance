@@ -76,7 +76,7 @@ abstract class Account {
     private Collection $transactions;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User\User", inversedBy="accounts")
      * @ORM\JoinColumn(nullable=false)
      */
     private User $user;
@@ -269,6 +269,10 @@ abstract class Account {
 
     public function setUser(User $user): self {
         $this->user = $user;
+        if($this->user !== $user){
+            $this->user->removeAccount($this);
+        }
+        $user->addAccount($this);
 
         return $this;
     }

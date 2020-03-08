@@ -2,6 +2,8 @@
     "type": "project",
     "name": "daniel3303/personal-finance",
     "description": "Free open-sourced personal finance software built using Symfony 5",
+    "keywords": ["symfony", "personal", "finance", "rest", "chart", "symfony 5", "software"],
+    "homepage": "https://github.com/daniel3303/personal-finance",
     "license": "proprietary",
     "require": {
         "php": "^7.4.0",
@@ -50,7 +52,8 @@
         "symfony/webpack-encore-bundle": "^1.6",
         "symfony/yaml": "5.0.*",
         "twig/cssinliner-extra": "^3.0",
-        "twig/inky-extra": "^3.0"
+        "twig/inky-extra": "^3.0",
+        "twig/intl-extra": "^3.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.2",
